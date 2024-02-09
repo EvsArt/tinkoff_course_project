@@ -6,6 +6,9 @@ spring:
     name: bot
   jackson:
     time-zone: UTC
+  profiles:
+    active:
+      dev
 
 server:
   port: 8090
