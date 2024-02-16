@@ -2,10 +2,15 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.constants.StringService;
 import edu.java.bot.messageProcessor.MessageParser;
+import edu.java.bot.tracks.TemporaryTracksRepository;
 import edu.java.bot.tracks.Track;
-import edu.java.bot.tracks.TracksHolder;
+import edu.java.bot.tracks.TrackValidator;
+import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,34 +21,69 @@ import org.springframework.stereotype.Component;
 public class UntrackCommand implements Command {
 
     private final MessageParser messageParser;
-    private final TracksHolder tracksHolder;
+    private final TemporaryTracksRepository tracksRepository;
 
     @Getter
-    private final String name = "untrack";
+    private final String name = StringService.COMMAND_UNTRACK_NAME;
     @Getter
-    private final String description = "Stop link tracking (need 1 argument after link)";
+    private final String description = StringService.COMMAND_UNTRACK_DESCRIPTION;
 
     @Autowired
-    public UntrackCommand(MessageParser messageParser, TracksHolder tracksHolder) {
+    public UntrackCommand(
+        MessageParser messageParser,
+        TemporaryTracksRepository tracksRepository,
+        TrackValidator trackValidator
+    ) {
         this.messageParser = messageParser;
-        this.tracksHolder = tracksHolder;
+        this.tracksRepository = tracksRepository;
     }
 
     @Override
-    public SendMessage handle(Update update) {
-        String argument = messageParser.parse(update.message()).arguments();
+    public String getHelpMessage() {
+        return StringService.COMMAND_UNTRACK_HELPMESSAGE;
+    }
 
-        if (argument.isBlank()) {
-            return new SendMessage(update.message().chat().id(), "Argument requires!");
-        }
-        tracksHolder.removeTrack(new Track(argument));
-        log.info("End tracking {}", argument);
-
-        return new SendMessage(update.message().chat().id(), String.format("End tracking %s", argument));
+    @Override
+    public boolean isAvailable(User user) {
+        return tracksRepository.isRegister(user);
     }
 
     @Override
     public boolean isTrigger(Message message) {
-        return COMMAND_WITH_ARGUMENTS_TRIGGER.test(message, getName());
+        return DefaultCommandTriggers.COMMAND_WITH_ARGUMENTS_TRIGGER.test(message, getName());
+    }
+
+    @Override
+    public boolean showInMyCommandsTable() {
+        return false;
+    }
+
+    @Override
+    public SendMessage handle(Update update) {
+        List<String> arguments = messageParser.parse(update.message()).arguments();
+
+        // Illegal arguments count
+        if (arguments.isEmpty() || arguments.size() > StringService.COMMAND_TRACK_ARGUMENTS_TO_DESCRIPTION.size()) {
+            return new SendMessage(
+                update.message().chat().id(),
+                StringService.commandNeedHelp(this)
+            );
+        }
+        User user = update.message().from();
+        Optional<Track> trackOpt = tracksRepository.getTrackByName(user, arguments.get(0));
+
+        SendMessage responseMessage = new SendMessage(update.message().chat().id(), "");
+        trackOpt.ifPresentOrElse(
+            track -> {
+                tracksRepository.removeTrack(user, track);
+                log.info("End tracking {}", track);
+                responseMessage.getParameters()
+                    .put(StringService.TEXT_PARAMETER_IN_REQUEST, StringService.endTracking(track));
+            },
+            () -> responseMessage.getParameters()
+                .put(StringService.TEXT_PARAMETER_IN_REQUEST, StringService.COMMAND_UNTRACK_LINK_NOT_TRACKED)
+        );
+
+        return responseMessage;
     }
 }

@@ -1,5 +1,7 @@
 package edu.java.bot.exceptions;
 
+import edu.java.bot.constants.StringService;
+
 public class NoSuchCommandException extends RuntimeException {
 
     public NoSuchCommandException(String msg) {
@@ -7,7 +9,7 @@ public class NoSuchCommandException extends RuntimeException {
     }
 
     public NoSuchCommandException() {
-        super("");
+        super(StringService.COMMAND_NOT_EXISTS);
     }
 
 }

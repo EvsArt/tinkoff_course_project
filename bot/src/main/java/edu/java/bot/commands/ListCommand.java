@@ -2,10 +2,10 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.tracks.Track;
-import edu.java.bot.tracks.TracksHolder;
-import java.util.Set;
+import edu.java.bot.constants.StringService;
+import edu.java.bot.tracks.TemporaryTracksRepository;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,34 +15,45 @@ import org.springframework.stereotype.Component;
 @Component
 public class ListCommand implements Command {
 
-    private final TracksHolder tracksHolder;
+    private final TemporaryTracksRepository tracksRepository;
 
     @Getter
-    private final String name = "list";
+    private final String name = StringService.COMMAND_LIST_NAME;
     @Getter
-    private final String description = "Print tracking list";
+    private final String description = StringService.COMMAND_LIST_DESCRIPTION;
 
     @Autowired
-    public ListCommand(TracksHolder tracksHolder) {
-        this.tracksHolder = tracksHolder;
+    public ListCommand(TemporaryTracksRepository tracksRepository) {
+        this.tracksRepository = tracksRepository;
+    }
+
+    @Override
+    public String getHelpMessage() {
+        return StringService.COMMAND_LIST_HELPMESSAGE;
     }
 
     @Override
     public SendMessage handle(Update update) {
-        log.debug("/list was called");
-        return new SendMessage(update.message().chat().id(), tracksToPrettyView(tracksHolder.getTracks()));
+        log.debug("Command {}{} was called", StringService.COMMAND_TRIGGER, name);
+        if (!tracksRepository.isRegister(update.message().from())) {
+            return new SendMessage(
+                update.message().chat().id(), StringService.PLEASE_REGISTER
+            );
+        }
+        return new SendMessage(
+            update.message().chat().id(),
+            StringService.tracksToPrettyView(tracksRepository.getTracksByUser(update.message().from()))
+        );
+    }
+
+    @Override
+    public boolean isAvailable(User user) {
+        return tracksRepository.isRegister(user);
     }
 
     @Override
     public boolean isTrigger(Message message) {
-        return COMMAND_WITH_ARGUMENTS_TRIGGER.test(message, getName());
-    }
-
-    private String tracksToPrettyView(Set<Track> tracks) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Your tracks:\n");
-        tracks.forEach(track -> builder.append(String.format("-- %s\n", track.link())));
-        return builder.toString();
+        return DefaultCommandTriggers.COMMAND_WITH_ARGUMENTS_TRIGGER.test(message, getName());
     }
 
 }

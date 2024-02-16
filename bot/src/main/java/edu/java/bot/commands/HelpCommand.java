@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.constants.StringService;
 import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +17,9 @@ import org.springframework.stereotype.Component;
 public class HelpCommand implements Command {
 
     @Getter
-    private final String name = "help";
+    private final String name = StringService.COMMAND_HELP_NAME;
     @Getter
-    private final String description = "Print list of available commands";
+    private final String description = StringService.COMMAND_HELP_DESCRIPTION;
 
     private final ApplicationContext context;
 
@@ -29,34 +30,26 @@ public class HelpCommand implements Command {
 
     @Override
     public boolean isTrigger(Message message) {
-        return SIMPLE_COMMAND_TRIGGER.test(message, name);
+        return DefaultCommandTriggers.SIMPLE_COMMAND_TRIGGER.test(message, name);
+    }
+
+    @Override
+    public String getHelpMessage() {
+        return StringService.COMMAND_HELP_HELPMESSAGE;
     }
 
     @Override
     public SendMessage handle(Update update) {
         return new SendMessage(
             update.message().chat().id(),
-            toPrettyView(getAvailableCommands(update.message().from()))
+            StringService.availableCommandsToPrettyView(getAvailableCommands(update.message().from()))
         );
     }
 
     private List<Command> getAvailableCommands(User user) {
-        return context.getBeansOfType(Command.class).values().stream()
+        return context.getBean(CommandsHolder.class).getCommands().stream()
             .filter(it -> it.showInHelpList(user))
             .toList();
-    }
-
-    private String toPrettyView(List<Command> commands) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Available commands list:\n");
-        commands.forEach(command -> builder.append(
-            String.format("%c%s - %s\n", '/',
-                command.getName(),
-                command.getDescription()
-            )
-        ));
-
-        return builder.toString();
     }
 
 }

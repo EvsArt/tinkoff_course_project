@@ -1,15 +1,21 @@
 package edu.java.bot.commands;
 
+import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
-import java.util.function.BiPredicate;
 
+/**
+ * You just need to create a bean implements Command
+ * for creating new command in bot
+ */
 public interface Command {
     String getName();
 
     String getDescription();
+
+    String getHelpMessage();
 
     SendMessage handle(Update update);
 
@@ -18,6 +24,9 @@ public interface Command {
      *
      * @param message potential calling message
      * @return true if message is caller of this command
+     *     <p>
+     *     You can use default triggers
+     * @see DefaultCommandTriggers
      */
     boolean isTrigger(Message message);
 
@@ -33,15 +42,25 @@ public interface Command {
         return true;
     }
 
+    /**
+     * Check if this command should to be shown for user in help list
+     *
+     * @param user user who want to see commands
+     * @return true if command should to be shown for user else false
+     *     <p>
+     *     Without overriding command shows if it is available
+     *     </p>
+     */
     default boolean showInHelpList(User user) {
         return isAvailable(user);
     }
 
-    BiPredicate<Message, String>
-        SIMPLE_COMMAND_TRIGGER = (message, commandName) -> message.text().equals('/' + commandName);
-    BiPredicate<Message, String>
-        COMMAND_WITH_ARGUMENTS_TRIGGER = (message, commandName) -> message.text().startsWith('/' + commandName);
-    BiPredicate<Message, String>
-        NOT_A_COMMAND_TRIGGER = ((message, s) -> !message.text().startsWith("/"));
+    default boolean showInMyCommandsTable() {
+        return true;
+    }
+
+    default BotCommand toApiCommand() {
+        return new BotCommand(getName(), getDescription());
+    }
 
 }
