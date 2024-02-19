@@ -1,6 +1,7 @@
 package edu.java.bot.messageProcessor;
 
 import com.pengrad.telegrambot.model.Message;
+import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
 import edu.java.bot.exceptions.NoSuchCommandException;
 import java.util.ArrayList;
@@ -13,11 +14,11 @@ public class MessageParser {
 
     public ParsedMessage parse(Message message) throws NoSuchCommandException {
 
-        boolean isCommand = message.text().startsWith(StringService.COMMAND_TRIGGER);
+        boolean isCommand = message.text().startsWith(Constants.COMMAND_TRIGGER);
 
         if (isCommand) {
             String[] commandAndArguments = message.text().split(" ", 2);
-            String command = commandAndArguments[0].replaceFirst(StringService.COMMAND_TRIGGER, "");
+            String command = commandAndArguments[0].replaceFirst(Constants.COMMAND_TRIGGER, "");
             List<String> arguments = new ArrayList<>();
             if (commandAndArguments.length == 2) {
                 arguments = Arrays.stream(commandAndArguments[1].split(" ")).toList();

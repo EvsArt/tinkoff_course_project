@@ -1,8 +1,8 @@
-package edu.java.bot.tracks;
+package edu.java.bot.tracks.validator;
 
 import java.util.List;
 
-public interface TrackValidator {
+public interface LinkValidatorManager {
 
     boolean validateLink(String link);
 

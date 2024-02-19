@@ -1,4 +1,4 @@
-package edu.java.bot.tracks.linkValidators;
+package edu.java.bot.tracks.validator;
 
 public interface LinkValidator {
 

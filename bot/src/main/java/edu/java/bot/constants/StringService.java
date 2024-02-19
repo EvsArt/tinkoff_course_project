@@ -11,28 +11,24 @@ public class StringService {
     private StringService() {
     }
 
-    public static final String TEXT_PARAMETER_IN_REQUEST = "text";
-
     public static final String COMMAND_NOT_EXISTS = "Command not exists";
-    public static final String COMMAND_TRIGGER = "/";
-    public static final String COMMAND_NEED_HELP_ARGUMENT = "-h";
 
     public static final String COMMAND_START_NAME = "start";
     public static final String COMMAND_START_DESCRIPTION = "User registration";
     public static final String COMMAND_START_SUCCESSFUL_REGISTRATION_MESSAGE = "You was registered!";
     public static final String COMMAND_START_HELPMESSAGE = String.format(
         "Using %s%s without arguments for user registration",
-        COMMAND_TRIGGER,
+        Constants.COMMAND_TRIGGER,
         COMMAND_START_NAME
     );
     public static final String PLEASE_REGISTER =
-        String.format("Please, registry firstly %s%s", COMMAND_TRIGGER, COMMAND_START_NAME);
+        String.format("Please, registry firstly %s%s", Constants.COMMAND_TRIGGER, COMMAND_START_NAME);
 
     public static final String COMMAND_HELP_NAME = "help";
     public static final String COMMAND_HELP_DESCRIPTION = "Print list of available commands";
     public static final String COMMAND_HELP_HELPMESSAGE = String.format(
         "Using %s%s without arguments for print list of available commands",
-        COMMAND_TRIGGER,
+        Constants.COMMAND_TRIGGER,
         COMMAND_HELP_NAME
     );
 
@@ -40,13 +36,13 @@ public class StringService {
     public static final String COMMAND_LIST_DESCRIPTION = "Print tracking list";
     public static final String COMMAND_LIST_HELPMESSAGE = String.format(
         "Using %s%s without arguments printing tracking links",
-        COMMAND_TRIGGER,
+        Constants.COMMAND_TRIGGER,
         COMMAND_LIST_NAME
     );
 
     public static final String COMMAND_NOT_A_COMMAND_NAME = "not-a-command";
     public static final String COMMAND_NOT_A_COMMAND_DESCRIPTION = "";
-    public static final String COMMAND_NOT_A_COMMAND_NOT_SUPPORT_MESSAGE =
+    public static final String COMMAND_NOT_A_COMMAND_NOT_SUPPORTS_MESSAGE =
         "Suddenly bot doesn't support not-command messages";
 
     public static final String COMMAND_TRACK_NAME = "track";
@@ -62,9 +58,9 @@ public class StringService {
             Arguments:
             %s
             """,
-        COMMAND_TRIGGER,
+        Constants.COMMAND_TRIGGER,
         COMMAND_TRACK_NAME,
-        COMMAND_TRIGGER,
+        Constants.COMMAND_TRIGGER,
         COMMAND_TRACK_NAME,
         argumentsToString(COMMAND_TRACK_ARGUMENTS_TO_DESCRIPTION)
     );
@@ -82,7 +78,7 @@ public class StringService {
             Arguments:
             %s
             """,
-        COMMAND_TRIGGER,
+        Constants.COMMAND_TRIGGER,
         COMMAND_UNTRACK_NAME,
         argumentsToString(COMMAND_UNTRACK_ARGUMENTS_TO_DESCRIPTION)
     );
@@ -90,7 +86,7 @@ public class StringService {
     public static String commandNotSupports(String command) {
         return String.format(
             "Command %s%s not supported!",
-            COMMAND_TRIGGER,
+            Constants.COMMAND_TRIGGER,
             command
         );
     }
@@ -98,7 +94,7 @@ public class StringService {
     public static String commandNameWithDescription(Command command) {
         return String.format(
             "%s%s - %s\n",
-            COMMAND_TRIGGER,
+            Constants.COMMAND_TRIGGER,
             command.getName(),
 
             command.getDescription()
@@ -122,7 +118,7 @@ public class StringService {
         return String.format("End tracking %s", track.link());
     }
 
-    public static String trackInList(Track track) {
+    private static String trackInList(Track track) {
         return String.format("-- %s: %s\n", track.name(), track.link());
     }
 
@@ -150,9 +146,9 @@ public class StringService {
     public static String commandNeedHelp(Command command) {
         return String.format(
             "Use %s%s %s for getting help with command",
-            COMMAND_TRIGGER,
+            Constants.COMMAND_TRIGGER,
             command.getName(),
-            COMMAND_NEED_HELP_ARGUMENT
+            Constants.COMMAND_NEED_HELP_ARGUMENT
         );
     }
 

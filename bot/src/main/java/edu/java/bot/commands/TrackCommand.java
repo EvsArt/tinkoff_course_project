@@ -8,7 +8,7 @@ import edu.java.bot.constants.StringService;
 import edu.java.bot.messageProcessor.MessageParser;
 import edu.java.bot.tracks.TemporaryTracksRepository;
 import edu.java.bot.tracks.Track;
-import edu.java.bot.tracks.TrackValidator;
+import edu.java.bot.tracks.validator.LinkValidatorManager;
 import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class TrackCommand implements Command {
 
     private final MessageParser messageParser;
     private final TemporaryTracksRepository tracksRepository;
-    private final TrackValidator trackValidator;
+    private final LinkValidatorManager linkValidator;
 
     @Getter
     private final String name = StringService.COMMAND_TRACK_NAME;
@@ -32,11 +32,11 @@ public class TrackCommand implements Command {
     public TrackCommand(
         MessageParser messageParser,
         TemporaryTracksRepository tracksRepository,
-        TrackValidator trackValidator
+        LinkValidatorManager linkValidator
     ) {
         this.messageParser = messageParser;
         this.tracksRepository = tracksRepository;
-        this.trackValidator = trackValidator;
+        this.linkValidator = linkValidator;
     }
 
     @Override
@@ -70,10 +70,10 @@ public class TrackCommand implements Command {
             );
         }
         // Link not valid
-        if (!trackValidator.validateLink(arguments.get(0))) {
+        if (!linkValidator.validateLink(arguments.get(0))) {
             return new SendMessage(
                 update.message().chat().id(),
-                StringService.invalidTrackingLink(trackValidator.getAvailableServices())
+                StringService.invalidTrackingLink(linkValidator.getAvailableServices())
             );
         }
 
@@ -86,6 +86,7 @@ public class TrackCommand implements Command {
             linkName = arguments.get(1);
         }
 
+        // Tracking and untracking realizations will be changed in future updates :)
         User user = update.message().from();
         Track newTrack = new Track(link, linkName);
         tracksRepository.addTrack(user, newTrack);

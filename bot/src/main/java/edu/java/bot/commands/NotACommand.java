@@ -32,7 +32,7 @@ public class NotACommand implements Command {
     @Override
     public SendMessage handle(Update update) {
         log.debug("{} was called", getName());
-        return new SendMessage(update.message().chat().id(), StringService.COMMAND_NOT_A_COMMAND_NOT_SUPPORT_MESSAGE);
+        return new SendMessage(update.message().chat().id(), StringService.COMMAND_NOT_A_COMMAND_NOT_SUPPORTS_MESSAGE);
     }
 
     @Override

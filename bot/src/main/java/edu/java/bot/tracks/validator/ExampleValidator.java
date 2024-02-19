@@ -1,4 +1,4 @@
-package edu.java.bot.tracks.linkValidators;
+package edu.java.bot.tracks.validator;
 
 import java.util.regex.Pattern;
 import lombok.Getter;

@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.commands.Command;
 import edu.java.bot.commands.CommandsHolder;
+import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
 import edu.java.bot.exceptions.NoSuchCommandException;
 import java.util.List;
@@ -39,7 +40,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
             // user requested help with command
             if (!message.arguments().isEmpty()
-                && message.arguments().getFirst().equals(StringService.COMMAND_NEED_HELP_ARGUMENT)) {
+                && message.arguments().getFirst().equals(Constants.COMMAND_NEED_HELP_ARGUMENT)) {
                 return new SendMessage(update.message().chat().id(), foundCommand.getHelpMessage());
             }
 

@@ -1,17 +1,16 @@
-package edu.java.bot.tracks;
+package edu.java.bot.tracks.validator;
 
-import edu.java.bot.tracks.linkValidators.LinkValidator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LinkValidatorManager implements TrackValidator {
+public class AllLinksValidatorManager implements LinkValidatorManager {
 
     private final List<LinkValidator> linkValidators;
 
     @Autowired
-    public LinkValidatorManager(List<LinkValidator> linkValidators) {
+    public AllLinksValidatorManager(List<LinkValidator> linkValidators) {
         this.linkValidators = linkValidators;
     }
 

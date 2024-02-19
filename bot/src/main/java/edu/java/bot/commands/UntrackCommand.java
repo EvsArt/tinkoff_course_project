@@ -4,11 +4,11 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
 import edu.java.bot.messageProcessor.MessageParser;
 import edu.java.bot.tracks.TemporaryTracksRepository;
 import edu.java.bot.tracks.Track;
-import edu.java.bot.tracks.TrackValidator;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
@@ -31,8 +31,7 @@ public class UntrackCommand implements Command {
     @Autowired
     public UntrackCommand(
         MessageParser messageParser,
-        TemporaryTracksRepository tracksRepository,
-        TrackValidator trackValidator
+        TemporaryTracksRepository tracksRepository
     ) {
         this.messageParser = messageParser;
         this.tracksRepository = tracksRepository;
@@ -69,6 +68,8 @@ public class UntrackCommand implements Command {
                 StringService.commandNeedHelp(this)
             );
         }
+
+        // Tracking and untracking realizations will be changed in future updates :)
         User user = update.message().from();
         Optional<Track> trackOpt = tracksRepository.getTrackByName(user, arguments.get(0));
 
@@ -78,10 +79,10 @@ public class UntrackCommand implements Command {
                 tracksRepository.removeTrack(user, track);
                 log.info("End tracking {}", track);
                 responseMessage.getParameters()
-                    .put(StringService.TEXT_PARAMETER_IN_REQUEST, StringService.endTracking(track));
+                    .put(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE, StringService.endTracking(track));
             },
             () -> responseMessage.getParameters()
-                .put(StringService.TEXT_PARAMETER_IN_REQUEST, StringService.COMMAND_UNTRACK_LINK_NOT_TRACKED)
+                .put(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE, StringService.COMMAND_UNTRACK_LINK_NOT_TRACKED)
         );
 
         return responseMessage;
