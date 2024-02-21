@@ -23,30 +23,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyTgBot implements TgBot {
 
-    private final ApplicationConfig applicationConfig;
     private final MessageProcessor messageProcessor;
-    private final CommandsHolder commandsHolder;
-    private TelegramBot botCore;
+    private final SetMyCommands setMyCommands;
+    private final TelegramBot botCore;
 
     @Autowired
     public MyTgBot(
-        ApplicationConfig applicationConfig,
         MessageProcessor messageProcessor,
-        CommandsHolder commandsHolder
+        ApplicationConfig applicationConfig,
+        SetMyCommands setMyCommands
     ) {
-        this.applicationConfig = applicationConfig;
         this.messageProcessor = messageProcessor;
-        this.commandsHolder = commandsHolder;
+        this.setMyCommands = setMyCommands;
+        botCore = new TelegramBot(applicationConfig.telegramToken());
     }
 
     @Override
     @EventListener(classes = ContextRefreshedEvent.class)
     public void start() {
-
-        botCore = new TelegramBot(applicationConfig.telegramToken());
         botCore.setUpdatesListener(this, this);
 
-        setMyCommands();
+        botCore.execute(setMyCommands);
 
         log.info("Bot was started");
     }
@@ -89,20 +86,6 @@ public class MyTgBot implements TgBot {
             // probably network error
             log.error(e.getMessage());
         }
-    }
-
-    private void setMyCommands() {
-
-        BotCommand[] allCommands = commandsHolder.getCommands().stream()
-            .filter(Command::showInMyCommandsTable)
-            .map(Command::toApiCommand)
-            .toArray(BotCommand[]::new);
-
-        SetMyCommands set = new SetMyCommands(allCommands);
-
-        botCore.execute(set);
-
-        log.debug("My commands set: {}", Arrays.toString((BotCommand[]) set.getParameters().get("commands")));
     }
 
 }
