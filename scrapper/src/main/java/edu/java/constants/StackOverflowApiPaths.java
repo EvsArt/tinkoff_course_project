@@ -1,9 +1,10 @@
 package edu.java.constants;
 
-public final class StackOverflowApiPaths {
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-    private StackOverflowApiPaths() {
-    }
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class StackOverflowApiPaths {
 
     public static final String GET_QUESTION = "/questions/{id}";
 

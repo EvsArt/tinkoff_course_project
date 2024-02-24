@@ -1,5 +1,9 @@
 package edu.java.constants;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StringService {
 
     public static final String GITHUB_DEFAULT_URL = "https://api.github.com";

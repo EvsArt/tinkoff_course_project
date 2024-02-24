@@ -2,11 +2,12 @@ package edu.java.configuration;
 
 import edu.java.client.DefaultGitHubClient;
 import edu.java.client.DefaultStackOverflowClient;
-import edu.java.client.GitHubClient;
+import edu.java.client.AsyncGitHubClient;
 import edu.java.client.StackOverflowClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import java.time.Duration;
 
 @Configuration
 public class ClientConfiguration {
@@ -19,8 +20,10 @@ public class ClientConfiguration {
     }
 
     @Bean
-    public GitHubClient gitHubClient() {
-        return DefaultGitHubClient.create(apiConfig.gitHub());
+    public AsyncGitHubClient gitHubClient() {
+        AsyncGitHubClient client = DefaultGitHubClient.create(apiConfig.gitHub());
+        client.getRepositoryByOwnerNameAndRepoName("EvsArt", "MinecraftServer").block(Duration.ofSeconds(15));
+        return client;
     }
 
     @Bean

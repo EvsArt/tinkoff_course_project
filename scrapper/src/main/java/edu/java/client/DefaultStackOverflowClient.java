@@ -4,10 +4,17 @@ import edu.java.configuration.ApiConfig;
 import edu.java.constants.StackOverflowApiPaths;
 import edu.java.dto.StackOverflowQuestionListResponse;
 import edu.java.dto.StackOverflowQuestionResponse;
+import edu.java.exceptions.status.BadRequestException;
+import edu.java.exceptions.status.ForbiddenException;
+import edu.java.exceptions.status.ResourceNotFoundException;
+import edu.java.exceptions.status.ServerErrorException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import java.net.URL;
+import reactor.netty.http.client.HttpClient;
 
 @Slf4j
 public class DefaultStackOverflowClient implements StackOverflowClient {
@@ -22,7 +29,7 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
     }
 
     public static StackOverflowClient create(ApiConfig.StackOverflowConfig config) {
-        WebClient webClient = buildWebClient(config.url());
+        WebClient webClient = buildWebClient(config);
         return new DefaultStackOverflowClient(webClient, config);
     }
 
@@ -35,14 +42,47 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
                 .build(id)
             )
             .retrieve()
+            .onStatus(
+                status -> status.isSameCodeAs(HttpStatus.BAD_REQUEST),
+                resp -> Mono.error(BadRequestException::new)
+            )
+            .onStatus(
+                status -> status.isSameCodeAs(HttpStatus.FORBIDDEN),
+                resp -> Mono.error(ForbiddenException::new)
+            )
+            .onStatus(
+                status -> status.isSameCodeAs(HttpStatus.NOT_FOUND),
+                resp -> Mono.error(ResourceNotFoundException::new)
+            )
+            .onStatus(HttpStatusCode::is5xxServerError, resp -> Mono.error(ServerErrorException::new))
             .bodyToMono(StackOverflowQuestionListResponse.class)
-            .onErrorResume(e -> Mono.empty())
-            .mapNotNull(it -> it.items().getFirst());
+            .map(it -> it.items().getFirst());
     }
 
-    private static WebClient buildWebClient(URL url) {
+    private static WebClient buildWebClient(ApiConfig.StackOverflowConfig config) {
+        HttpClient client = HttpClient
+            .create()
+            .responseTimeout(config.connectionTimeout());
+
         return WebClient.builder()
-            .baseUrl(url.toString())
+            .baseUrl(config.url().toString())
+            .clientConnector(new ReactorClientHttpConnector(client))
+            .defaultStatusHandler(
+                status -> status.isSameCodeAs(HttpStatus.BAD_REQUEST),
+                resp -> Mono.error(BadRequestException::new)
+            )
+            .defaultStatusHandler(
+                status -> status.isSameCodeAs(HttpStatus.FORBIDDEN),
+                resp -> Mono.error(ForbiddenException::new)
+            )
+            .defaultStatusHandler(
+                status -> status.isSameCodeAs(HttpStatus.NOT_FOUND),
+                resp -> Mono.error(ResourceNotFoundException::new)
+            )
+            .defaultStatusHandler(
+                HttpStatusCode::is5xxServerError,
+                resp -> Mono.error(ServerErrorException::new)
+            )
             .build();
     }
 

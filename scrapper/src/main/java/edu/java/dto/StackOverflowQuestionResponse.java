@@ -1,10 +1,11 @@
 package edu.java.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 public record StackOverflowQuestionResponse(
-    Long question_id,
+    @JsonProperty("question_id") Long questionId,
     String title,
-    OffsetDateTime last_activity_date
+    @JsonProperty("last_activity_date") OffsetDateTime lastActivityDate
 ){
 }
