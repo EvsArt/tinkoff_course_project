@@ -21,9 +21,7 @@ public class ClientConfiguration {
 
     @Bean
     public AsyncGitHubClient gitHubClient() {
-        AsyncGitHubClient client = DefaultGitHubClient.create(apiConfig.gitHub());
-        client.getRepositoryByOwnerNameAndRepoName("EvsArt", "MinecraftServer").block(Duration.ofSeconds(15));
-        return client;
+        return DefaultGitHubClient.create(apiConfig.gitHub());
     }
 
     @Bean

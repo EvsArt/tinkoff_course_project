@@ -8,8 +8,10 @@ import edu.java.exceptions.status.MovedPermanentlyException;
 import edu.java.exceptions.status.ResourceNotFoundException;
 import edu.java.exceptions.status.ServerErrorException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -27,7 +29,7 @@ public class DefaultGitHubClient implements AsyncGitHubClient {
         log.info("Created GitHub Client");
     }
 
-    public static AsyncGitHubClient create(ApiConfig.GitHubConfig config) {
+    public static DefaultGitHubClient create(ApiConfig.GitHubConfig config) {
         WebClient webClient = buildWebClient(config);
         return new DefaultGitHubClient(webClient, config);
     }
@@ -60,6 +62,7 @@ public class DefaultGitHubClient implements AsyncGitHubClient {
         return WebClient.builder()
             .baseUrl(config.url().toString())
             .clientConnector(new ReactorClientHttpConnector(client))
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .defaultStatusHandler(
                 status -> status.isSameCodeAs(HttpStatus.MOVED_PERMANENTLY),
                 resp -> Mono.error(MovedPermanentlyException::new)
