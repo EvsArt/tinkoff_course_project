@@ -33,6 +33,12 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
         return new DefaultStackOverflowClient(webClient, config);
     }
 
+    /**
+     * Returns question info by its id
+     *
+     * @param id is question id
+     * @return question info
+     */
     @Override
     public Mono<StackOverflowQuestionResponse> getQuestionById(Long id) {
         return webClient.get()
