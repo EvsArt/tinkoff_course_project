@@ -9,9 +9,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Slf4j
 @EnableScheduling
 @Configuration
+@ConditionalOnExpression("${app.scheduler.enable}")
 public class LinkUpdaterScheduler {
 
-    @ConditionalOnExpression("#{@applicationConfig.scheduler.enable}")
     @Scheduled(fixedDelayString = "#{@applicationConfig.scheduler.interval}")
     public void update() {
         log.info("Scheduler is working!!!");
