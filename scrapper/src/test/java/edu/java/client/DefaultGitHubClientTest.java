@@ -8,9 +8,11 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.GitHubApiPaths;
 import edu.java.dto.GitHubRepoResponse;
+import edu.java.dto.StackOverflowQuestionResponse;
 import edu.java.exceptions.status.ForbiddenException;
 import edu.java.exceptions.status.MovedPermanentlyException;
 import edu.java.exceptions.status.ResourceNotFoundException;
+import edu.java.exceptions.status.ServerErrorException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -121,6 +123,19 @@ class DefaultGitHubClientTest {
         );
     }
 
+    private void setupServerErrorGetRepositoryStub() {
+        WireMock.stubFor(
+            WireMock
+                .get(WireMock.urlPathEqualTo(urlPath))
+                .withPort(port)
+                .withHeader(HttpHeaders.CONTENT_TYPE, WireMock.equalTo(MediaType.APPLICATION_JSON_VALUE))
+                .willReturn(WireMock.aResponse()
+                    .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                )
+        );
+    }
+
     @Test
     void getRepositoryWithOKStatus() {
         setupOKGetRepositoryStub();
@@ -158,6 +173,16 @@ class DefaultGitHubClientTest {
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(MovedPermanentlyException.class);
+    }
+
+    @Test
+    void getRepositoryWithServerErrorStatus() {
+        setupServerErrorGetRepositoryStub();
+
+        Mono<GitHubRepoResponse> realResponseMono = client.getRepositoryByOwnerNameAndRepoName(name, repo);
+        Throwable thrown = catchThrowable(realResponseMono::block);
+
+        assertThat(thrown).isInstanceOf(ServerErrorException.class);
     }
 
 }
