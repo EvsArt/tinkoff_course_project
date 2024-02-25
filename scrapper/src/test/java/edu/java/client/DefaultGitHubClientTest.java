@@ -41,7 +41,14 @@ class DefaultGitHubClientTest {
         OffsetDateTime.parse("2007-12-05T11:14:31Z")
     );
 
-    private static String responseJson;
+    private static final String responseJson = """
+        {
+        "id": 1,
+        "full_name": "Name/Repo",
+        "updated_at": "2007-12-03T10:15:30Z",
+        "pushed_at": "2007-12-05T11:14:31Z"
+        }
+        """;
 
     private static final String name = "Name";
     private static final String repo = "Repo";
@@ -51,7 +58,7 @@ class DefaultGitHubClientTest {
 
     @BeforeAll
     public static void setClientAndConvertResponse()
-        throws URISyntaxException, MalformedURLException, JsonProcessingException {
+        throws URISyntaxException, MalformedURLException {
         client = DefaultGitHubClient.create(
             new ApiConfig.GitHubConfig(
                 new URI(String.format("http://%s:%d", host, port)).toURL(),
@@ -59,10 +66,6 @@ class DefaultGitHubClientTest {
                 Duration.of(10, ChronoUnit.SECONDS)
             )
         );
-        responseJson = new ObjectMapper()
-            .registerModule(new JavaTimeModule())
-            .writer()
-            .writeValueAsString(expResponse);
     }
 
     public void setupOKGetRepositoryStub() {

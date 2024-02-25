@@ -9,8 +9,10 @@ import edu.java.exceptions.status.ForbiddenException;
 import edu.java.exceptions.status.ResourceNotFoundException;
 import edu.java.exceptions.status.ServerErrorException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -28,7 +30,7 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
         log.info("Created StackOverFlow Client");
     }
 
-    public static StackOverflowClient create(ApiConfig.StackOverflowConfig config) {
+    public static DefaultStackOverflowClient create(ApiConfig.StackOverflowConfig config) {
         WebClient webClient = buildWebClient(config);
         return new DefaultStackOverflowClient(webClient, config);
     }
@@ -73,6 +75,7 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
         return WebClient.builder()
             .baseUrl(config.url().toString())
             .clientConnector(new ReactorClientHttpConnector(client))
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .defaultStatusHandler(
                 status -> status.isSameCodeAs(HttpStatus.BAD_REQUEST),
                 resp -> Mono.error(BadRequestException::new)
