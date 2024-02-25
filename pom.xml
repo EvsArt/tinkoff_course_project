@@ -189,7 +189,7 @@
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
                         <release>${java.release}</release>
-                        <uriParameters>true</uriParameters>
+                        <parameters>true</parameters>
 
                         <compilerArgument>-Xlint:all</compilerArgument>
                         <compilerArgument>-Xdoclint:all</compilerArgument>
