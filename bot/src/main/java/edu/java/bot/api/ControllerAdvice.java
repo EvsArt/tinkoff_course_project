@@ -1,5 +1,6 @@
-package edu.java.bot.api.controller;
+package edu.java.bot.api;
 
+import edu.java.bot.api.controller.UpdatesController;
 import edu.java.bot.api.dto.ApiErrorResponse;
 import edu.java.bot.api.exceptions.InvalidUpdateException;
 import java.util.Arrays;

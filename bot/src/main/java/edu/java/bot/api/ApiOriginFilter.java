@@ -1,4 +1,4 @@
-package edu.java.bot.api.controller;
+package edu.java.bot.api;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
