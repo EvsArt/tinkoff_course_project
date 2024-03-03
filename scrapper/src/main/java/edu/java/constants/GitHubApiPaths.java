@@ -1,10 +1,9 @@
 package edu.java.constants;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class GitHubApiPaths {
+@UtilityClass
+public class GitHubApiPaths {
 
     public static final String OWNER_NAME_PARAM = "ownerName";
     public static final String REPO_NAME_PARAM = "repoName";
