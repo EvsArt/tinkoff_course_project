@@ -1,4 +1,4 @@
-package edu.java.bot.api;
+package edu.java.bot.api.controllerAdvice;
 
 import edu.java.bot.api.controller.UpdatesController;
 import edu.java.bot.api.dto.ApiErrorResponse;
@@ -19,10 +19,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice(basePackageClasses = UpdatesController.class)
-public class ControllerAdvice extends ResponseEntityExceptionHandler {
+public class UpdatesControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidUpdateException.class)
-    protected ResponseEntity<Object> handleInvalidUpdate(
+    public ResponseEntity<Object> handleInvalidUpdate(
         RuntimeException ex, WebRequest request
     ) {
         HttpStatusCode status = HttpStatus.BAD_REQUEST;
