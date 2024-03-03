@@ -27,4 +27,10 @@ public record ApiConfig(
     ) {
     }
 
+    public record BotConfig(
+        @DefaultValue(DefaultUrl.BOT_DEFAULT_URL) URL url,
+        Duration connectionTimeout
+    ){
+    }
+
 }
