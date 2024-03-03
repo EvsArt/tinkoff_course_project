@@ -6,11 +6,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-@ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
+@ConfigurationProperties(prefix = "app", ignoreUnknownFields = true)
 public record ApplicationConfig(
-    @NotNull
-    Scheduler scheduler
+    @NotNull Scheduler scheduler
 ) {
+
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
+
 }

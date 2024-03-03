@@ -4,6 +4,16 @@ app:
     interval: 10s
     force-check-delay: 10s
 
+api:
+  github:
+    connection-timeout: 10s
+    url: https://api.github.com
+  stackoverflow:
+    connection-timeout: 10s
+    url: https://api.stackexchange.com
+    uri-parameters:
+      site: stackoverflow
+
 spring:
   application:
     name: scrapper
