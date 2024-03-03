@@ -5,16 +5,12 @@ import edu.java.api.exceptions.ChatAlreadyRegisteredException;
 import edu.java.api.exceptions.ChatNotExistException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @RequestMapping("/tg-chat")
-public class ChatController {
+public class ChatController implements IChatController {
 
     private final InMemoryChatRepository chatRepository;
 
@@ -25,7 +21,7 @@ public class ChatController {
     @PostMapping("/{id}")
     public ResponseEntity<Void> registerChat(@PathVariable Long id) {
 
-        if(!chatRepository.registry(id)) {
+        if (!chatRepository.registry(id)) {
             throw new ChatAlreadyRegisteredException();
         }
 
@@ -36,13 +32,12 @@ public class ChatController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteChat(@PathVariable Long id) {
 
-        if(!chatRepository.delete(id)) {
+        if (!chatRepository.delete(id)) {
             throw new ChatNotExistException();
         }
 
         log.debug(String.format("Chat %d was deleted", id));
         return ResponseEntity.ok().build();
     }
-
 
 }

@@ -7,7 +7,6 @@ import edu.java.api.dto.ListLinksResponse;
 import edu.java.api.dto.RemoveLinkRequest;
 import edu.java.api.exceptions.WrongRequestFormatException;
 import edu.java.api.service.LinksService;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/links")
-public class LinksController {
+public class LinksController implements ILinksController {
 
     private final LinksService linksService;
 
