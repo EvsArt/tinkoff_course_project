@@ -34,25 +34,6 @@ public class DefaultGitHubClient implements AsyncGitHubClient {
         return new DefaultGitHubClient(webClient, config);
     }
 
-    /**
-     * Returns repository info by its owner's name and repository name
-     *
-     * @param ownerName is repository owner's name
-     * @param repoName  is repository name
-     * @return repository info
-     */
-    @Override
-    public Mono<GitHubRepoResponse> getRepositoryByOwnerNameAndRepoName(String ownerName, String repoName) {
-        return webClient.get()
-            .uri(uriBuilder -> uriBuilder
-                .path(GitHubApiPaths.GET_REPOSITORY)
-                .queryParams(config.uriParameters())
-                .build(ownerName, repoName)
-            )
-            .retrieve()
-            .bodyToMono(GitHubRepoResponse.class);
-    }
-
     private static WebClient buildWebClient(ApiConfig.GitHubConfig config) {
 
         HttpClient client = HttpClient
@@ -80,6 +61,25 @@ public class DefaultGitHubClient implements AsyncGitHubClient {
                 resp -> Mono.error(ServerErrorException::new)
             )
             .build();
+    }
+
+    /**
+     * Returns repository info by its owner's name and repository name
+     *
+     * @param ownerName is repository owner's name
+     * @param repoName  is repository name
+     * @return repository info
+     */
+    @Override
+    public Mono<GitHubRepoResponse> getRepositoryByOwnerNameAndRepoName(String ownerName, String repoName) {
+        return webClient.get()
+            .uri(uriBuilder -> uriBuilder
+                .path(GitHubApiPaths.GET_REPOSITORY)
+                .queryParams(config.uriParameters())
+                .build(ownerName, repoName)
+            )
+            .retrieve()
+            .bodyToMono(GitHubRepoResponse.class);
     }
 
 }

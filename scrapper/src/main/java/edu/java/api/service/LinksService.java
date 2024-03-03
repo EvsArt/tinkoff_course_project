@@ -8,10 +8,9 @@ import edu.java.api.dto.ListLinksResponse;
 import edu.java.api.dto.RemoveLinkRequest;
 import edu.java.api.exceptions.ChatNotExistException;
 import edu.java.api.exceptions.LinkNotExistsException;
+import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Random;
 
 @Service
 public class LinksService {
@@ -26,7 +25,7 @@ public class LinksService {
     }
 
     public ListLinksResponse getListLinksResponseByTgChatId(Long tgChatId) {
-        if(!chatRepository.isExists(tgChatId)) {
+        if (!chatRepository.isExists(tgChatId)) {
             throw new ChatNotExistException();
         }
         return new ListLinksResponse(
@@ -37,7 +36,7 @@ public class LinksService {
     }
 
     public LinkResponse saveLink(Long chatId, AddLinkRequest requestBody) {
-        if(!chatRepository.isExists(chatId)) {
+        if (!chatRepository.isExists(chatId)) {
             throw new ChatNotExistException();
         }
         linksRepository.addLink(chatId, addLinkRequestToLink(requestBody));
@@ -45,10 +44,10 @@ public class LinksService {
     }
 
     public LinkResponse removeLink(Long tgChatId, RemoveLinkRequest requestBody) throws LinkNotExistsException {
-        if(!chatRepository.isExists(tgChatId)) {
+        if (!chatRepository.isExists(tgChatId)) {
             throw new ChatNotExistException();
         }
-        if(!linksRepository.removeLink(tgChatId, removeLinkRequestToLink(requestBody))) {
+        if (!linksRepository.removeLink(tgChatId, removeLinkRequestToLink(requestBody))) {
             throw new LinkNotExistsException();
         }
         return new LinkResponse(tgChatId, requestBody.getLink());

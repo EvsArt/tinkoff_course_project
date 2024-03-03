@@ -1,12 +1,12 @@
 package edu.java.api;
 
-import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class InMemoryLinksRepository {
@@ -24,9 +24,12 @@ public class InMemoryLinksRepository {
     }
 
     public List<Link> getLinksByChatId(Long chatId) {
-        return (tgChatToLinksMap.containsKey(chatId)) ? tgChatToLinksMap.get(chatId).stream().toList() : new ArrayList<>();
+        return (tgChatToLinksMap.containsKey(chatId))
+            ? tgChatToLinksMap.get(chatId).stream().toList()
+            : new ArrayList<>();
     }
 
-    public record Link(Long id, String url){}
+    public record Link(Long id, String url) {
+    }
 
 }

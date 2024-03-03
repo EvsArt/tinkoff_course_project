@@ -1,11 +1,8 @@
 package edu.java.botClient;
 
 import edu.java.botClient.dto.LinkUpdateRequest;
-import edu.java.client.DefaultGitHubClient;
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.BotApiPaths;
-import edu.java.constants.GitHubApiPaths;
-import edu.java.dto.GitHubRepoResponse;
 import edu.java.exceptions.status.ForbiddenException;
 import edu.java.exceptions.status.MovedPermanentlyException;
 import edu.java.exceptions.status.ResourceNotFoundException;
@@ -38,19 +35,6 @@ public class DefaultBotClient implements BotClient {
         return new DefaultBotClient(webClient, config);
     }
 
-    @Override
-    public ResponseEntity<Void> postUpdates(LinkUpdateRequest updateRequest) {
-        Mono<Void> res = webClient.get()
-            .uri(uriBuilder -> uriBuilder
-                .path(BotApiPaths.POST_UPDATE)
-                .build()
-            )
-            .retrieve()
-            .bodyToMono(Void.class);
-        return ResponseEntity.ok(res.block());
-
-    }
-
     private static WebClient buildWebClient(ApiConfig.BotConfig config) {
 
         HttpClient client = HttpClient
@@ -78,6 +62,19 @@ public class DefaultBotClient implements BotClient {
                 resp -> Mono.error(ServerErrorException::new)
             )
             .build();
+    }
+
+    @Override
+    public ResponseEntity<Void> postUpdates(LinkUpdateRequest updateRequest) {
+        Mono<Void> res = webClient.get()
+            .uri(uriBuilder -> uriBuilder
+                .path(BotApiPaths.POST_UPDATE)
+                .build()
+            )
+            .retrieve()
+            .bodyToMono(Void.class);
+        return ResponseEntity.ok(res.block());
+
     }
 
 }

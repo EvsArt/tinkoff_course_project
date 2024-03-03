@@ -85,7 +85,8 @@ public class ChatControllerAdvice extends ResponseEntityExceptionHandler {
 
     @Override
     public ResponseEntity<Object> handleTypeMismatch(
-        TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request
+    ) {
 
         ApiErrorResponse response =
             ApiErrorResponse.builder()

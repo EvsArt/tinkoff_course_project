@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 public interface IChatController {
 
@@ -23,13 +21,19 @@ public interface IChatController {
                                         schema = @Schema(implementation = ApiErrorResponse.class)))})
     ResponseEntity<Void> registerChat(@PathVariable Long id);
 
-    @Operation(summary = "Удалить чат", description = "", tags={  })
+    @Operation(summary = "Удалить чат", description = "", tags = {})
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Чат успешно удалён"),
 
-        @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class))),
+        @ApiResponse(responseCode = "400",
+                     description = "Некорректные параметры запроса",
+                     content = @Content(mediaType = "application/json",
+                                        schema = @Schema(implementation = ApiErrorResponse.class))),
 
-        @ApiResponse(responseCode = "404", description = "Чат не существует", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class))) })
+        @ApiResponse(responseCode = "404",
+                     description = "Чат не существует",
+                     content = @Content(mediaType = "application/json",
+                                        schema = @Schema(implementation = ApiErrorResponse.class)))})
     ResponseEntity<Void> deleteChat(@PathVariable Long id);
 
 }

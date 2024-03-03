@@ -2,10 +2,12 @@ package edu.java.api.controllerAdvice;
 
 import edu.java.api.controller.LinksController;
 import edu.java.api.dto.ApiErrorResponse;
-import edu.java.api.exceptions.ChatAlreadyRegisteredException;
 import edu.java.api.exceptions.ChatNotExistException;
 import edu.java.api.exceptions.LinkNotExistsException;
 import edu.java.api.exceptions.WrongRequestFormatException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,19 +20,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 @RestControllerAdvice(basePackageClasses = LinksController.class)
 public class LinksControllerAdvice extends ResponseEntityExceptionHandler {
 
     @Override
     public ResponseEntity<Object> handleTypeMismatch(
-        TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request
+    ) {
         ApiErrorResponse response =
             ApiErrorResponse.builder()
-                .description("Wrong request format")
+                .description("Wrong type of input value")
                 .code(String.valueOf(status.value()))
                 .exceptionName(ex.getClass().getName())
                 .exceptionMessage(ex.getMessage())
@@ -85,7 +85,6 @@ public class LinksControllerAdvice extends ResponseEntityExceptionHandler {
         );
     }
 
-
     @ExceptionHandler(LinkNotExistsException.class)
     public ResponseEntity<Object> handleLinkNotExists(
         RuntimeException ex, WebRequest request
@@ -115,7 +114,6 @@ public class LinksControllerAdvice extends ResponseEntityExceptionHandler {
             request
         );
     }
-
 
     @ExceptionHandler(ChatNotExistException.class)
     public ResponseEntity<Object> handleChatNotExists(

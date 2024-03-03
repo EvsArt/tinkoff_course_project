@@ -35,6 +35,34 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
         return new DefaultStackOverflowClient(webClient, config);
     }
 
+    private static WebClient buildWebClient(ApiConfig.StackOverflowConfig config) {
+        HttpClient client = HttpClient
+            .create()
+            .responseTimeout(config.connectionTimeout());
+
+        return WebClient.builder()
+            .baseUrl(config.url().toString())
+            .clientConnector(new ReactorClientHttpConnector(client))
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .defaultStatusHandler(
+                status -> status.isSameCodeAs(HttpStatus.BAD_REQUEST),
+                resp -> Mono.error(BadRequestException::new)
+            )
+            .defaultStatusHandler(
+                status -> status.isSameCodeAs(HttpStatus.FORBIDDEN),
+                resp -> Mono.error(ForbiddenException::new)
+            )
+            .defaultStatusHandler(
+                status -> status.isSameCodeAs(HttpStatus.NOT_FOUND),
+                resp -> Mono.error(ResourceNotFoundException::new)
+            )
+            .defaultStatusHandler(
+                HttpStatusCode::is5xxServerError,
+                resp -> Mono.error(ServerErrorException::new)
+            )
+            .build();
+    }
+
     /**
      * Returns question info by its id
      *
@@ -65,34 +93,6 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
             .onStatus(HttpStatusCode::is5xxServerError, resp -> Mono.error(ServerErrorException::new))
             .bodyToMono(StackOverflowQuestionListResponse.class)
             .map(it -> it.items().getFirst());
-    }
-
-    private static WebClient buildWebClient(ApiConfig.StackOverflowConfig config) {
-        HttpClient client = HttpClient
-            .create()
-            .responseTimeout(config.connectionTimeout());
-
-        return WebClient.builder()
-            .baseUrl(config.url().toString())
-            .clientConnector(new ReactorClientHttpConnector(client))
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .defaultStatusHandler(
-                status -> status.isSameCodeAs(HttpStatus.BAD_REQUEST),
-                resp -> Mono.error(BadRequestException::new)
-            )
-            .defaultStatusHandler(
-                status -> status.isSameCodeAs(HttpStatus.FORBIDDEN),
-                resp -> Mono.error(ForbiddenException::new)
-            )
-            .defaultStatusHandler(
-                status -> status.isSameCodeAs(HttpStatus.NOT_FOUND),
-                resp -> Mono.error(ResourceNotFoundException::new)
-            )
-            .defaultStatusHandler(
-                HttpStatusCode::is5xxServerError,
-                resp -> Mono.error(ServerErrorException::new)
-            )
-            .build();
     }
 
 }
