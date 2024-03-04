@@ -13,6 +13,7 @@ import edu.java.bot.tracks.Track;
 import edu.java.bot.tracks.validator.AllLinksValidatorManager;
 import edu.java.bot.tracks.validator.ExampleValidator;
 import edu.java.bot.tracks.validator.LinkValidator;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,7 +21,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.stream.Stream;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)
@@ -107,7 +107,7 @@ class TrackCommandTest {
     @Test
     void isNotTrigger() {
         Message mockMessage = Mockito.mock(Message.class);
-        Mockito.doReturn(command+"1234").when(mockMessage).text();
+        Mockito.doReturn(command + "1234").when(mockMessage).text();
 
         assertThat(trackCommand.isTrigger(mockMessage)).isFalse();
     }

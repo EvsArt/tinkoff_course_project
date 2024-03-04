@@ -1,6 +1,5 @@
 package edu.java.api.controller;
 
-import edu.java.api.repository.InMemoryChatRepository;
 import edu.java.api.exceptions.ChatAlreadyRegisteredException;
 import edu.java.api.exceptions.ChatNotExistException;
 import edu.java.api.service.ChatService;

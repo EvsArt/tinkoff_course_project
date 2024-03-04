@@ -9,14 +9,14 @@ import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
 import edu.java.bot.tracks.TemporaryTracksRepository;
 import edu.java.bot.tracks.Track;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.HashSet;
-import java.util.Set;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,6 +24,7 @@ class ListCommandTest {
 
     @InjectMocks ListCommand listCommand;
     @Mock TemporaryTracksRepository tracksRepository;
+    String command = Constants.COMMAND_TRIGGER + StringService.COMMAND_LIST_NAME;
 
     @Test
     void standardCalling() {
@@ -75,8 +76,6 @@ class ListCommandTest {
         assertThat(realResult).isEqualTo(expResult);
     }
 
-    String command = Constants.COMMAND_TRIGGER + StringService.COMMAND_LIST_NAME;
-
     @Test
     void isTrigger() {
         Message mockMessage = Mockito.mock(Message.class);
@@ -88,7 +87,7 @@ class ListCommandTest {
     @Test
     void isNotTrigger() {
         Message mockMessage = Mockito.mock(Message.class);
-        Mockito.doReturn(command+"1234").when(mockMessage).text();
+        Mockito.doReturn(command + "1234").when(mockMessage).text();
 
         assertThat(listCommand.isTrigger(mockMessage)).isFalse();
     }

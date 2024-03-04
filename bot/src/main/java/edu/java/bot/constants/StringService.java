@@ -8,11 +8,7 @@ import java.util.Set;
 
 public class StringService {
 
-    private StringService() {
-    }
-
     public static final String COMMAND_NOT_EXISTS = "Command not exists";
-
     public static final String COMMAND_START_NAME = "start";
     public static final String COMMAND_START_DESCRIPTION = "User registration";
     public static final String COMMAND_START_SUCCESSFUL_REGISTRATION_MESSAGE = "You was registered!";
@@ -23,7 +19,6 @@ public class StringService {
     );
     public static final String PLEASE_REGISTER =
         String.format("Please, registry firstly %s%s", Constants.COMMAND_TRIGGER, COMMAND_START_NAME);
-
     public static final String COMMAND_HELP_NAME = "help";
     public static final String COMMAND_HELP_DESCRIPTION = "Print list of available commands";
     public static final String COMMAND_HELP_HELPMESSAGE = String.format(
@@ -31,7 +26,6 @@ public class StringService {
         Constants.COMMAND_TRIGGER,
         COMMAND_HELP_NAME
     );
-
     public static final String COMMAND_LIST_NAME = "list";
     public static final String COMMAND_LIST_DESCRIPTION = "Print tracking list";
     public static final String COMMAND_LIST_HELPMESSAGE = String.format(
@@ -39,19 +33,16 @@ public class StringService {
         Constants.COMMAND_TRIGGER,
         COMMAND_LIST_NAME
     );
-
     public static final String COMMAND_NOT_A_COMMAND_NAME = "not-a-command";
     public static final String COMMAND_NOT_A_COMMAND_DESCRIPTION = "";
     public static final String COMMAND_NOT_A_COMMAND_NOT_SUPPORTS_MESSAGE =
         "Suddenly bot doesn't support not-command messages";
-
     public static final String COMMAND_TRACK_NAME = "track";
     public static final String COMMAND_TRACK_DESCRIPTION = "Start link tracking";
     public static final Map<String, String> COMMAND_TRACK_ARGUMENTS_TO_DESCRIPTION = Map.of(
         "link", "Link of the page you want to start tracking",
         "name", "Your link name (Optional)"
     );
-
     public static final String COMMAND_TRACK_HELPMESSAGE = String.format(
         """
             Using: %s%s link [, name] or %s%s link
@@ -64,14 +55,12 @@ public class StringService {
         COMMAND_TRACK_NAME,
         argumentsToString(COMMAND_TRACK_ARGUMENTS_TO_DESCRIPTION)
     );
-
     public static final String COMMAND_UNTRACK_NAME = "untrack";
     public static final String COMMAND_UNTRACK_DESCRIPTION = "Stop link tracking";
     public static final String COMMAND_UNTRACK_LINK_NOT_TRACKED = "This link didn't track";
     public static final Map<String, String> COMMAND_UNTRACK_ARGUMENTS_TO_DESCRIPTION = Map.of(
         "linkName", "Name of the link you want to untrack"
     );
-
     public static final String COMMAND_UNTRACK_HELPMESSAGE = String.format(
         """
             Using: %s%s linkName
@@ -82,6 +71,9 @@ public class StringService {
         COMMAND_UNTRACK_NAME,
         argumentsToString(COMMAND_UNTRACK_ARGUMENTS_TO_DESCRIPTION)
     );
+
+    private StringService() {
+    }
 
     public static String commandNotSupports(String command) {
         return String.format(

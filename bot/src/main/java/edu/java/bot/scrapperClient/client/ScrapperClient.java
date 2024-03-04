@@ -11,10 +11,13 @@ import reactor.core.publisher.Mono;
 public interface ScrapperClient {
 
     Mono<RegisterChatResponse> registerChat(Long id);
+
     Mono<DeleteChatResponse> deleteChat(Long id);
 
     Mono<ListLinksResponse> getLinks(Long tgChatId);
+
     Mono<LinkResponse> addLink(Long tgChatId, AddLinkRequest addLinkRequest);
+
     Mono<LinkResponse> removeLink(Long tgChatId, RemoveLinkRequest removeLinkRequest);
 
 }

@@ -1,8 +1,8 @@
 package edu.java.bot.scrapperClient.dto;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.ToString;
-import java.util.List;
 
 @Getter
 @ToString

@@ -90,7 +90,7 @@ class UntrackCommandTest {
     @Test
     void isNotTrigger() {
         Message mockMessage = Mockito.mock(Message.class);
-        Mockito.doReturn(command+"1234").when(mockMessage).text();
+        Mockito.doReturn(command + "1234").when(mockMessage).text();
 
         assertThat(untrackCommand.isTrigger(mockMessage)).isFalse();
     }

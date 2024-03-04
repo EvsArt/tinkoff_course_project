@@ -3,11 +3,9 @@ package edu.java.bot.scrapperClient.client;
 import edu.java.bot.constants.ScrapperApiPaths;
 import edu.java.bot.scrapperClient.config.ScrapperConfig;
 import edu.java.bot.scrapperClient.dto.AddLinkRequest;
-import edu.java.bot.scrapperClient.dto.DeleteChatRequest;
 import edu.java.bot.scrapperClient.dto.DeleteChatResponse;
 import edu.java.bot.scrapperClient.dto.LinkResponse;
 import edu.java.bot.scrapperClient.dto.ListLinksResponse;
-import edu.java.bot.scrapperClient.dto.RegisterChatRequest;
 import edu.java.bot.scrapperClient.dto.RegisterChatResponse;
 import edu.java.bot.scrapperClient.dto.RemoveLinkRequest;
 import edu.java.bot.scrapperClient.exceptions.status.BadRequestException;
@@ -38,6 +36,31 @@ public class DefaultScrapperClient implements ScrapperClient {
     public static ScrapperClient create(ScrapperConfig config) {
         WebClient webClient = buildWebClient(config);
         return new DefaultScrapperClient(webClient, config);
+    }
+
+    private static WebClient buildWebClient(ScrapperConfig config) {
+
+        HttpClient client = HttpClient
+            .create()
+            .responseTimeout(config.connectionTimeout());
+
+        return WebClient.builder()
+            .baseUrl(config.url().toString())
+            .clientConnector(new ReactorClientHttpConnector(client))
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .defaultStatusHandler(
+                status -> status.isSameCodeAs(HttpStatus.BAD_REQUEST),
+                resp -> Mono.error(BadRequestException::new)
+            )
+            .defaultStatusHandler(
+                status -> status.isSameCodeAs(HttpStatus.NOT_FOUND),
+                resp -> Mono.error(ResourceNotFoundException::new)
+            )
+            .defaultStatusHandler(
+                HttpStatusCode::is5xxServerError,
+                resp -> Mono.error(ServerErrorException::new)
+            )
+            .build();
     }
 
     @Override
@@ -93,31 +116,6 @@ public class DefaultScrapperClient implements ScrapperClient {
             )
             .retrieve()
             .bodyToMono(LinkResponse.class);
-    }
-
-    private static WebClient buildWebClient(ScrapperConfig config) {
-
-        HttpClient client = HttpClient
-            .create()
-            .responseTimeout(config.connectionTimeout());
-
-        return WebClient.builder()
-            .baseUrl(config.url().toString())
-            .clientConnector(new ReactorClientHttpConnector(client))
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .defaultStatusHandler(
-                status -> status.isSameCodeAs(HttpStatus.BAD_REQUEST),
-                resp -> Mono.error(BadRequestException::new)
-            )
-            .defaultStatusHandler(
-                status -> status.isSameCodeAs(HttpStatus.NOT_FOUND),
-                resp -> Mono.error(ResourceNotFoundException::new)
-            )
-            .defaultStatusHandler(
-                HttpStatusCode::is5xxServerError,
-                resp -> Mono.error(ServerErrorException::new)
-            )
-            .build();
     }
 
 }

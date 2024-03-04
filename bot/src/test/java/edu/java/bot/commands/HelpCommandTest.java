@@ -3,19 +3,17 @@ package edu.java.bot.commands;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
-import edu.java.bot.tracks.TemporaryTracksRepository;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.ArrayList;
-import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith({MockitoExtension.class})
@@ -38,7 +36,7 @@ class HelpCommandTest {
     @Test
     void isNotTrigger() {
         Message mockMessage = Mockito.mock(Message.class);
-        Mockito.doReturn(command+"1234").when(mockMessage).text();
+        Mockito.doReturn(command + "1234").when(mockMessage).text();
 
         assertThat(helpCommand.isTrigger(mockMessage)).isFalse();
     }

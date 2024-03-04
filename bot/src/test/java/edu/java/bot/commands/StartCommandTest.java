@@ -14,9 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class StartCommandTest {
@@ -24,6 +22,7 @@ class StartCommandTest {
     @InjectMocks StartCommand startCommand;
 
     @Mock TemporaryTracksRepository temporaryTracksRepository;
+    String command = Constants.COMMAND_TRIGGER + StringService.COMMAND_START_NAME;
 
     @Test
     void shouldRegisterUserAndPrintResult() {
@@ -38,8 +37,6 @@ class StartCommandTest {
         assertThat(realResult).isEqualTo(expResult);
     }
 
-    String command = Constants.COMMAND_TRIGGER + StringService.COMMAND_START_NAME;
-
     @Test
     void isTrigger() {
         Message mockMessage = Mockito.mock(Message.class);
@@ -51,7 +48,7 @@ class StartCommandTest {
     @Test
     void isNotTrigger() {
         Message mockMessage = Mockito.mock(Message.class);
-        Mockito.doReturn(command+"1234").when(mockMessage).text();
+        Mockito.doReturn(command + "1234").when(mockMessage).text();
 
         assertThat(startCommand.isTrigger(mockMessage)).isFalse();
     }

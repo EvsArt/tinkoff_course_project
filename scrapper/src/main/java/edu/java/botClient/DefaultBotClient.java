@@ -34,17 +34,6 @@ public class DefaultBotClient implements BotClient {
         return new DefaultBotClient(webClient, config);
     }
 
-    @Override
-    public Mono<PostUpdatesResponse> postUpdates(LinkUpdateRequest updateRequest) {
-        return webClient.post()
-            .uri(uriBuilder -> uriBuilder
-                .path(BotApiPaths.UPDATES)
-                .build()
-            )
-            .retrieve()
-            .bodyToMono(PostUpdatesResponse.class);
-    }
-
     private static WebClient buildWebClient(BotConfig config) {
 
         HttpClient client = HttpClient
@@ -68,6 +57,17 @@ public class DefaultBotClient implements BotClient {
                 resp -> Mono.error(ServerErrorException::new)
             )
             .build();
+    }
+
+    @Override
+    public Mono<PostUpdatesResponse> postUpdates(LinkUpdateRequest updateRequest) {
+        return webClient.post()
+            .uri(uriBuilder -> uriBuilder
+                .path(BotApiPaths.UPDATES)
+                .build()
+            )
+            .retrieve()
+            .bodyToMono(PostUpdatesResponse.class);
     }
 
 }
