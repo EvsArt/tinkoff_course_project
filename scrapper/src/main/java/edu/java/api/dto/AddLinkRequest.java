@@ -1,11 +1,13 @@
 package edu.java.api.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.validation.annotation.Validated;
 
 @Getter
 @ToString
+@Validated
 public class AddLinkRequest {
-    @NotNull String link;
+    @NotBlank String link;
 }

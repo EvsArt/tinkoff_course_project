@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.validation.BindingResult;
 
 public interface IUpdatesController {
 
@@ -19,7 +18,6 @@ public interface IUpdatesController {
                      content = @Content(mediaType = "application/json",
                                         schema = @Schema(implementation = ApiErrorResponse.class)))})
     void postUpdate(
-        LinkUpdateRequest update,
-        BindingResult bindingResult
+        LinkUpdateRequest update
     );
 }

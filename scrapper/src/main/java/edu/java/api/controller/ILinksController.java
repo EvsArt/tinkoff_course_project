@@ -1,17 +1,12 @@
 package edu.java.api.controller;
 
-import edu.java.api.dto.AddLinkRequest;
-import edu.java.api.dto.ApiErrorResponse;
-import edu.java.api.dto.LinkResponse;
-import edu.java.api.dto.ListLinksResponse;
-import edu.java.api.dto.RemoveLinkRequest;
+import edu.java.api.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 
 public interface ILinksController {
 
@@ -43,8 +38,7 @@ public interface ILinksController {
                                         schema = @Schema(implementation = ApiErrorResponse.class)))})
     ResponseEntity<LinkResponse> addLink(
         Long tgChatId,
-        AddLinkRequest requestBody,
-        BindingResult bindingResult
+        AddLinkRequest requestBody
     );
 
     @Operation(summary = "Убрать отслеживание ссылки", description = "", tags = {})
@@ -65,8 +59,7 @@ public interface ILinksController {
                                         schema = @Schema(implementation = ApiErrorResponse.class)))})
     ResponseEntity<LinkResponse> removeLink(
         Long tgChatId,
-        RemoveLinkRequest requestBody,
-        BindingResult bindingResult
+        RemoveLinkRequest requestBody
     );
 
 }

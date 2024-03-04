@@ -5,12 +5,10 @@ import edu.java.api.dto.AddLinkRequest;
 import edu.java.api.dto.LinkResponse;
 import edu.java.api.dto.ListLinksResponse;
 import edu.java.api.dto.RemoveLinkRequest;
-import edu.java.api.exceptions.WrongRequestFormatException;
 import edu.java.api.service.LinksService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,13 +39,8 @@ public class LinksController implements ILinksController {
     @PostMapping
     public ResponseEntity<LinkResponse> addLink(
         @RequestHeader(Headers.TG_CHAT_ID) Long tgChatId,
-        @RequestBody @Valid AddLinkRequest requestBody,
-        BindingResult bindingResult
+        @RequestBody @Valid AddLinkRequest requestBody
     ) {
-        if (bindingResult.hasErrors()) {
-            throw new WrongRequestFormatException();
-        }
-
         log.debug("Adding link {} to id {}", requestBody, tgChatId);
         return ResponseEntity.ok(
             linksService.saveLink(tgChatId, requestBody)
@@ -57,13 +50,8 @@ public class LinksController implements ILinksController {
     @DeleteMapping
     public ResponseEntity<LinkResponse> removeLink(
         @RequestHeader(Headers.TG_CHAT_ID) Long tgChatId,
-        @RequestBody @Valid RemoveLinkRequest requestBody,
-        BindingResult bindingResult
+        @RequestBody @Valid RemoveLinkRequest requestBody
     ) {
-        if (bindingResult.hasErrors()) {
-            throw new WrongRequestFormatException();
-        }
-
         log.debug("Removing link {} to id {}", requestBody, tgChatId);
         return ResponseEntity.ok(
             linksService.removeLink(tgChatId, requestBody)
