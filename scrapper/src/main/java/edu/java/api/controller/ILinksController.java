@@ -1,6 +1,10 @@
 package edu.java.api.controller;
 
-import edu.java.api.dto.*;
+import edu.java.api.dto.AddLinkRequest;
+import edu.java.api.dto.ApiErrorResponse;
+import edu.java.api.dto.LinkResponse;
+import edu.java.api.dto.ListLinksResponse;
+import edu.java.api.dto.RemoveLinkRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

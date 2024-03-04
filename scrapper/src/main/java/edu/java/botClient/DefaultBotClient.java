@@ -1,18 +1,21 @@
 package edu.java.botClient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.java.botClient.config.BotConfig;
 import edu.java.botClient.dto.LinkUpdateRequest;
 import edu.java.botClient.dto.PostUpdatesResponse;
 import edu.java.constants.BotApiPaths;
 import edu.java.exceptions.status.BadRequestException;
-import edu.java.exceptions.status.ResourceNotFoundException;
 import edu.java.exceptions.status.ServerErrorException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
@@ -20,9 +23,11 @@ import reactor.netty.http.client.HttpClient;
 @Slf4j
 public class DefaultBotClient implements BotClient {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final WebClient webClient;
     private final BotConfig config;
 
+    @Autowired
     private DefaultBotClient(WebClient webClient, BotConfig config) {
         this.webClient = webClient;
         this.config = config;
@@ -49,10 +54,6 @@ public class DefaultBotClient implements BotClient {
                 resp -> Mono.error(BadRequestException::new)
             )
             .defaultStatusHandler(
-                status -> status.isSameCodeAs(HttpStatus.NOT_FOUND),
-                resp -> Mono.error(ResourceNotFoundException::new)
-            )
-            .defaultStatusHandler(
                 HttpStatusCode::is5xxServerError,
                 resp -> Mono.error(ServerErrorException::new)
             )
@@ -60,12 +61,13 @@ public class DefaultBotClient implements BotClient {
     }
 
     @Override
-    public Mono<PostUpdatesResponse> postUpdates(LinkUpdateRequest updateRequest) {
+    public Mono<PostUpdatesResponse> postUpdates(LinkUpdateRequest updateRequest) throws JsonProcessingException {
         return webClient.post()
             .uri(uriBuilder -> uriBuilder
                 .path(BotApiPaths.UPDATES)
                 .build()
             )
+            .body(BodyInserters.fromValue(objectMapper.writer().writeValueAsString(updateRequest)))
             .retrieve()
             .bodyToMono(PostUpdatesResponse.class);
     }

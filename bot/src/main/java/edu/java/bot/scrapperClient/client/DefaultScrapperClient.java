@@ -1,5 +1,8 @@
 package edu.java.bot.scrapperClient.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.java.bot.constants.Headers;
 import edu.java.bot.constants.ScrapperApiPaths;
 import edu.java.bot.scrapperClient.config.ScrapperConfig;
 import edu.java.bot.scrapperClient.dto.AddLinkRequest;
@@ -13,10 +16,12 @@ import edu.java.bot.scrapperClient.exceptions.status.ResourceNotFoundException;
 import edu.java.bot.scrapperClient.exceptions.status.ServerErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
@@ -24,6 +29,7 @@ import reactor.netty.http.client.HttpClient;
 @Slf4j
 public class DefaultScrapperClient implements ScrapperClient {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final WebClient webClient;
     private final ScrapperConfig config;
 
@@ -68,7 +74,7 @@ public class DefaultScrapperClient implements ScrapperClient {
         return webClient.post()
             .uri(uriBuilder -> uriBuilder
                 .path(ScrapperApiPaths.CHAT)
-                .build()
+                .build(id)
             )
             .retrieve()
             .bodyToMono(RegisterChatResponse.class);
@@ -79,7 +85,7 @@ public class DefaultScrapperClient implements ScrapperClient {
         return webClient.delete()
             .uri(uriBuilder -> uriBuilder
                 .path(ScrapperApiPaths.CHAT)
-                .build()
+                .build(id)
             )
             .retrieve()
             .bodyToMono(DeleteChatResponse.class);
@@ -92,28 +98,34 @@ public class DefaultScrapperClient implements ScrapperClient {
                 .path(ScrapperApiPaths.LINKS)
                 .build()
             )
+            .header(Headers.TG_CHAT_ID, String.valueOf(tgChatId))
             .retrieve()
             .bodyToMono(ListLinksResponse.class);
     }
 
     @Override
-    public Mono<LinkResponse> addLink(Long tgChatId, AddLinkRequest addLinkRequest) {
+    public Mono<LinkResponse> addLink(Long tgChatId, AddLinkRequest addLinkRequest) throws JsonProcessingException {
         return webClient.post()
             .uri(uriBuilder -> uriBuilder
                 .path(ScrapperApiPaths.LINKS)
                 .build()
             )
+            .header(Headers.TG_CHAT_ID, String.valueOf(tgChatId))
+            .body(BodyInserters.fromValue(objectMapper.writer().writeValueAsString(addLinkRequest)))
             .retrieve()
             .bodyToMono(LinkResponse.class);
     }
 
     @Override
-    public Mono<LinkResponse> removeLink(Long tgChatId, RemoveLinkRequest removeLinkRequest) {
-        return webClient.delete()
+    public Mono<LinkResponse> removeLink(Long tgChatId, RemoveLinkRequest removeLinkRequest)
+        throws JsonProcessingException {
+        return webClient.method(HttpMethod.DELETE)
             .uri(uriBuilder -> uriBuilder
                 .path(ScrapperApiPaths.LINKS)
                 .build()
             )
+            .header(Headers.TG_CHAT_ID, String.valueOf(tgChatId))
+            .body(BodyInserters.fromValue(objectMapper.writer().writeValueAsString(removeLinkRequest)))
             .retrieve()
             .bodyToMono(LinkResponse.class);
     }

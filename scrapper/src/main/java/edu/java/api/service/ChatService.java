@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChatService {
 
-    private InMemoryChatRepository chatRepository;
+    private final InMemoryChatRepository chatRepository;
 
     public ChatService(InMemoryChatRepository chatRepository) {
         this.chatRepository = chatRepository;

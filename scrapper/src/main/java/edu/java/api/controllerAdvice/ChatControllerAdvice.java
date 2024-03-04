@@ -61,7 +61,7 @@ public class ChatControllerAdvice extends ResponseEntityExceptionHandler {
 
         ApiErrorResponse response =
             ApiErrorResponse.builder()
-                .description("Chat not exist")
+                .description("Chat not exists")
                 .code(String.valueOf(status.value()))
                 .exceptionName(ex.getClass().getName())
                 .exceptionMessage(ex.getMessage())
@@ -87,7 +87,6 @@ public class ChatControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleTypeMismatch(
         TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request
     ) {
-
         ApiErrorResponse response =
             ApiErrorResponse.builder()
                 .description("Chat id is need to be a number")
