@@ -1,10 +1,11 @@
 package edu.java.botClient;
 
 import edu.java.botClient.dto.LinkUpdateRequest;
-import org.springframework.http.ResponseEntity;
+import edu.java.botClient.dto.PostUpdatesResponse;
+import reactor.core.publisher.Mono;
 
 public interface BotClient {
 
-    ResponseEntity<Void> postUpdates(LinkUpdateRequest updateRequest);
+    Mono<PostUpdatesResponse> postUpdates(LinkUpdateRequest updateRequest);
 
 }

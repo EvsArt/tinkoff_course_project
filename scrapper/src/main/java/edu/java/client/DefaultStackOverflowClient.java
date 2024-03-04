@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 @Slf4j
-public class DefaultStackOverflowClient implements StackOverflowClient {
+public class DefaultStackOverflowClient implements AsyncStackOverflowClient {
 
     private final WebClient webClient;
     private final ApiConfig.StackOverflowConfig config;

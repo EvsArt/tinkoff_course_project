@@ -5,6 +5,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class BotApiPaths {
 
-    public static final String POST_UPDATE = "/updates";
+    public static final String UPDATES = "/updates";
 
 }
