@@ -1,4 +1,4 @@
-package edu.java.api;
+package edu.java.api.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;

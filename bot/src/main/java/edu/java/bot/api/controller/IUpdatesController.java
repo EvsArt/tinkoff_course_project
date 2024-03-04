@@ -19,7 +19,7 @@ public interface IUpdatesController {
                      description = "Некорректные параметры запроса",
                      content = @Content(mediaType = "application/json",
                                         schema = @Schema(implementation = ApiErrorResponse.class)))})
-    ResponseEntity<Void> postUpdate(
+    void postUpdate(
         LinkUpdateRequest update,
         BindingResult bindingResult
     );

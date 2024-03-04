@@ -5,7 +5,6 @@ import edu.java.bot.api.exceptions.InvalidUpdateException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +22,7 @@ public class UpdatesController implements IUpdatesController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> postUpdate(
+    public void postUpdate(
         @RequestBody @Valid LinkUpdateRequest update,
         BindingResult bindingResult
     ) {
@@ -32,7 +31,6 @@ public class UpdatesController implements IUpdatesController {
         }
 
         log.debug(String.format("Update %s was accepted", update));
-        return ResponseEntity.ok().build();
     }
 
 }

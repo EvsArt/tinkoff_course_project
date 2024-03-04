@@ -19,7 +19,7 @@ public interface IChatController {
                      description = "Некорректные параметры запроса",
                      content = @Content(mediaType = "application/json",
                                         schema = @Schema(implementation = ApiErrorResponse.class)))})
-    ResponseEntity<Void> registerChat(@PathVariable Long id);
+    void registerChat(@PathVariable Long id);
 
     @Operation(summary = "Удалить чат", description = "", tags = {})
     @ApiResponses(value = {
@@ -34,6 +34,6 @@ public interface IChatController {
                      description = "Чат не существует",
                      content = @Content(mediaType = "application/json",
                                         schema = @Schema(implementation = ApiErrorResponse.class)))})
-    ResponseEntity<Void> deleteChat(@PathVariable Long id);
+    void deleteChat(@PathVariable Long id);
 
 }

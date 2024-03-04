@@ -1,7 +1,7 @@
 package edu.java.api.service;
 
-import edu.java.api.InMemoryChatRepository;
-import edu.java.api.InMemoryLinksRepository;
+import edu.java.api.repository.InMemoryChatRepository;
+import edu.java.api.repository.InMemoryLinksRepository;
 import edu.java.api.dto.AddLinkRequest;
 import edu.java.api.dto.LinkResponse;
 import edu.java.api.dto.ListLinksResponse;
