@@ -48,13 +48,13 @@ class DefaultScrapperClientTest {
         .exceptionName("ex").stacktrace(List.of())
         .build();
 
-    private static final LinkResponse testLinkResponse = new LinkResponse(1L, "url");
+    private static final LinkResponse testLinkResponse = new LinkResponse(1L, URI.create("url"));
 
     private static ScrapperClient client;
     private static final ListLinksResponse links = new ListLinksResponse(List.of(
-        new LinkResponse(1L, "a"),
-        new LinkResponse(2L, "b"),
-        new LinkResponse(3L, "c")
+        new LinkResponse(1L, URI.create("a")),
+        new LinkResponse(2L, URI.create("b")),
+        new LinkResponse(3L, URI.create("c"))
     ));
 
     @BeforeAll
