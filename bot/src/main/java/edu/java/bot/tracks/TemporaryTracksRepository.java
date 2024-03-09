@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class TemporaryTracksRepository {
 
     private final Map<Long, Set<Track>> usersIdToTheirTracks = new HashMap<>();
+    private final Map<Long, Integer> usersIdToLastTrackNameNum = new HashMap<>();
 
     public void register(User user) {
         usersIdToTheirTracks.put(user.id(), new HashSet<>());
@@ -39,8 +40,6 @@ public class TemporaryTracksRepository {
             .filter(track -> track.name().equals(name))
             .findFirst();
     }
-
-    private final Map<Long, Integer> usersIdToLastTrackNameNum = new HashMap<>();
 
     /**
      * Creates new name for track in format track{N}

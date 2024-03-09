@@ -1,25 +1,14 @@
 package edu.java.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.GitHubApiPaths;
 import edu.java.dto.GitHubRepoResponse;
-import edu.java.dto.StackOverflowQuestionResponse;
 import edu.java.exceptions.status.ForbiddenException;
 import edu.java.exceptions.status.MovedPermanentlyException;
 import edu.java.exceptions.status.ResourceNotFoundException;
 import edu.java.exceptions.status.ServerErrorException;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.util.MultiValueMapAdapter;
-import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,6 +16,13 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.util.MultiValueMapAdapter;
+import reactor.core.publisher.Mono;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
@@ -35,14 +31,12 @@ class DefaultGitHubClientTest {
 
     private static final String host = "localhost";
     private static final int port = 8082;
-    private static DefaultGitHubClient client;
     private final static GitHubRepoResponse expResponse = new GitHubRepoResponse(
         1L,
         "Name/Repo",
         OffsetDateTime.parse("2007-12-03T10:15:30Z"),
         OffsetDateTime.parse("2007-12-05T11:14:31Z")
     );
-
     private static final String responseJson = """
         {
         "id": 1,
@@ -51,12 +45,12 @@ class DefaultGitHubClientTest {
         "pushed_at": "2007-12-05T11:14:31Z"
         }
         """;
-
     private static final String name = "Name";
     private static final String repo = "Repo";
     private static final String urlPath = GitHubApiPaths.GET_REPOSITORY
         .replaceAll("\\{" + GitHubApiPaths.OWNER_NAME_PARAM + "}", name)
         .replaceAll("\\{" + GitHubApiPaths.REPO_NAME_PARAM + "}", repo);
+    private static DefaultGitHubClient client;
 
     @BeforeAll
     public static void setClientAndConvertResponse()

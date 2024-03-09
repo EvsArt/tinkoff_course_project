@@ -6,7 +6,6 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
-import org.apache.kafka.common.network.Send;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -53,7 +52,7 @@ class NotACommandTest {
     @Test
     void isNotTrigger() {
         Message mockMessage = Mockito.mock(Message.class);
-        Mockito.doReturn(Constants.COMMAND_TRIGGER+"Hello!").when(mockMessage).text();
+        Mockito.doReturn(Constants.COMMAND_TRIGGER + "Hello!").when(mockMessage).text();
 
         assertThat(notACommand.isTrigger(mockMessage)).isFalse();
     }

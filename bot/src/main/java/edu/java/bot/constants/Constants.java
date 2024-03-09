@@ -1,9 +1,9 @@
 package edu.java.bot.constants;
 
-public final class Constants {
+import lombok.experimental.UtilityClass;
 
-    private Constants() {
-    }
+@UtilityClass
+public class Constants {
 
     public static final String TEXT_PARAMETER_IN_SEND_MESSAGE = "text";
     public static final String COMMAND_TRIGGER = "/";

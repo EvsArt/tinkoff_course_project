@@ -7,16 +7,8 @@ import edu.java.constants.StackOverflowApiPaths;
 import edu.java.dto.StackOverflowQuestionResponse;
 import edu.java.exceptions.status.BadRequestException;
 import edu.java.exceptions.status.ForbiddenException;
-import edu.java.exceptions.status.MovedPermanentlyException;
 import edu.java.exceptions.status.ResourceNotFoundException;
 import edu.java.exceptions.status.ServerErrorException;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.util.MultiValueMapAdapter;
-import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,6 +18,13 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.util.MultiValueMapAdapter;
+import reactor.core.publisher.Mono;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
@@ -34,14 +33,12 @@ class DefaultStackOverflowClientTest {
 
     private static final String host = "localhost";
     private static final int port = 8082;
-    private static DefaultStackOverflowClient client;
     private final static StackOverflowQuestionResponse expResponse =
         new StackOverflowQuestionResponse(
             1L,
             "MyQuestion",
             OffsetDateTime.of(LocalDateTime.ofEpochSecond(1708557503, 0, ZoneOffset.UTC), ZoneOffset.UTC)
         );
-
     private static final String responseJson = """
         {"items":[{
             "question_id": 1,
@@ -52,6 +49,7 @@ class DefaultStackOverflowClientTest {
     private static final Long id = 1L;
     private static final String urlPath = StackOverflowApiPaths.GET_QUESTION
         .replaceAll("\\{" + StackOverflowApiPaths.QUESTION_ID_PARAM + "}", String.valueOf(id));
+    private static DefaultStackOverflowClient client;
 
     @BeforeAll
     public static void setClientAndConvertResponse()

@@ -3,13 +3,13 @@ package edu.java.bot.messageProcessor;
 import com.pengrad.telegrambot.model.Message;
 import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
+import java.util.List;
 import joptsimple.internal.Strings;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)
