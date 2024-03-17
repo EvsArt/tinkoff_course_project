@@ -26,7 +26,7 @@ public abstract class IntegrationTest {
             .getParent()
             .getParent()
             .resolve("migrations");
-    private static final String changeLogFileName = "master.yml";
+    private static final String changeLogFileName = "master.yaml";
 
     public static PostgreSQLContainer<?> POSTGRES;
 

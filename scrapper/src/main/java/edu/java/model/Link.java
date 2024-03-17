@@ -1,18 +1,28 @@
 package edu.java.model;
 
-import jakarta.validation.constraints.NotNull;
+import java.net.URI;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class Link {
 
     Long id;
-    @NotNull String url;
-    @NotNull String name;
+    @NonNull URI url;
+    @NonNull String name;
 
-    @NotNull OffsetDateTime createdAt;
-    @NotNull OffsetDateTime lastUpdateTime;
-    @NotNull OffsetDateTime lastCheckTime;
+    @NonNull OffsetDateTime createdAt;
+    @NonNull OffsetDateTime lastUpdateTime;
+    @NonNull OffsetDateTime lastCheckTime;
 
+    List<TgChat> tgChats = new ArrayList<>();
 }

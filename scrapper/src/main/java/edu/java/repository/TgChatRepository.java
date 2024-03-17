@@ -16,6 +16,9 @@ public interface TgChatRepository {
 
     Optional<TgChat> findTgChatById(Long id);
 
+    Optional<TgChat> findTgChatByChatId(Long chatId);
+
     List<TgChat> findAllTgChats();
 
+    List<TgChat> findTgChatsByLinkId(Long id);
 }

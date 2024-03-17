@@ -21,6 +21,11 @@ tgbot:
 spring:
   application:
     name: scrapper
+  datasource:
+    url: jdbc:postgresql://postgresql:5432/scrapper
+  liquibase:
+    enabled:
+      false
 
 server:
   port: 8080

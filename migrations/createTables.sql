@@ -5,7 +5,8 @@ create table tg_chat (
     chat_id         bigint                   not null,
     name            text                     not null,
 
-    primary key (id)
+    primary key (id),
+    unique (chat_id)
 );
 
 --changeset evsart:link
@@ -14,9 +15,9 @@ create table link (
     url                 text                     not null,
     name                text,
 
-    created_at          timestamp not null,
-    last_update_time    timestamp not null,
-    last_check_time     timestamp not null,
+    created_at          timestamp with time zone not null,
+    last_update_time    timestamp with time zone not null,
+    last_check_time     timestamp with time zone not null,
 
     primary key (id),
     unique (url)

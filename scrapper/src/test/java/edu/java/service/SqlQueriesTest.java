@@ -1,7 +1,7 @@
 package edu.java.service;
 
-import org.junit.jupiter.api.Test;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
@@ -383,6 +383,23 @@ class SqlQueriesTest {
         Throwable result = catchThrowable(() -> SqlQueries.findWhereQuery(tableName, conditionFieldName));
 
         assertThat(result).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void deleteQueryWithListInArguments() {
+        String tableName = "myTable";
+        String field1 = "id";
+        String field2 = "name";
+        List<String> conditionFieldsNamesList = List.of(field1, field2);
+
+        // id = :id
+        String condition = "%s = :%s and %s = :%s".formatted(field1, field1, field2, field2);
+
+        String expQuery = "delete from %s where %s".formatted(tableName, condition);
+
+        String resQuery = SqlQueries.deleteQuery(tableName, conditionFieldsNamesList);
+
+        assertThat(resQuery).isEqualTo(expQuery);
     }
 
 }
