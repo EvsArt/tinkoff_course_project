@@ -2,6 +2,7 @@ package edu.java.repository;
 
 import edu.java.model.Link;
 import java.net.URI;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
@@ -26,4 +27,7 @@ public interface LinkRepository {
     List<Link> removeLinksByTgChatId(Long id);
 
     Optional<Link> removeLinkByTgChatIdAndUri(Long id, URI uri);
+
+    List<Link> findAllWhereLastCheckTimeBefore(OffsetDateTime dateTime);
+
 }

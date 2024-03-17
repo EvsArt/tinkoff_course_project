@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.StackOverflowApiPaths;
+import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
 import edu.java.exceptions.status.BadRequestException;
 import edu.java.exceptions.status.ForbiddenException;
@@ -133,7 +134,8 @@ class DefaultStackOverflowClientTest {
     void getQuestionWithOKStatus() {
         setupOKGetQuestionStub();
 
-        StackOverflowQuestionResponse realResponse = client.getQuestionById(id).block();
+        StackOverflowQuestionResponse realResponse =
+            client.getQuestionById(new StackOverflowQuestionRequest(id)).block();
 
         assertThat(realResponse).isEqualTo(expResponse);
     }
@@ -142,7 +144,8 @@ class DefaultStackOverflowClientTest {
     void getQuestionWithNotFoundStatus() {
         setupNotFoundGetQuestionStub();
 
-        Mono<StackOverflowQuestionResponse> realResponseMono = client.getQuestionById(id);
+        Mono<StackOverflowQuestionResponse> realResponseMono =
+            client.getQuestionById(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class);
@@ -152,7 +155,8 @@ class DefaultStackOverflowClientTest {
     void getQuestionWithForbiddenStatus() {
         setupForbiddenGetQuestionStub();
 
-        Mono<StackOverflowQuestionResponse> realResponseMono = client.getQuestionById(id);
+        Mono<StackOverflowQuestionResponse> realResponseMono =
+            client.getQuestionById(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ForbiddenException.class);
@@ -162,7 +166,8 @@ class DefaultStackOverflowClientTest {
     void getQuestionWithBadRequestStatus() {
         setupBadRequestGetQuestionStub();
 
-        Mono<StackOverflowQuestionResponse> realResponseMono = client.getQuestionById(id);
+        Mono<StackOverflowQuestionResponse> realResponseMono =
+            client.getQuestionById(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(BadRequestException.class);
@@ -172,7 +177,8 @@ class DefaultStackOverflowClientTest {
     void getQuestionWithServerErrorStatus() {
         setupServerErrorGetQuestionStub();
 
-        Mono<StackOverflowQuestionResponse> realResponseMono = client.getQuestionById(id);
+        Mono<StackOverflowQuestionResponse> realResponseMono =
+            client.getQuestionById(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ServerErrorException.class);

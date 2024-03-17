@@ -4,10 +4,12 @@ import edu.java.model.TgChat;
 import edu.java.repository.LinkRepository;
 import edu.java.repository.TgChatRepository;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class ITgChatService implements TgChatService {
 
     private final TgChatRepository tgChatRepository;
@@ -32,11 +34,12 @@ public class ITgChatService implements TgChatService {
     @Override
     public TgChat registerChat(long chatId, String name) {
         Optional<TgChat> existsChat = tgChatRepository.findTgChatByChatId(chatId);
+        log.info("Register chat chatId={}, name={}", chatId, name);
         return existsChat
             .orElseGet(
                 () -> tgChatRepository.insertTgChat(new TgChat(chatId, name))
                     .orElse(new TgChat(chatId, name))
-                );
+            );
     }
 
     /**
@@ -48,8 +51,9 @@ public class ITgChatService implements TgChatService {
      */
     @Override
     public TgChat unregisterChat(long chatId) {
-        Optional<TgChat> existsChat = tgChatRepository.removeTgChatById(chatId);
+        Optional<TgChat> existsChat = tgChatRepository.removeTgChatByChatId(chatId);
         linkRepository.removeLinksByTgChatId(chatId);
+        log.info("Unregister chat chatId={}", chatId);
         return existsChat.orElse(new TgChat(chatId, ""));
     }
 

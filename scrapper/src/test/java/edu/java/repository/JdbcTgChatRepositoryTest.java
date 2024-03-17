@@ -54,7 +54,7 @@ class JdbcTgChatRepositoryTest extends IntegrationTest {
     @Rollback
     @Transactional
     void insertTgChatWithIdShouldIgnoreIt() {
-        TgChat chat = new TgChat(111L, 1L, "aa");
+        TgChat chat = new TgChat(111L, 11L, "aa");
         TgChat res1 = chatRepository.insertTgChat(chat).get();
         chat.setChatId(112L);
         TgChat res2 = chatRepository.insertTgChat(chat).get();

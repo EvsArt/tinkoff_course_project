@@ -73,6 +73,21 @@ public class SqlQueries {
 
     /**
      * Creates sql query for select like
+     * 'select * from user where created_at < :created_at'
+     * :created_at is parameter name for JDBCClient
+     *
+     * @param tableName          name of table where you want to find a row
+     * @param conditionFieldName field with where condition
+     * @return created sql query
+     */
+    public static String findWhereBeforeQuery(String tableName, String conditionFieldName) {
+        validTableName(tableName);
+        validFieldName(conditionFieldName);
+        return "select * from %s where %s < :%s".formatted(tableName, conditionFieldName, conditionFieldName);
+    }
+
+    /**
+     * Creates sql query for select like
      * 'select name from user where id = :id'
      * :id is parameter name for JDBCClient
      *

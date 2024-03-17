@@ -1,11 +1,13 @@
 package edu.java.repository.jdbc;
 
 import edu.java.model.Link;
+import edu.java.model.TgChat;
 import edu.java.repository.LinkRepository;
 import edu.java.repository.TgChatRepository;
 import edu.java.service.SqlQueries;
 import java.net.URI;
 import java.sql.Types;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -118,6 +120,7 @@ public class JdbcLinkDao implements LinkRepository {
     }
 
     @Override
+    @Transactional
     public Optional<Link> findLinkById(Long id) {
         log.debug("findLinkById() was called with id={}", id);
         String sql = SqlQueries.findWhereQuery(linkTableName, SqlQueries.LINK_FIELD_ID_NAME);
@@ -133,6 +136,7 @@ public class JdbcLinkDao implements LinkRepository {
     }
 
     @Override
+    @Transactional
     public Optional<Link> findLinkByURL(URI url) {
         log.debug("findLinkByUrl() was called with url={}", url);
         String sql = SqlQueries.findWhereQuery(linkTableName, SqlQueries.LINK_FIELD_URL_NAME);
@@ -148,10 +152,23 @@ public class JdbcLinkDao implements LinkRepository {
     }
 
     @Override
+    @Transactional
     public List<Link> findAllLinks() {
         log.debug("findAllLinks() was called");
         String sql = SqlQueries.findAllQuery(linkTableName);
         List<Link> links = jdbcClient.sql(sql)
+            .query(Link.class).list();
+        links.forEach(link -> link.setTgChats(tgChatRepository.findTgChatsByLinkId(link.getId())));
+        return links;
+    }
+
+    @Override
+    @Transactional
+    public List<Link> findAllWhereLastCheckTimeBefore(OffsetDateTime dateTime) {
+        log.debug("findAllWhereLastCheckTimeBefore() was called with dateTime={}", dateTime);
+        String sql = SqlQueries.findWhereBeforeQuery(linkTableName, SqlQueries.LINK_FIELD_LAST_CHECK_TIME_NAME);
+        List<Link> links = jdbcClient.sql(sql)
+            .param(SqlQueries.LINK_FIELD_LAST_CHECK_TIME_NAME, dateTime, Types.TIMESTAMP_WITH_TIMEZONE)
             .query(Link.class).list();
         links.forEach(link -> link.setTgChats(tgChatRepository.findTgChatsByLinkId(link.getId())));
         return links;
@@ -201,11 +218,13 @@ public class JdbcLinkDao implements LinkRepository {
     public Optional<Link> removeLinkByTgChatIdAndUri(Long chatId, URI uri) {
         log.debug("removeLinkByTgChatIdAndUri() was called with chatId={} and uri={}", chatId, uri);
         Optional<Link> link = findLinkByURL(uri);
-        if (link.isEmpty()) {
+        Optional<TgChat> chat = tgChatRepository.findTgChatByChatId(chatId);
+        if (link.isEmpty() || chat.isEmpty()) {
             return link;
         }
-        associativeTableRepository.removeLinkAndChatIds(link.get().getId(), chatId);
-        removeLinksWithoutChat(List.of(link.get()));
+        associativeTableRepository.removeLinkAndChatIds(link.get().getId(), chat.get().getId());
+        link = findLinkByURL(uri);  // update tgChat list in link var
+        removeLinksWithoutChat(List.of(link.get())).size();
         return link;
     }
 

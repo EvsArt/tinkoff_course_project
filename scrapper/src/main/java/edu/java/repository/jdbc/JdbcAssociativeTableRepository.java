@@ -72,6 +72,7 @@ public class JdbcAssociativeTableRepository {
         return removedIds;
     }
 
+    @Transactional
     public void removeLinkAndChatIds(Long linkId, Long chatId) {
         log.debug("removeLinkAndChatIds with linkId={} and chatId={}", linkId, chatId);
         String sql = SqlQueries.deleteQuery(

@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.GitHubApiPaths;
+import edu.java.dto.GitHubRepoRequest;
 import edu.java.dto.GitHubRepoResponse;
 import edu.java.exceptions.status.ForbiddenException;
 import edu.java.exceptions.status.MovedPermanentlyException;
@@ -134,7 +135,8 @@ class DefaultGitHubClientTest {
     void getRepositoryWithOKStatus() {
         setupOKGetRepositoryStub();
 
-        GitHubRepoResponse realResponse = client.getRepositoryByOwnerNameAndRepoName(name, repo).block();
+        GitHubRepoResponse realResponse =
+            client.getRepositoryByOwnerNameAndRepoName(new GitHubRepoRequest(name, repo)).block();
 
         assertThat(realResponse).isEqualTo(expResponse);
     }
@@ -143,7 +145,8 @@ class DefaultGitHubClientTest {
     void getRepositoryWithNotFoundStatus() {
         setupNotFoundGetRepositoryStub();
 
-        Mono<GitHubRepoResponse> realResponseMono = client.getRepositoryByOwnerNameAndRepoName(name, repo);
+        Mono<GitHubRepoResponse> realResponseMono =
+            client.getRepositoryByOwnerNameAndRepoName(new GitHubRepoRequest(name, repo));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class);
@@ -153,7 +156,8 @@ class DefaultGitHubClientTest {
     void getRepositoryWithForbiddenStatus() {
         setupForbiddenGetRepositoryStub();
 
-        Mono<GitHubRepoResponse> realResponseMono = client.getRepositoryByOwnerNameAndRepoName(name, repo);
+        Mono<GitHubRepoResponse> realResponseMono =
+            client.getRepositoryByOwnerNameAndRepoName(new GitHubRepoRequest(name, repo));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ForbiddenException.class);
@@ -163,7 +167,8 @@ class DefaultGitHubClientTest {
     void getRepositoryWithMovedPermanentlyStatus() {
         setupMovedPermanentlyGetRepositoryStub();
 
-        Mono<GitHubRepoResponse> realResponseMono = client.getRepositoryByOwnerNameAndRepoName(name, repo);
+        Mono<GitHubRepoResponse> realResponseMono =
+            client.getRepositoryByOwnerNameAndRepoName(new GitHubRepoRequest(name, repo));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(MovedPermanentlyException.class);
@@ -173,7 +178,8 @@ class DefaultGitHubClientTest {
     void getRepositoryWithServerErrorStatus() {
         setupServerErrorGetRepositoryStub();
 
-        Mono<GitHubRepoResponse> realResponseMono = client.getRepositoryByOwnerNameAndRepoName(name, repo);
+        Mono<GitHubRepoResponse> realResponseMono =
+            client.getRepositoryByOwnerNameAndRepoName(new GitHubRepoRequest(name, repo));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ServerErrorException.class);

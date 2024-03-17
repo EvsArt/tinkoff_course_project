@@ -4,6 +4,7 @@ import edu.java.model.TgChat;
 import edu.java.repository.TgChatRepository;
 import edu.java.service.SqlQueries;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -73,11 +74,30 @@ public class JdbcTgChatRepository implements TgChatRepository {
         log.debug("removeTgChatById() was called with id={}", id);
         String sql = SqlQueries.deleteQuery(tgChatTableName, SqlQueries.TG_CHAT_FIELD_ID_NAME);
         Optional<TgChat> oldTgChat = findTgChatById(id);
+        if (oldTgChat.isEmpty()) {
+            return oldTgChat;
+        }
         int updated = jdbcClient.sql(sql)
             .param(SqlQueries.TG_CHAT_FIELD_ID_NAME, id, Types.BIGINT)
             .update();
         log.debug("removeTgChatById(): {} rows were updated", updated);
         associativeTableRepository.removeLinkAndChatIdsByTgChatId(id);
+        return oldTgChat;
+    }
+
+    @Override
+    public Optional<TgChat> removeTgChatByChatId(Long chatId) {
+        log.debug("removeTgChatByChatId() was called with chatId={}", chatId);
+        String sql = SqlQueries.deleteQuery(tgChatTableName, SqlQueries.TG_CHAT_FIELD_CHAT_ID_NAME);
+        Optional<TgChat> oldTgChat = findTgChatByChatId(chatId);
+        if (oldTgChat.isEmpty()) {
+            return oldTgChat;
+        }
+        int updated = jdbcClient.sql(sql)
+            .param(SqlQueries.TG_CHAT_FIELD_CHAT_ID_NAME, chatId, Types.BIGINT)
+            .update();
+        log.debug("removeTgChatByChatId(): {} rows were updated", updated);
+        associativeTableRepository.removeLinkAndChatIdsByTgChatId(oldTgChat.get().getId());
         return oldTgChat;
     }
 
@@ -121,12 +141,12 @@ public class JdbcTgChatRepository implements TgChatRepository {
             SqlQueries.LINK_TG_CHAT_FIELD_TG_CHAT_NAME,
             SqlQueries.LINK_TG_CHAT_FIELD_LINK_NAME
         );
-        return jdbcClient.sql(sql)
+        return new ArrayList<>(jdbcClient.sql(sql)
             .param(SqlQueries.LINK_TG_CHAT_FIELD_LINK_NAME, id, Types.BIGINT)
             .query(Long.class).list()
             .stream()
             .map(tgChatId -> findTgChatById(tgChatId).get())
-            .toList();
+            .toList());
     }
 
 }

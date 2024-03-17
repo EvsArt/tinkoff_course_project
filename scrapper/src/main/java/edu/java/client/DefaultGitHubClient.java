@@ -2,6 +2,7 @@ package edu.java.client;
 
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.GitHubApiPaths;
+import edu.java.dto.GitHubRepoRequest;
 import edu.java.dto.GitHubRepoResponse;
 import edu.java.exceptions.status.ForbiddenException;
 import edu.java.exceptions.status.MovedPermanentlyException;
@@ -18,7 +19,7 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 @Slf4j
-public class DefaultGitHubClient implements AsyncGitHubClient {
+public class DefaultGitHubClient implements GitHubClient {
 
     private final WebClient webClient;
     private final ApiConfig.GitHubConfig config;
@@ -66,17 +67,16 @@ public class DefaultGitHubClient implements AsyncGitHubClient {
     /**
      * Returns repository info by its owner's name and repository name
      *
-     * @param ownerName is repository owner's name
-     * @param repoName  is repository name
+     * @param request is dto with repo owner and repo name
      * @return repository info
      */
     @Override
-    public Mono<GitHubRepoResponse> getRepositoryByOwnerNameAndRepoName(String ownerName, String repoName) {
+    public Mono<GitHubRepoResponse> getRepositoryByOwnerNameAndRepoName(GitHubRepoRequest request) {
         return webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path(GitHubApiPaths.GET_REPOSITORY)
                 .queryParams(config.uriParameters())
-                .build(ownerName, repoName)
+                .build(request.ownerName(), request.repositoryName())
             )
             .retrieve()
             .bodyToMono(GitHubRepoResponse.class);

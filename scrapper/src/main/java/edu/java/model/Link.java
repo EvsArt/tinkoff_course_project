@@ -25,4 +25,13 @@ public class Link {
     @NonNull OffsetDateTime lastCheckTime;
 
     List<TgChat> tgChats = new ArrayList<>();
+
+    public Link(URI url, String name) {
+        this.url = url;
+        this.name = name;
+        this.createdAt = OffsetDateTime.now();
+        this.lastUpdateTime = OffsetDateTime.now();
+        this.lastCheckTime = OffsetDateTime.now();
+    }
+
 }

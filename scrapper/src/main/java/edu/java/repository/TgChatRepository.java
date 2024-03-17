@@ -14,6 +14,8 @@ public interface TgChatRepository {
 
     Optional<TgChat> removeTgChatById(Long id);
 
+    Optional<TgChat> removeTgChatByChatId(Long chatId);
+
     Optional<TgChat> findTgChatById(Long id);
 
     Optional<TgChat> findTgChatByChatId(Long chatId);

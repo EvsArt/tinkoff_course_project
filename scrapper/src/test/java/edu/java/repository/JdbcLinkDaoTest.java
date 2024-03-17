@@ -337,6 +337,35 @@ class JdbcLinkDaoTest extends IntegrationTest {
         assertThat(res.get(0)).isEqualTo(link1);
     }
 
+    @Test
+    @Rollback
+    @Transactional
+    void findAllWhereLastCheckTimeBefore() {
+        OffsetDateTime needLastCheckTime = OffsetDateTime.parse("2024-03-15T11:17:31+03:00");
+        Link checkedLink = new Link(
+            URI.create("https://github.com/me/myRep1"),
+            "name1",
+            OffsetDateTime.parse("2024-03-15T11:15:30+03:00"),
+            OffsetDateTime.parse("2024-03-15T11:19:32+03:00"),
+            needLastCheckTime.plusDays(1)
+        );
+        Link uncheckedLink = new Link(
+            URI.create("https://github.com/me/myRep2"),
+            "name2",
+            OffsetDateTime.parse("2024-03-15T11:15:30+03:00"),
+            OffsetDateTime.parse("2024-03-15T11:19:32+03:00"),
+            needLastCheckTime.minusDays(1)
+        );
+
+        linkRepository.insertLink(checkedLink).get();
+        uncheckedLink = linkRepository.insertLink(uncheckedLink).get();
+
+        List<Link> res = linkRepository.findAllWhereLastCheckTimeBefore(needLastCheckTime);
+
+        assertThat(res.size()).isEqualTo(1);
+        assertThat(res.get(0)).isEqualTo(uncheckedLink);
+    }
+
     private Link createLinkWithUniqueUrlWithNum(int num) {
         return new Link(
             URI.create("https://github.com/me/myRep" + num),

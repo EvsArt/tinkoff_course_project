@@ -2,6 +2,7 @@ package edu.java.service;
 
 import edu.java.model.Link;
 import java.net.URI;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface LinkService {
@@ -10,6 +11,13 @@ public interface LinkService {
 
     Link removeLink(long tgChatId, URI url);
 
-    List<Link> findAll(long tgChatId);
+    List<Link> findAllByTgChatId(long tgChatId);
 
+    List<Link> findAll();
+
+    List<Link> findAllWhereLastCheckTimeBefore(OffsetDateTime dateTime);
+
+    Link setLastCheckTime(Long linkId, OffsetDateTime dateTime);
+
+    Link setLastUpdateTime(Long linkId, OffsetDateTime dateTime);
 }
