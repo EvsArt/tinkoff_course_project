@@ -2,6 +2,7 @@ package edu.java.domain.jooqRepository;
 
 import edu.java.model.Link;
 import edu.java.model.TgChat;
+import edu.java.scrapper.IntegrationTest;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-class JooqLinkRepositoryTest {
+class JooqLinkRepositoryTest extends IntegrationTest {
 
     @Autowired
     private JooqLinkRepository linkRepository;
