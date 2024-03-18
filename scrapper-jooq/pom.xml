@@ -9,7 +9,7 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>scrapper</artifactId>
+    <artifactId>scrapper-jooq</artifactId>
     <version>${revision}</version>
 
     <properties>
