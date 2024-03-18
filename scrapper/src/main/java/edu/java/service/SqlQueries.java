@@ -58,8 +58,8 @@ public class SqlQueries {
 
     /**
      * Creates sql query for select like
-     * 'select * from user where id = :id'
-     * :id is parameter name for JDBCClient
+     * 'select * from user where id = {@literal :}id'
+     * {@literal :}id is parameter name for JDBCClient
      *
      * @param tableName          name of table where you want to find a row
      * @param conditionFieldName field with where condition
@@ -73,8 +73,8 @@ public class SqlQueries {
 
     /**
      * Creates sql query for select like
-     * 'select * from user where created_at < :created_at'
-     * :created_at is parameter name for JDBCClient
+     * select * from user where created_at {@literal <} {@literal :}created_at
+     * {@literal :}created_at is parameter name for JDBCClient
      *
      * @param tableName          name of table where you want to find a row
      * @param conditionFieldName field with where condition
@@ -88,8 +88,8 @@ public class SqlQueries {
 
     /**
      * Creates sql query for select like
-     * 'select name from user where id = :id'
-     * :id is parameter name for JDBCClient
+     * 'select name from user where id = {@literal :}id'
+     * {@literal :}id is parameter name for JDBCClient
      *
      * @param tableName          name of table where you want to find a row
      * @param fieldName          name of field you want to find
@@ -110,8 +110,8 @@ public class SqlQueries {
 
     /**
      * Creates sql query for insert like
-     * 'insert into user (id, name) values (:id, :name)'
-     * :id and :name is parameters names for JDBCClient
+     * 'insert into user (id, name) values ({@literal :}id, {@literal :}name)'
+     * {@literal :}id and {@literal :}name is parameters names for JDBCClient
      *
      * @param tableName   name of table where you want to insert value
      * @param fieldsNames list of fields you want to insert
@@ -129,8 +129,8 @@ public class SqlQueries {
 
     /**
      * Creates sql query for update like
-     * 'update user set name = :name where id = :id'
-     * :id and :name is parameters names for JDBCClient
+     * 'update user set name = {@literal :}name where id = {@literal :}id'
+     * {@literal :}id and {@literal :}name is parameters names for JDBCClient
      *
      * @param tableName   name of table where you want to update value
      * @param fieldsNames list of fields you want to update
@@ -149,8 +149,8 @@ public class SqlQueries {
 
     /**
      * Creates sql query for delete like
-     * 'delete from user where id = :id and name = :name'
-     * :id is parameter name for JDBCClient
+     * 'delete from user where id = {@literal :}id and name = {@literal :}name'
+     * {@literal :}id is parameter name for JDBCClient
      *
      * @param tableName            name of table where you want to delete a row
      * @param conditionFieldsNames list of fields with where condition
