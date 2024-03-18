@@ -25,14 +25,14 @@ create table link (
 
 --changeset evsart:link_tg_chat
 create table link_tg_chat (
-    tg_chat_id bigint references tg_chat(id),
-    link_id bigint references link(id)
+    tg_chat_id bigint references tg_chat(id)  on delete cascade,
+    link_id bigint references link(id)  on delete cascade
 )
 
 --changeset evsart:github_link_info
 create table github_link_info (
     id bigint generated always as identity,
-    link_id bigint not null references link(id),
+    link_id bigint not null references link(id) on delete cascade,
 
     last_event_id bigint not null,
 
@@ -43,7 +43,7 @@ create table github_link_info (
 --changeset evsart:stackoverflow_link_info
 create table stackoverflow_link_info (
     id bigint generated always as identity,
-    link_id bigint not null references link(id),
+    link_id bigint not null references link(id)  on delete cascade,
 
     answers_count integer not null,
 

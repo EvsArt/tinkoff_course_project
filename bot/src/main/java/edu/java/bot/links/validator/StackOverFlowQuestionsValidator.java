@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StackOverFlowQuestionsValidator implements LinkValidator{
+public class StackOverFlowQuestionsValidator implements LinkValidator {
 
     @Getter
     private final String serviceName = "StackOverFlow questions";

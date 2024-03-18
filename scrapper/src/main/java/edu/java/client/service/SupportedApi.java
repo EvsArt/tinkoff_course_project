@@ -8,7 +8,7 @@ public enum SupportedApi {
 
     GITHUB_REPO(Pattern.compile("^(https?://)?github\\.com/(?<ownerName>\\w+)/(?<repoName>\\w+)$")),
     STACKOVERFLOW_QUESTION(Pattern.compile(
-        "^(https?://)?stackoverflow\\.com/questions/(?<questionId>\\d+)/(?<questionName>\\w+)$"));
+        "^(https?://)?stackoverflow\\.com/questions/(?<questionId>\\d+)/(?<questionName>[\\w-]+)$"));
 
     private final Pattern linkPattern;
 

@@ -7,9 +7,10 @@ import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
-import edu.java.bot.messageProcessor.MessageParser;
 import edu.java.bot.links.Link;
+import edu.java.bot.messageProcessor.MessageParser;
 import java.util.Optional;
+import edu.java.bot.scrapperClient.client.ScrapperClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,7 +28,7 @@ class UntrackCommandTest {
     @InjectMocks UntrackCommand untrackCommand;
     @Spy MessageParser messageParser;
 
-    @Mock TemporaryTracksRepository tracksRepository;
+    @Mock ScrapperClient scrapperClient;
 
     @Test
     void handleWithoutArgumentsItShouldPrintHelpMessage() {
@@ -38,43 +39,6 @@ class UntrackCommandTest {
         SendMessage realResponse = untrackCommand.handle(update);
         String realResult = (String) realResponse.getParameters().get(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE);
 
-        assertThat(realResult).isEqualTo(expResult);
-    }
-
-    @Test
-    void handleWithOneArgumentItShouldRemoveTrack() {
-        String name = "Track1";
-
-        Update update = getTestUpdateMessageWithText(String.format("%s %s", command, name));
-        User user = Mockito.mock(User.class);
-        Mockito.when(update.message().from()).thenReturn(user);
-        Link link = new Link("someLink", name);
-        Mockito.when(tracksRepository.getTrackByName(user, name)).thenReturn(Optional.of(link));
-
-        String expResult = StringService.endTracking(link);
-
-        SendMessage realResponse = untrackCommand.handle(update);
-        String realResult = (String) realResponse.getParameters().get(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE);
-
-        Mockito.verify(tracksRepository, Mockito.times(1)).removeTrack(update.message().from(), link);
-        assertThat(realResult).isEqualTo(expResult);
-    }
-
-    @Test
-    void handleWithUnknownNameShouldPrintMessage() {
-        String name = "UnknownName";
-
-        Update update = getTestUpdateMessageWithText(String.format("%s %s", command, name));
-        User user = Mockito.mock(User.class);
-        Mockito.when(update.message().from()).thenReturn(user);
-        Mockito.when(tracksRepository.getTrackByName(user, name)).thenReturn(Optional.empty());
-
-        String expResult = StringService.COMMAND_UNTRACK_LINK_NOT_TRACKED;
-
-        SendMessage realResponse = untrackCommand.handle(update);
-        String realResult = (String) realResponse.getParameters().get(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE);
-
-        Mockito.verify(tracksRepository, Mockito.never()).removeTrack(Mockito.any(), Mockito.any());
         assertThat(realResult).isEqualTo(expResult);
     }
 

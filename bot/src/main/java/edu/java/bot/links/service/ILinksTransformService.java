@@ -1,7 +1,9 @@
 package edu.java.bot.links.service;
 
 import edu.java.bot.links.Link;
+import edu.java.bot.scrapperClient.dto.AddLinkRequest;
 import edu.java.bot.scrapperClient.dto.LinkResponse;
+import edu.java.bot.scrapperClient.dto.RemoveLinkRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +24,15 @@ public class ILinksTransformService implements LinksTransformService {
             linksParsingService.getLinkName(linkResponse.getUrl().toString())
         );
     }
+
+    @Override
+    public AddLinkRequest toAddLinkRequest(Link newLink) {
+        return new AddLinkRequest(newLink.url());
+    }
+
+    @Override
+    public RemoveLinkRequest toRemoveLinkRequest(Link newLink) {
+        return new RemoveLinkRequest(newLink.url());
+    }
+
 }

@@ -7,12 +7,13 @@ import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
-import edu.java.bot.messageProcessor.MessageParser;
 import edu.java.bot.links.Link;
 import edu.java.bot.links.validator.AllLinksValidatorManager;
 import edu.java.bot.links.validator.GitHubRepoValidator;
 import edu.java.bot.links.validator.LinkValidator;
+import edu.java.bot.messageProcessor.MessageParser;
 import java.util.stream.Stream;
+import edu.java.bot.scrapperClient.client.ScrapperClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,7 +34,7 @@ class TrackCommandTest {
     @Spy AllLinksValidatorManager linkValidatorManager =
         new AllLinksValidatorManager(Stream.of(exampleValidator).toList());
 
-    @Mock TemporaryTracksRepository tracksRepository;
+    @Mock ScrapperClient scrapperClient;
 
     @Test
     void handleWithoutArgumentsItShouldPrintHelpMessage() {
@@ -48,39 +49,6 @@ class TrackCommandTest {
     }
 
     @Test
-    void handleWithOnlyOneArgumentItShouldCreateName() {
-        String legalLink = "example.com/post/1";
-
-        Update update = getTestUpdateMessageWithText(String.format("%s %s", command, legalLink));
-        User user = Mockito.mock(User.class);
-        Mockito.when(update.message().from()).thenReturn(user);
-
-        String expResult = StringService.startTracking(new Link(legalLink, ""));
-
-        SendMessage realResponse = trackCommand.handle(update);
-        String realResult = (String) realResponse.getParameters().get(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE);
-
-        Mockito.verify(tracksRepository, Mockito.times(1)).getNewTrackNameFor(update.message().from());
-        assertThat(realResult).isEqualTo(expResult);
-    }
-
-    @Test
-    void handleShouldReturnSuccessAndWriteTrack() {
-        String legalLink = "example.com/post/1";
-        String trackName = "MyTrack";
-        Update update = getTestUpdateMessageWithText(String.format("%s %s %s", command, legalLink, trackName));
-
-        Link expSavedLink = new Link(legalLink, trackName);
-        String expResult = StringService.startTracking(expSavedLink);
-
-        SendMessage realResponse = trackCommand.handle(update);
-        String realResult = (String) realResponse.getParameters().get(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE);
-
-        Mockito.verify(tracksRepository, Mockito.times(1)).addTrack(update.message().from(), expSavedLink);
-        assertThat(realResult).isEqualTo(expResult);
-    }
-
-    @Test
     void invalidLinkTest() {
         String illegalLink = "exmple.com/post/1";
         String trackName = "MyTrack";
@@ -91,7 +59,7 @@ class TrackCommandTest {
         SendMessage realResponse = trackCommand.handle(update);
         String realResult = (String) realResponse.getParameters().get(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE);
 
-        Mockito.verify(tracksRepository, Mockito.never()).addTrack(Mockito.any(), Mockito.any());
+        Mockito.verify(scrapperClient, Mockito.never()).addLink(Mockito.any(), Mockito.any());
         assertThat(realResult).isEqualTo(expResult);
     }
 

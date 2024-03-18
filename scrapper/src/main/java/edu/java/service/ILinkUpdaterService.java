@@ -11,6 +11,7 @@ import edu.java.model.GitHubLinkInfo;
 import edu.java.model.Link;
 import edu.java.model.LinkUpdateInfo;
 import edu.java.model.StackOverFlowLinkInfo;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,7 @@ public class ILinkUpdaterService implements LinkUpdaterService {
     @Override
     public LinkUpdateInfo checkUpdates(Link link) {
         SupportedApi api = SupportedApi.getApiByLink(link.getUrl().toString());
+        linkService.setLastCheckTime(link.getId(), OffsetDateTime.now());
         return switch (api) {
             case GITHUB_REPO -> checkGitHubRepoUpdates(link);
             case STACKOVERFLOW_QUESTION -> checkStackOverFlowQuestionUpdates(link);

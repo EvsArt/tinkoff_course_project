@@ -1,6 +1,5 @@
 package edu.java.bot.commands;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -13,6 +12,7 @@ import edu.java.bot.scrapperClient.client.ScrapperClient;
 import edu.java.bot.scrapperClient.dto.RemoveLinkRequest;
 import edu.java.bot.scrapperClient.exceptions.status.BadRequestException;
 import edu.java.bot.scrapperClient.exceptions.status.ResourceNotFoundException;
+import edu.java.bot.scrapperClient.exceptions.status.ServerErrorException;
 import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +80,7 @@ public class UntrackCommand implements Command {
             log.info("End tracking {} by chat {}", url, chatId);
             responseMessage.getParameters()
                 .put(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE, StringService.endTracking(link));
-        } catch (BadRequestException e) {
+        } catch (BadRequestException | ServerErrorException e) {
             return new SendMessage(update.message().chat().id(), StringService.errorWithUntrackLink(link));
         } catch (ResourceNotFoundException e) {
             return new SendMessage(chatId, StringService.linkNotExists(link));

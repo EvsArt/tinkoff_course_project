@@ -17,6 +17,8 @@ public interface LinkService {
 
     Link findByUrl(URI url);
 
+    Link findById(Long id);
+
     List<Link> findAllWhereLastCheckTimeBefore(OffsetDateTime dateTime);
 
     Link setLastCheckTime(Long linkId, OffsetDateTime dateTime);

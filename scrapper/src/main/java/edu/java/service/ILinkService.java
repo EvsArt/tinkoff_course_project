@@ -79,6 +79,11 @@ public class ILinkService implements LinkService {
     }
 
     @Override
+    public Link findById(Long id) {
+        return linkRepository.findLinkById(id).orElseThrow(LinkNotExistsException::new);
+    }
+
+    @Override
     public List<Link> findAllWhereLastCheckTimeBefore(OffsetDateTime dateTime) {
         return linkRepository.findAllWhereLastCheckTimeBefore(dateTime);
     }

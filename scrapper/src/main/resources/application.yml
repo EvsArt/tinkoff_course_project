@@ -4,7 +4,7 @@ app:
     interval: 10s
     force-check-delay: 10s
   linkChecker:
-    checkInterval: 7s
+    checkInterval: 1m
 
 api:
   github:

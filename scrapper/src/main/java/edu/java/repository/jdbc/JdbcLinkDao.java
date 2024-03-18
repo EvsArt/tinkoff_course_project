@@ -91,12 +91,12 @@ public class JdbcLinkDao implements LinkRepository {
             .update();
 
         // creating rows in associative table
-        log.debug("newLink: {}", newLink.getTgChats());
+        log.debug("newLink: {}", newLink);
         newLink.getTgChats().stream()
             .filter(chat -> !oldLink.get().getTgChats().contains(chat))
             .forEach(chat -> associativeTableRepository.saveLinkAndChatIds(id, chat.getId()));
         // remove unused chats from associative table
-        log.debug("oldLink: {}", oldLink.get().getTgChats());
+        log.debug("oldLink: {}", oldLink.get());
         oldLink.get().getTgChats().stream()
             .filter(chat -> !newLink.getTgChats().contains(chat))
             .forEach(chat -> associativeTableRepository.removeLinkAndChatIds(id, chat.getId()));

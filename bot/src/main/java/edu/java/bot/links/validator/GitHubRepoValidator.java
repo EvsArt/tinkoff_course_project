@@ -2,7 +2,6 @@ package edu.java.bot.links.validator;
 
 import edu.java.bot.links.SupportedApi;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component

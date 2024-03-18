@@ -10,12 +10,13 @@ import edu.java.bot.links.service.LinksParsingService;
 import edu.java.bot.links.service.LinksTransformService;
 import edu.java.bot.scrapperClient.client.ScrapperClient;
 import edu.java.bot.scrapperClient.exceptions.status.BadRequestException;
+import edu.java.bot.scrapperClient.exceptions.status.ServerErrorException;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -31,7 +32,8 @@ public class ListCommand implements Command {
     private final String description = StringService.COMMAND_LIST_DESCRIPTION;
 
     @Autowired
-    public ListCommand(ScrapperClient scrapperClient, LinksParsingService parsingService,
+    public ListCommand(
+        ScrapperClient scrapperClient, LinksParsingService parsingService,
         LinksTransformService transformService
     ) {
         this.scrapperClient = scrapperClient;
@@ -55,7 +57,7 @@ public class ListCommand implements Command {
             links = scrapperClient.getLinks(chatId).block().getLinks().stream()
                 .map(transformService::toLink)
                 .collect(Collectors.toSet());
-        } catch (BadRequestException e) {
+        } catch (BadRequestException | ServerErrorException e) {
             return new SendMessage(chatId, StringService.errorWithGettingLinks());
         }
 

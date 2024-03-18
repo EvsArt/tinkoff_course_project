@@ -67,7 +67,8 @@ class ILinkServiceTest extends IntegrationTest {
     @Transactional
     @Rollback
     void addLinkToNotExistedChat_ShouldThrowException() {
-        Throwable res = catchThrowable(() -> linkService.addLink(11L, URI.create("https://github.com/me/MyRep"), "MyLink"));
+        Throwable res =
+            catchThrowable(() -> linkService.addLink(11L, URI.create("https://github.com/me/MyRep"), "MyLink"));
 
         assertThat(res).isInstanceOf(IllegalArgumentException.class);
     }
