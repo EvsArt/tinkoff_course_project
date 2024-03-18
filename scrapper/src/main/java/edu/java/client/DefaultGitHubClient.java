@@ -24,7 +24,6 @@ public class DefaultGitHubClient implements GitHubClient {
 
     private final WebClient webClient;
     private final ApiConfig.GitHubConfig config;
-    private static final int maxBufferSize = 1024*1024;
 
     private DefaultGitHubClient(WebClient webClient, ApiConfig.GitHubConfig config) {
         this.webClient = webClient;
@@ -63,7 +62,6 @@ public class DefaultGitHubClient implements GitHubClient {
                 HttpStatusCode::is5xxServerError,
                 resp -> Mono.error(ServerErrorException::new)
             )
-            .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(maxBufferSize))
             .build();
     }
 

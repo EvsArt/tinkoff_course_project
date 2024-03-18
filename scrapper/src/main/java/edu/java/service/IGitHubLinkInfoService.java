@@ -7,8 +7,8 @@ import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.GitHubLinkInfo;
 import edu.java.model.Link;
 import edu.java.repository.GitHubLinkInfoRepository;
-import java.net.URI;
 import edu.java.repository.LinkRepository;
+import java.net.URI;
 import org.springframework.stereotype.Service;
 
 @Service
