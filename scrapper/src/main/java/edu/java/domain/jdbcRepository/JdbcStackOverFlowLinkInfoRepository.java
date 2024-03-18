@@ -1,23 +1,25 @@
-package edu.java.repository.jdbc;
+package edu.java.domain.jdbcRepository;
 
+import edu.java.domain.StackOverFlowLinkInfoRepository;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.Link;
 import edu.java.model.StackOverFlowLinkInfo;
-import edu.java.repository.StackOverFlowLinkInfoRepository;
 import edu.java.service.SqlQueries;
 import java.net.URI;
 import java.sql.Types;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
 @Slf4j
+@Primary
+@Repository
 public class JdbcStackOverFlowLinkInfoRepository implements StackOverFlowLinkInfoRepository {
 
     private final JdbcClient jdbcClient;

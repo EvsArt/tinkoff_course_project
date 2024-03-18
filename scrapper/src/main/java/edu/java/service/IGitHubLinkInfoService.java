@@ -1,13 +1,13 @@
 package edu.java.service;
 
 import edu.java.client.GitHubClient;
+import edu.java.domain.GitHubLinkInfoRepository;
+import edu.java.domain.LinkRepository;
 import edu.java.dto.GitHubRepoEventResponse;
 import edu.java.dto.GitHubRepoRequest;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.GitHubLinkInfo;
 import edu.java.model.Link;
-import edu.java.repository.GitHubLinkInfoRepository;
-import edu.java.repository.LinkRepository;
 import java.net.URI;
 import org.springframework.stereotype.Service;
 

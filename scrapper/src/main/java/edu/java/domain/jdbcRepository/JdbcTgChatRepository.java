@@ -1,7 +1,7 @@
-package edu.java.repository.jdbc;
+package edu.java.domain.jdbcRepository;
 
+import edu.java.domain.TgChatRepository;
 import edu.java.model.TgChat;
-import edu.java.repository.TgChatRepository;
 import edu.java.service.SqlQueries;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@Primary
 @Repository
 public class JdbcTgChatRepository implements TgChatRepository {
 

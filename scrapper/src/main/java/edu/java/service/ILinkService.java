@@ -1,11 +1,11 @@
 package edu.java.service;
 
+import edu.java.domain.LinkRepository;
+import edu.java.domain.TgChatRepository;
 import edu.java.exceptions.ChatNotExistException;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.Link;
 import edu.java.model.TgChat;
-import edu.java.repository.LinkRepository;
-import edu.java.repository.TgChatRepository;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;

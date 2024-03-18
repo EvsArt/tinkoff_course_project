@@ -1,4 +1,4 @@
-package edu.java.repository;
+package edu.java.domain;
 
 import edu.java.model.StackOverFlowLinkInfo;
 import java.net.URI;

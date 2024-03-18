@@ -1,9 +1,9 @@
-package edu.java.repository.jdbc;
+package edu.java.domain.jdbcRepository;
 
+import edu.java.domain.LinkRepository;
+import edu.java.domain.TgChatRepository;
 import edu.java.model.Link;
 import edu.java.model.TgChat;
-import edu.java.repository.LinkRepository;
-import edu.java.repository.TgChatRepository;
 import edu.java.service.SqlQueries;
 import java.net.URI;
 import java.sql.Types;
@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -20,8 +21,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@Primary
 @Repository
-public class JdbcLinkDao implements LinkRepository {
+public class JdbcLinkRepository implements LinkRepository {
 
     private final JdbcClient jdbcClient;
     private final TgChatRepository tgChatRepository;
@@ -31,7 +33,7 @@ public class JdbcLinkDao implements LinkRepository {
     private final List<String> linkFieldsNamesWithoutId = SqlQueries.LINK_FIELDS_NAMES_WITHOUT_ID;
 
     @Autowired
-    public JdbcLinkDao(
+    public JdbcLinkRepository(
         JdbcClient jdbcClient,
         TgChatRepository tgChatRepository,
         JdbcAssociativeTableRepository associativeTableRepository
@@ -186,12 +188,10 @@ public class JdbcLinkDao implements LinkRepository {
                 SqlQueries.LINK_TG_CHAT_FIELD_LINK_NAME,
                 SqlQueries.LINK_TG_CHAT_FIELD_TG_CHAT_NAME
             );
-        log.error(sql);
         // getting links id from associative table
         List<Long> linksId = jdbcClient.sql(sql)
             .param(SqlQueries.LINK_TG_CHAT_FIELD_TG_CHAT_NAME, chat.getId(), Types.BIGINT)
             .query(Long.class).list();
-        log.error(linksId.toString());
 
         return linksId.stream()
             .map(linkId -> findLinkById(linkId).orElse(new Link()))

@@ -1,11 +1,11 @@
 package edu.java.service;
 
 import edu.java.client.StackOverflowClient;
+import edu.java.domain.StackOverFlowLinkInfoRepository;
 import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
 import edu.java.model.Link;
 import edu.java.model.StackOverFlowLinkInfo;
-import edu.java.repository.StackOverFlowLinkInfoRepository;
 import java.net.URI;
 import org.springframework.stereotype.Service;
 

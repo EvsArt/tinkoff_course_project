@@ -1,10 +1,7 @@
-package edu.java.repository;
+package edu.java.domain.jooqRepository;
 
 import edu.java.model.Link;
 import edu.java.model.TgChat;
-import edu.java.repository.jdbc.JdbcLinkDao;
-import edu.java.repository.jdbc.JdbcTgChatRepository;
-import edu.java.scrapper.IntegrationTest;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,12 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-class JdbcLinkDaoTest extends IntegrationTest {
+class JooqLinkRepositoryTest {
 
     @Autowired
-    private JdbcLinkDao linkRepository;
+    private JooqLinkRepository linkRepository;
     @Autowired
-    private JdbcTgChatRepository chatRepository;
+    private JooqTgChatRepository chatRepository;
 
     @Test
     @Rollback
@@ -295,7 +292,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
         link1 = linkRepository.insertLink(link1).get();
         linkRepository.insertLink(link2).get();
 
-        List<Link> res = linkRepository.findLinksByTgChatId(chat1.getChatId());
+        List<Link> res = linkRepository.findLinksByTgChatId(chat1.getId());
 
         assertThat(res.size()).isEqualTo(1);
         assertThat(res.get(0)).isEqualTo(link1);
@@ -376,4 +373,5 @@ class JdbcLinkDaoTest extends IntegrationTest {
             OffsetDateTime.parse("2024-03-15T11:19:32+03:00")
         );
     }
+
 }

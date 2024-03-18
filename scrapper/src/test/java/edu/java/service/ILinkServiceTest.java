@@ -1,9 +1,9 @@
 package edu.java.service;
 
+import edu.java.domain.LinkRepository;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.Link;
 import edu.java.model.TgChat;
-import edu.java.repository.LinkRepository;
 import edu.java.scrapper.IntegrationTest;
 import java.net.URI;
 import java.time.OffsetDateTime;

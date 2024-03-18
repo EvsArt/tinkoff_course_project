@@ -1,4 +1,4 @@
-package edu.java.repository.jdbc;
+package edu.java.domain.jdbcRepository;
 
 import edu.java.model.Link;
 import edu.java.service.SqlQueries;
@@ -45,8 +45,8 @@ public class JdbcAssociativeTableRepository {
             .update();
     }
 
-    public List<Long> findChatsIdsByTgChatId(Long id) {
-        log.debug("findChatsIdsByTgChatId() with id={}", id);
+    public List<Long> findLinksIdsByTgChatId(Long id) {
+        log.debug("findLinksIdsByTgChatId() with id={}", id);
         String sql = SqlQueries.findFieldWhereQuery(
             associativeTableName,
             SqlQueries.LINK_TG_CHAT_FIELD_LINK_NAME,
@@ -60,7 +60,7 @@ public class JdbcAssociativeTableRepository {
     @Transactional
     public List<Long> removeLinkAndChatIdsByTgChatId(Long id) {
         log.debug("removeLinkAndChatIdsByTgChatId() with id={}", id);
-        List<Long> removedIds = findChatsIdsByTgChatId(id);
+        List<Long> removedIds = findLinksIdsByTgChatId(id);
         String sql = SqlQueries.deleteQuery(
             associativeTableName,
             SqlQueries.LINK_TG_CHAT_FIELD_TG_CHAT_NAME
