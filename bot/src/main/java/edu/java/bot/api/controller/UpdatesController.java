@@ -23,7 +23,7 @@ public class UpdatesController implements IUpdatesController {
     public void postUpdate(
         @RequestBody @Valid LinkUpdateRequest update
     ) {
-        log.debug(String.format("Update %s was accepted", update));
+        log.info(String.format("Update %s was accepted", update));
     }
 
 }

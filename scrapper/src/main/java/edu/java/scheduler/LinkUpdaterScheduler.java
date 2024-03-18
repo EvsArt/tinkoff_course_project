@@ -48,7 +48,6 @@ public class LinkUpdaterScheduler {
         needCheckingLinks.stream()
             .map(updaterService::checkUpdates)
             .filter(LinkUpdateInfo::isUpdated)
-            .peek(updateInfo -> log.info(updateInfo.toString()))
             .forEach(sendUpdatesService::sendUpdate);
     }
 

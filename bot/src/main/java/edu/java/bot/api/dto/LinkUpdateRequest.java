@@ -14,8 +14,6 @@ import org.springframework.validation.annotation.Validated;
 @Builder
 public class LinkUpdateRequest {
     @NotNull
-    private Long id;
-    @NotNull
     private String url;
     private String description;
     @NotEmpty
