@@ -28,3 +28,23 @@ create table link_tg_chat (
     tg_chat_id bigint references tg_chat(id),
     link_id bigint references link(id)
 )
+
+--changeset evsart:github_link_info
+create table github_link_info (
+    id bigint generated always as identity,
+    link_id bigint not null references link(id),
+
+    events_count integer not null,
+
+    primary key(id)
+)
+
+--changeset evsart:stackoverflow_link_info
+create table stackoverflow_link_info (
+    id bigint generated always as identity,
+    link_id bigint not null references link(id),
+
+    answers_count integer not null,
+
+    primary key(id)
+)

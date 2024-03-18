@@ -71,7 +71,7 @@ public class DefaultGitHubClient implements GitHubClient {
      * @return repository info
      */
     @Override
-    public Mono<GitHubRepoResponse> getRepositoryByOwnerNameAndRepoName(GitHubRepoRequest request) {
+    public Mono<GitHubRepoResponse> getRepository(GitHubRepoRequest request) {
         return webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path(GitHubApiPaths.GET_REPOSITORY)

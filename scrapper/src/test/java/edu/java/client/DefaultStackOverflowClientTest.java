@@ -135,7 +135,7 @@ class DefaultStackOverflowClientTest {
         setupOKGetQuestionStub();
 
         StackOverflowQuestionResponse realResponse =
-            client.getQuestionById(new StackOverflowQuestionRequest(id)).block();
+            client.getQuestion(new StackOverflowQuestionRequest(id)).block();
 
         assertThat(realResponse).isEqualTo(expResponse);
     }
@@ -145,7 +145,7 @@ class DefaultStackOverflowClientTest {
         setupNotFoundGetQuestionStub();
 
         Mono<StackOverflowQuestionResponse> realResponseMono =
-            client.getQuestionById(new StackOverflowQuestionRequest(id));
+            client.getQuestion(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class);
@@ -156,7 +156,7 @@ class DefaultStackOverflowClientTest {
         setupForbiddenGetQuestionStub();
 
         Mono<StackOverflowQuestionResponse> realResponseMono =
-            client.getQuestionById(new StackOverflowQuestionRequest(id));
+            client.getQuestion(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ForbiddenException.class);
@@ -167,7 +167,7 @@ class DefaultStackOverflowClientTest {
         setupBadRequestGetQuestionStub();
 
         Mono<StackOverflowQuestionResponse> realResponseMono =
-            client.getQuestionById(new StackOverflowQuestionRequest(id));
+            client.getQuestion(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(BadRequestException.class);
@@ -178,7 +178,7 @@ class DefaultStackOverflowClientTest {
         setupServerErrorGetQuestionStub();
 
         Mono<StackOverflowQuestionResponse> realResponseMono =
-            client.getQuestionById(new StackOverflowQuestionRequest(id));
+            client.getQuestion(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ServerErrorException.class);

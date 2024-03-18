@@ -3,14 +3,17 @@ package edu.java.service;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
 import edu.java.client.service.SupportedApi;
-import edu.java.constants.StringConstants;
+import edu.java.dto.GitHubRepoEventResponse;
+import edu.java.dto.GitHubRepoEventsResponse;
 import edu.java.dto.GitHubRepoRequest;
-import edu.java.dto.GitHubRepoResponse;
 import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
+import edu.java.model.GitHubLinkInfo;
 import edu.java.model.Link;
 import edu.java.model.LinkUpdateInfo;
-import java.time.OffsetDateTime;
+import edu.java.model.StackOverFlowLinkInfo;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +24,24 @@ public class ILinkUpdaterService implements LinkUpdaterService {
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final LinkService linkService;
+    private final GitHubLinkInfoService gitHubLinkInfoService;
+    private final StackOverFlowLinkInfoService stackOverFlowLinkInfoService;
 
     @Autowired
     public ILinkUpdaterService(
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
         ILinksParsingService linksParsingService,
-        LinkService linkService
+        LinkService linkService,
+        GitHubLinkInfoService gitHubLinkInfoService,
+        StackOverFlowLinkInfoService stackOverFlowLinkInfoService
     ) {
         this.gitHubClient = gitHubClient;
         this.stackOverflowClient = stackOverflowClient;
         this.linksParsingService = linksParsingService;
         this.linkService = linkService;
+        this.gitHubLinkInfoService = gitHubLinkInfoService;
+        this.stackOverFlowLinkInfoService = stackOverFlowLinkInfoService;
     }
 
     @Override
@@ -45,33 +54,68 @@ public class ILinkUpdaterService implements LinkUpdaterService {
     }
 
     public LinkUpdateInfo checkGitHubRepoUpdates(Link link) {
-        GitHubRepoRequest request = linksParsingService.getGitHubRepoRequestByLink(link.getUrl().toString());
 
-        GitHubRepoResponse response = gitHubClient.getRepositoryByOwnerNameAndRepoName(request).block();
+        List<LinkUpdateInfo> foundUpdates = new ArrayList<>();
+        foundUpdates.add(checkNewGitHubEvents(link));
 
-        OffsetDateTime resourcePushedAt = response.pushedAt();
-        OffsetDateTime savedUpdatedAt = link.getLastUpdateTime();
-
-        if (resourcePushedAt.isAfter(savedUpdatedAt)) {
-            linkService.setLastUpdateTime(link.getId(), resourcePushedAt);
-            return LinkUpdateInfo.updateInfoWithUpdate(StringConstants.REPOSITORY_WAS_UPDATED, link);
-        }
-        return LinkUpdateInfo.updateInfoWithoutUpdate();
+        return foundUpdates.stream()
+            .filter(LinkUpdateInfo::isUpdated)
+            .findFirst()
+            .orElse(LinkUpdateInfo.updateInfoWithoutUpdate());
     }
 
     public LinkUpdateInfo checkStackOverFlowQuestionUpdates(Link link) {
-        StackOverflowQuestionRequest request = linksParsingService.getQuestionRequestByLink(link.getUrl().toString());
+        List<LinkUpdateInfo> foundUpdates = new ArrayList<>();
+        foundUpdates.add(checkNewStackOverFlowAnswers(link));
 
-        StackOverflowQuestionResponse response = stackOverflowClient.getQuestionById(request).block();
+        return foundUpdates.stream()
+            .filter(LinkUpdateInfo::isUpdated)
+            .findFirst()
+            .orElse(LinkUpdateInfo.updateInfoWithoutUpdate());
+    }
 
-        OffsetDateTime resourceUpdatedAt = response.lastActivityDate();
-        OffsetDateTime savedUpdatedAt = link.getLastUpdateTime();
+    private LinkUpdateInfo checkNewStackOverFlowAnswers(Link link) {
+        StackOverflowQuestionRequest request =
+            linksParsingService.getStackOverFlowQuestionRequestByLink(link.getUrl().toString());
 
-        if (resourceUpdatedAt.isAfter(savedUpdatedAt)) {
-            linkService.setLastUpdateTime(link.getId(), resourceUpdatedAt);
-            return LinkUpdateInfo.updateInfoWithUpdate(StringConstants.QUESTION_WAS_UPDATED, link);
+        StackOverflowQuestionResponse response = stackOverflowClient.getQuestion(request).block();
+
+        StackOverFlowLinkInfo linkInfo = stackOverFlowLinkInfoService.findLinkInfoByLinkUrl(link.getUrl());
+
+        int responseEventsCount = response.answerCount();
+        int savedEventsCount = linkInfo.getAnswersCount();
+
+        if (responseEventsCount == savedEventsCount) {
+            linkInfo.setAnswersCount(responseEventsCount);
+            stackOverFlowLinkInfoService.updateLinkInfo(link.getId(), linkInfo);
+            return LinkUpdateInfo.updateInfoWithoutUpdate();
         }
-        return LinkUpdateInfo.updateInfoWithoutUpdate();
+        return LinkUpdateInfo.updateInfoWithUpdate("There is a new answer!", link);
+    }
+
+    private LinkUpdateInfo checkNewGitHubEvents(Link link) {
+        GitHubRepoRequest request = linksParsingService.getGitHubRepoRequestByLink(link.getUrl().toString());
+
+        GitHubRepoEventsResponse response = gitHubClient.getRepositoryEvents(request).block();
+
+        GitHubLinkInfo linkInfo = gitHubLinkInfoService.findLinkInfoByLinkUrl(link.getUrl());
+
+        int responseEventsCount = response.getEvents().size();
+        int savedEventsCount = linkInfo.getEventsCount();
+
+        List<String> newEventsTypes = response.getEvents().stream()
+            .limit(savedEventsCount - responseEventsCount)
+            .map(GitHubRepoEventResponse::getType)
+            .toList();
+
+        if (newEventsTypes.isEmpty()) {
+            return LinkUpdateInfo.updateInfoWithoutUpdate();
+        }
+
+        linkInfo.setEventsCount(responseEventsCount);
+        gitHubLinkInfoService.updateLinkInfo(link.getId(), linkInfo);
+        String message = "New events: %s".formatted(newEventsTypes);
+        return LinkUpdateInfo.updateInfoWithUpdate(message, link);
     }
 
 }

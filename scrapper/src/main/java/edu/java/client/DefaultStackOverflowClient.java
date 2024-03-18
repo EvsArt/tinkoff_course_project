@@ -71,7 +71,7 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
      * @return question info
      */
     @Override
-    public Mono<StackOverflowQuestionResponse> getQuestionById(StackOverflowQuestionRequest request) {
+    public Mono<StackOverflowQuestionResponse> getQuestion(StackOverflowQuestionRequest request) {
         return webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path(StackOverflowApiPaths.GET_QUESTION)
