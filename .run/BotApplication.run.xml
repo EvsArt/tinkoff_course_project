@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BotApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <envs>
+      <env name="TG_TOKEN" value="6332586707:AAFKDBTJqBWOQORSP9xW0svGAdyCOIlUQJI" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="edu.java.bot.BotApplication" />
+    <module name="bot" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="edu.java.bot.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

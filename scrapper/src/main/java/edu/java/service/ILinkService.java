@@ -83,6 +83,7 @@ public class ILinkService implements LinkService {
     public Link setLastUpdateTime(Long linkId, OffsetDateTime dateTime) {
         Link newLink = linkRepository.findLinkById(linkId).orElseGet(Link::new);
         newLink.setLastUpdateTime(dateTime);
+        log.error(newLink.toString());
         return linkRepository.updateLink(linkId, newLink).get();
     }
 

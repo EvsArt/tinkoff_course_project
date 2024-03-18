@@ -49,11 +49,11 @@ public class ILinkUpdaterService implements LinkUpdaterService {
 
         GitHubRepoResponse response = gitHubClient.getRepositoryByOwnerNameAndRepoName(request).block();
 
-        OffsetDateTime resourceUpdatedAt = response.updatedAt();
+        OffsetDateTime resourcePushedAt = response.pushedAt();
         OffsetDateTime savedUpdatedAt = link.getLastUpdateTime();
 
-        if (resourceUpdatedAt.isAfter(savedUpdatedAt)) {
-            linkService.setLastUpdateTime(link.getId(), resourceUpdatedAt);
+        if (resourcePushedAt.isAfter(savedUpdatedAt)) {
+            linkService.setLastUpdateTime(link.getId(), resourcePushedAt);
             return LinkUpdateInfo.updateInfoWithUpdate(StringConstants.REPOSITORY_WAS_UPDATED, link);
         }
         return LinkUpdateInfo.updateInfoWithoutUpdate();
