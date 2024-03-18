@@ -2,21 +2,28 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
-import edu.java.bot.tracks.TemporaryTracksRepository;
+import edu.java.bot.links.Link;
+import edu.java.bot.links.service.LinksParsingService;
+import edu.java.bot.links.service.LinksTransformService;
+import edu.java.bot.scrapperClient.client.ScrapperClient;
+import edu.java.bot.scrapperClient.exceptions.status.BadRequestException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
 public class ListCommand implements Command {
 
-    private final TemporaryTracksRepository tracksRepository;
+    private final ScrapperClient scrapperClient;
+    private final LinksParsingService parsingService;
+    private final LinksTransformService transformService;
 
     @Getter
     private final String name = StringService.COMMAND_LIST_NAME;
@@ -24,8 +31,12 @@ public class ListCommand implements Command {
     private final String description = StringService.COMMAND_LIST_DESCRIPTION;
 
     @Autowired
-    public ListCommand(TemporaryTracksRepository tracksRepository) {
-        this.tracksRepository = tracksRepository;
+    public ListCommand(ScrapperClient scrapperClient, LinksParsingService parsingService,
+        LinksTransformService transformService
+    ) {
+        this.scrapperClient = scrapperClient;
+        this.parsingService = parsingService;
+        this.transformService = transformService;
     }
 
     @Override
@@ -36,20 +47,22 @@ public class ListCommand implements Command {
     @Override
     public SendMessage handle(Update update) {
         log.debug("Command {}{} was called", Constants.COMMAND_TRIGGER, name);
-        if (!tracksRepository.isRegister(update.message().from())) {
-            return new SendMessage(
-                update.message().chat().id(), StringService.PLEASE_REGISTER
-            );
-        }
-        return new SendMessage(
-            update.message().chat().id(),
-            StringService.tracksToPrettyView(tracksRepository.getTracksByUser(update.message().from()))
-        );
-    }
 
-    @Override
-    public boolean isAvailable(User user) {
-        return tracksRepository.isRegister(user);
+        long chatId = update.message().chat().id();
+
+        Set<Link> links;
+        try {
+            links = scrapperClient.getLinks(chatId).block().getLinks().stream()
+                .map(transformService::toLink)
+                .collect(Collectors.toSet());
+        } catch (BadRequestException e) {
+            return new SendMessage(chatId, StringService.errorWithGettingLinks());
+        }
+
+        return new SendMessage(
+            chatId,
+            StringService.tracksToPrettyView(links)
+        );
     }
 
     @Override

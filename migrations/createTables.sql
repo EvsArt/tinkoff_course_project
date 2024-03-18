@@ -36,6 +36,7 @@ create table github_link_info (
 
     last_event_id bigint not null,
 
+    unique (link_id),
     primary key(id)
 )
 
@@ -46,5 +47,6 @@ create table stackoverflow_link_info (
 
     answers_count integer not null,
 
+    unique (link_id),
     primary key(id)
 )

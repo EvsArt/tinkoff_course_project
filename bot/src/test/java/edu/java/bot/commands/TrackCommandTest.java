@@ -8,11 +8,10 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
 import edu.java.bot.messageProcessor.MessageParser;
-import edu.java.bot.tracks.TemporaryTracksRepository;
-import edu.java.bot.tracks.Track;
-import edu.java.bot.tracks.validator.AllLinksValidatorManager;
-import edu.java.bot.tracks.validator.ExampleValidator;
-import edu.java.bot.tracks.validator.LinkValidator;
+import edu.java.bot.links.Link;
+import edu.java.bot.links.validator.AllLinksValidatorManager;
+import edu.java.bot.links.validator.GitHubRepoValidator;
+import edu.java.bot.links.validator.LinkValidator;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +29,7 @@ class TrackCommandTest {
 
     @InjectMocks TrackCommand trackCommand;
     @Spy MessageParser messageParser;
-    @Spy LinkValidator exampleValidator = new ExampleValidator();
+    @Spy LinkValidator exampleValidator = new GitHubRepoValidator();
     @Spy AllLinksValidatorManager linkValidatorManager =
         new AllLinksValidatorManager(Stream.of(exampleValidator).toList());
 
@@ -56,7 +55,7 @@ class TrackCommandTest {
         User user = Mockito.mock(User.class);
         Mockito.when(update.message().from()).thenReturn(user);
 
-        String expResult = StringService.startTracking(new Track(legalLink, ""));
+        String expResult = StringService.startTracking(new Link(legalLink, ""));
 
         SendMessage realResponse = trackCommand.handle(update);
         String realResult = (String) realResponse.getParameters().get(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE);
@@ -71,13 +70,13 @@ class TrackCommandTest {
         String trackName = "MyTrack";
         Update update = getTestUpdateMessageWithText(String.format("%s %s %s", command, legalLink, trackName));
 
-        Track expSavedTrack = new Track(legalLink, trackName);
-        String expResult = StringService.startTracking(expSavedTrack);
+        Link expSavedLink = new Link(legalLink, trackName);
+        String expResult = StringService.startTracking(expSavedLink);
 
         SendMessage realResponse = trackCommand.handle(update);
         String realResult = (String) realResponse.getParameters().get(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE);
 
-        Mockito.verify(tracksRepository, Mockito.times(1)).addTrack(update.message().from(), expSavedTrack);
+        Mockito.verify(tracksRepository, Mockito.times(1)).addTrack(update.message().from(), expSavedLink);
         assertThat(realResult).isEqualTo(expResult);
     }
 

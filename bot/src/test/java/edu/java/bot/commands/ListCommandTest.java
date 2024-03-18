@@ -7,8 +7,7 @@ import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
-import edu.java.bot.tracks.TemporaryTracksRepository;
-import edu.java.bot.tracks.Track;
+import edu.java.bot.links.Link;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -31,13 +30,13 @@ class ListCommandTest {
         Update update = getTestUpdateMessage();
         User user = Mockito.mock(User.class);
         Mockito.when(update.message().from()).thenReturn(user);
-        Set<Track> tracks = new HashSet<>();
-        tracks.add(new Track("www.eee.com/awsd/ad/1", "Track1"));
-        tracks.add(new Track("www.eee.com/awsd/ad/2", "Track2"));
+        Set<Link> links = new HashSet<>();
+        links.add(new Link("www.eee.com/awsd/ad/1", "Track1"));
+        links.add(new Link("www.eee.com/awsd/ad/2", "Track2"));
         Mockito.when(tracksRepository.isRegister(user)).thenReturn(true);
-        Mockito.when(tracksRepository.getTracksByUser(user)).thenReturn(tracks);
+        Mockito.when(tracksRepository.getTracksByUser(user)).thenReturn(links);
 
-        String expResult = StringService.tracksToPrettyView(tracks);
+        String expResult = StringService.tracksToPrettyView(links);
 
         SendMessage realResponse = listCommand.handle(update);
         String realResult = (String) realResponse.getParameters().get(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE);

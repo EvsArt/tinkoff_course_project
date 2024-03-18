@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -104,30 +105,37 @@ public class DefaultScrapperClient implements ScrapperClient {
     }
 
     @Override
-    public Mono<LinkResponse> addLink(Long tgChatId, AddLinkRequest addLinkRequest) throws JsonProcessingException {
-        return webClient.post()
-            .uri(uriBuilder -> uriBuilder
-                .path(ScrapperApiPaths.LINKS)
-                .build()
-            )
-            .header(Headers.TG_CHAT_ID, String.valueOf(tgChatId))
-            .body(BodyInserters.fromValue(objectMapper.writer().writeValueAsString(addLinkRequest)))
-            .retrieve()
-            .bodyToMono(LinkResponse.class);
+    public Mono<LinkResponse> addLink(Long tgChatId, AddLinkRequest addLinkRequest) {
+        try {
+            return webClient.post()
+                .uri(uriBuilder -> uriBuilder
+                    .path(ScrapperApiPaths.LINKS)
+                    .build()
+                )
+                .header(Headers.TG_CHAT_ID, String.valueOf(tgChatId))
+                .body(BodyInserters.fromValue(objectMapper.writer().writeValueAsString(addLinkRequest)))
+                .retrieve()
+                .bodyToMono(LinkResponse.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public Mono<LinkResponse> removeLink(Long tgChatId, RemoveLinkRequest removeLinkRequest)
-        throws JsonProcessingException {
-        return webClient.method(HttpMethod.DELETE)
-            .uri(uriBuilder -> uriBuilder
-                .path(ScrapperApiPaths.LINKS)
-                .build()
-            )
-            .header(Headers.TG_CHAT_ID, String.valueOf(tgChatId))
-            .body(BodyInserters.fromValue(objectMapper.writer().writeValueAsString(removeLinkRequest)))
-            .retrieve()
-            .bodyToMono(LinkResponse.class);
+    public Mono<LinkResponse> removeLink(Long tgChatId, RemoveLinkRequest removeLinkRequest) {
+        try {
+            return webClient.method(HttpMethod.DELETE)
+                .uri(uriBuilder -> uriBuilder
+                    .path(ScrapperApiPaths.LINKS)
+                    .build()
+                )
+                .header(Headers.TG_CHAT_ID, String.valueOf(tgChatId))
+                .body(BodyInserters.fromValue(objectMapper.writer().writeValueAsString(removeLinkRequest)))
+                .retrieve()
+                .bodyToMono(LinkResponse.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

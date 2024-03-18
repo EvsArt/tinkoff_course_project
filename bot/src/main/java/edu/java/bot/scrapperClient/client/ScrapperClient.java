@@ -17,8 +17,8 @@ public interface ScrapperClient {
 
     Mono<ListLinksResponse> getLinks(Long tgChatId);
 
-    Mono<LinkResponse> addLink(Long tgChatId, AddLinkRequest addLinkRequest) throws JsonProcessingException;
+    Mono<LinkResponse> addLink(Long tgChatId, AddLinkRequest addLinkRequest);
 
-    Mono<LinkResponse> removeLink(Long tgChatId, RemoveLinkRequest removeLinkRequest) throws JsonProcessingException;
+    Mono<LinkResponse> removeLink(Long tgChatId, RemoveLinkRequest removeLinkRequest);
 
 }

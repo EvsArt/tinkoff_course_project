@@ -1,4 +1,4 @@
-package edu.java.bot.tracks.validator;
+package edu.java.bot.links.validator;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

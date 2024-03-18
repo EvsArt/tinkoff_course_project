@@ -2,13 +2,15 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.constants.StringService;
+import edu.java.bot.links.Link;
+import edu.java.bot.links.service.LinksParsingService;
+import edu.java.bot.links.validator.LinkValidatorManager;
 import edu.java.bot.messageProcessor.MessageParser;
-import edu.java.bot.tracks.TemporaryTracksRepository;
-import edu.java.bot.tracks.Track;
-import edu.java.bot.tracks.validator.LinkValidatorManager;
+import edu.java.bot.scrapperClient.client.ScrapperClient;
+import edu.java.bot.scrapperClient.dto.AddLinkRequest;
+import edu.java.bot.scrapperClient.exceptions.status.BadRequestException;
 import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +22,9 @@ import org.springframework.stereotype.Component;
 public class TrackCommand implements Command {
 
     private final MessageParser messageParser;
-    private final TemporaryTracksRepository tracksRepository;
+    private final ScrapperClient scrapperClient;
     private final LinkValidatorManager linkValidator;
+    private final LinksParsingService linksParsingService;
 
     @Getter
     private final String name = StringService.COMMAND_TRACK_NAME;
@@ -31,17 +34,14 @@ public class TrackCommand implements Command {
     @Autowired
     public TrackCommand(
         MessageParser messageParser,
-        TemporaryTracksRepository tracksRepository,
-        LinkValidatorManager linkValidator
+        ScrapperClient scrapperClient,
+        LinkValidatorManager linkValidator,
+        LinksParsingService linksParsingService
     ) {
         this.messageParser = messageParser;
-        this.tracksRepository = tracksRepository;
+        this.scrapperClient = scrapperClient;
         this.linkValidator = linkValidator;
-    }
-
-    @Override
-    public boolean isAvailable(User user) {
-        return tracksRepository.isRegister(user);
+        this.linksParsingService = linksParsingService;
     }
 
     @Override
@@ -62,36 +62,39 @@ public class TrackCommand implements Command {
     @Override
     public SendMessage handle(Update update) {
         List<String> arguments = messageParser.parse(update.message()).arguments();
+        long chatId = update.message().chat().id();
         // Illegal arguments count
         if (arguments.isEmpty() || arguments.size() > StringService.COMMAND_TRACK_ARGUMENTS_TO_DESCRIPTION.size()) {
             return new SendMessage(
-                update.message().chat().id(),
+                chatId,
                 StringService.commandNeedHelp(this)
             );
         }
         // Link not valid
         if (!linkValidator.validateLink(arguments.get(0))) {
             return new SendMessage(
-                update.message().chat().id(),
+                chatId,
                 StringService.invalidTrackingLink(linkValidator.getAvailableServices())
             );
         }
 
         String link = arguments.get(0);
         String linkName;
-        // Only link without name
+        // Only url without name
         if (arguments.size() < 2) {
-            linkName = tracksRepository.getNewTrackNameFor(update.message().from());
+            linkName = linksParsingService.getLinkName(link);
         } else {
             linkName = arguments.get(1);
         }
 
-        // Tracking and untracking realizations will be changed in future updates :)
-        User user = update.message().from();
-        Track newTrack = new Track(link, linkName);
-        tracksRepository.addTrack(user, newTrack);
-        log.info("User {} starts tracking {}", user, newTrack);
+        Link newLink = new Link(link, linkName);
+        try {
+            scrapperClient.addLink(chatId, new AddLinkRequest(newLink.url())).block();
+        } catch (BadRequestException e) {
+            return new SendMessage(chatId, StringService.errorWithTrackLink(newLink));
+        }
+        log.info("Chat {} starts tracking {}", chatId, newLink);
 
-        return new SendMessage(update.message().chat().id(), StringService.startTracking(newTrack));
+        return new SendMessage(update.message().chat().id(), StringService.startTracking(newLink));
     }
 }
