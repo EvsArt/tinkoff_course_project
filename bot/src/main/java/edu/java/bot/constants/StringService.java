@@ -166,4 +166,7 @@ public class StringService {
         return builder.toString();
     }
 
+    public static String receiveUpdate(String url, String description) {
+        return "Received update!\n%s\n%s".formatted(url, description);
+    }
 }
