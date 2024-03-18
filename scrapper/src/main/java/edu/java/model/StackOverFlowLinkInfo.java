@@ -3,6 +3,7 @@ package edu.java.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Data
@@ -11,6 +12,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StackOverFlowLinkInfo {
     private long id;
-    private Link link;
-    private int answersCount;
+    @NonNull private Link link;
+    @NonNull private Integer answersCount;
 }

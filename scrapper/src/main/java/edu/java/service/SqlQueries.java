@@ -11,6 +11,8 @@ public class SqlQueries {
     public static final String TG_CHAT_TABLE_NAME = "tg_chat";
     public static final String LINK_TABLE_NAME = "link";
     public static final String LINK_TG_CHAT_TABLE_NAME = "link_tg_chat";
+    public static final String GITHUB_LINK_INFO_TABLE_NAME = "github_link_info";
+    public static final String STACKOVERFLOW_LINK_INFO_TABLE_NAME = "stackoverflow_link_info";
 
     public static final String TG_CHAT_FIELD_ID_NAME = "id";
     public static final String TG_CHAT_FIELD_CHAT_ID_NAME = "chat_id";
@@ -43,6 +45,22 @@ public class SqlQueries {
 
     public static final String LINK_TG_CHAT_FIELD_TG_CHAT_NAME = "tg_chat_id";
     public static final String LINK_TG_CHAT_FIELD_LINK_NAME = "link_id";
+
+    public static final String GITHUB_LINK_INFO_FIELD_ID_NAME = "id";
+    public static final String GITHUB_LINK_INFO_FIELD_LINK_ID_NAME = "link_id";
+    public static final String GITHUB_LINK_INFO_FIELD_EVENTS_COUNT_NAME = "events_count";
+    public static final List<String> GITHUB_LINK_INFO_FIELDS_NAMES_WITHOUT_ID = List.of(
+        GITHUB_LINK_INFO_FIELD_LINK_ID_NAME,
+        GITHUB_LINK_INFO_FIELD_EVENTS_COUNT_NAME
+    );
+
+    public static final String STACKOVERFLOW_LINK_INFO_FIELD_ID_NAME = "id";
+    public static final String STACKOVERFLOW_LINK_INFO_FIELD_LINK_ID_NAME = "link_id";
+    public static final String STACKOVERFLOW_LINK_INFO_FIELD_EVENTS_COUNT_NAME = "answers_count";
+    public static final List<String> STACKOVERFLOW_LINK_INFO_FIELDS_NAMES_WITHOUT_ID = List.of(
+        STACKOVERFLOW_LINK_INFO_FIELD_LINK_ID_NAME,
+        STACKOVERFLOW_LINK_INFO_FIELD_EVENTS_COUNT_NAME
+    );
 
     /**
      * Creates sql query for select * like

@@ -1,15 +1,18 @@
 package edu.java.service;
 
 import edu.java.model.GitHubLinkInfo;
+import edu.java.model.Link;
 import java.net.URI;
 
 public interface GitHubLinkInfoService {
 
     GitHubLinkInfo findLinkInfoByLinkId(long linkId);
 
-    GitHubLinkInfo addLinkInfo(GitHubLinkInfo linkInfo);
+    GitHubLinkInfo findLinkInfoByLinkUrl(URI url);
+
+    GitHubLinkInfo addLinkInfo(Link link);
 
     GitHubLinkInfo updateLinkInfo(long linkId, GitHubLinkInfo linkInfo);
 
-    GitHubLinkInfo findLinkInfoByLinkUrl(URI url);
+    GitHubLinkInfo removeLinkInfoByLink(Link link);
 }

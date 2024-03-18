@@ -8,6 +8,7 @@ import edu.java.api.dto.ListLinksResponse;
 import edu.java.api.dto.RemoveLinkRequest;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.Link;
+import edu.java.service.LinkInfoService;
 import edu.java.service.LinkService;
 import edu.java.service.LinksTransformService;
 import java.net.URI;
@@ -34,6 +35,7 @@ class LinksControllerTest {
 
     @MockBean LinkService linksService;
     @MockBean LinksTransformService linksTransformService;
+    @MockBean LinkInfoService linkInfoService;
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
 

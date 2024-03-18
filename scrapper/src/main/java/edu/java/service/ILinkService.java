@@ -19,10 +19,16 @@ public class ILinkService implements LinkService {
 
     private final LinkRepository linkRepository;
     private final TgChatRepository chatRepository;
+    private final LinkInfoService linkInfoService;
 
-    public ILinkService(LinkRepository linkRepository, TgChatRepository chatRepository) {
+    public ILinkService(
+        LinkRepository linkRepository,
+        TgChatRepository chatRepository,
+        LinkInfoService linkInfoService
+    ) {
         this.linkRepository = linkRepository;
         this.chatRepository = chatRepository;
+        this.linkInfoService = linkInfoService;
     }
 
     @Override
@@ -34,12 +40,11 @@ public class ILinkService implements LinkService {
         TgChat chat = chatRepository.findTgChatByChatId(tgChatId)
             .orElseThrow(() -> new IllegalArgumentException("Chat not register!"));
         newLink.getTgChats().add(chat);
-        if (newLink.getId() == null) {
-            log.debug("addLink(): link didn't exist. Creating new row {}", newLink);
-            return linkRepository.insertLink(newLink).get();
+        if (newLink.getId() != null) {
+            return linkRepository.updateLink(newLink.getId(), newLink).get();
         }
-        log.debug("addLink(): link existed. Updating row {}", newLink);
-        return linkRepository.updateLink(newLink.getId(), newLink).get();
+
+        return linkRepository.insertLink(newLink).get();
     }
 
     @Override
@@ -49,7 +54,8 @@ public class ILinkService implements LinkService {
         if (!chatExists) {
             throw new ChatNotExistException();
         }
-        return linkRepository.removeLinkByTgChatIdAndUri(tgChatId, url).orElseThrow(LinkNotExistsException::new);
+        Link link = linkRepository.removeLinkByTgChatIdAndUri(tgChatId, url).orElseThrow(LinkNotExistsException::new);
+        return link;
     }
 
     @Override
@@ -65,6 +71,11 @@ public class ILinkService implements LinkService {
     @Override
     public List<Link> findAll() {
         return linkRepository.findAllLinks();
+    }
+
+    @Override
+    public Link findByUrl(URI url) {
+        return linkRepository.findLinkByURL(url).orElseThrow(IllegalArgumentException::new);
     }
 
     @Override

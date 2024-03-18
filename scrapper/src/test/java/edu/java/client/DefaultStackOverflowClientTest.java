@@ -38,13 +38,15 @@ class DefaultStackOverflowClientTest {
         new StackOverflowQuestionResponse(
             1L,
             "MyQuestion",
-            OffsetDateTime.of(LocalDateTime.ofEpochSecond(1708557503, 0, ZoneOffset.UTC), ZoneOffset.UTC)
+            OffsetDateTime.of(LocalDateTime.ofEpochSecond(1708557503, 0, ZoneOffset.UTC), ZoneOffset.UTC),
+            1
         );
     private static final String responseJson = """
         {"items":[{
             "question_id": 1,
             "title": "MyQuestion",
-            "last_activity_date": 1708557503
+            "last_activity_date": 1708557503,
+            "answer_count": 1
         }]}
         """;
     private static final Long id = 1L;

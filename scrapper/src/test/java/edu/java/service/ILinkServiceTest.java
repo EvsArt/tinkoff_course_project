@@ -32,7 +32,7 @@ class ILinkServiceTest extends IntegrationTest {
     void addLink() {
         TgChat chat1 = new TgChat(1L, "Chat1");
         chat1 = chatService.registerChat(chat1.getChatId(), chat1.getName());
-        Link newLink = new Link(URI.create("https://a.com"), "Link");
+        Link newLink = new Link(URI.create("https://github.com/me/MyRep"), "Link");
         newLink.getTgChats().add(chat1);
 
         Link res = linkService.addLink(chat1.getChatId(), newLink.getUrl(), newLink.getName());
@@ -50,7 +50,7 @@ class ILinkServiceTest extends IntegrationTest {
         chat1 = chatService.registerChat(chat1.getChatId(), chat1.getName());
         chat2 = chatService.registerChat(chat2.getChatId(), chat2.getName());
 
-        URI uri = URI.create("https:/a.com");
+        URI uri = URI.create("https://github.com/me/MyRep");
         Link oldLink = new Link(uri, "Link1");
         oldLink.getTgChats().add(chat1);
         linkService.addLink(chat1.getChatId(), oldLink.getUrl(), oldLink.getName());
@@ -67,7 +67,7 @@ class ILinkServiceTest extends IntegrationTest {
     @Transactional
     @Rollback
     void addLinkToNotExistedChat_ShouldThrowException() {
-        Throwable res = catchThrowable(() -> linkService.addLink(11L, URI.create("https://a.com"), "MyLink"));
+        Throwable res = catchThrowable(() -> linkService.addLink(11L, URI.create("https://github.com/me/MyRep"), "MyLink"));
 
         assertThat(res).isInstanceOf(IllegalArgumentException.class);
     }
@@ -78,7 +78,7 @@ class ILinkServiceTest extends IntegrationTest {
     void removeLink() {
         TgChat chat1 = new TgChat(11L, "Chat1");
         chat1 = chatService.registerChat(chat1.getChatId(), chat1.getName());
-        Link newLink = new Link(URI.create("https://a.com"), "Link");
+        Link newLink = new Link(URI.create("https://github.com/me/MyRep"), "Link");
         newLink.getTgChats().add(chat1);
 
         linkService.addLink(chat1.getChatId(), newLink.getUrl(), newLink.getName());
@@ -96,7 +96,7 @@ class ILinkServiceTest extends IntegrationTest {
         chat1 = chatService.registerChat(chat1.getChatId(), chat1.getName());
         chat2 = chatService.registerChat(chat2.getChatId(), chat2.getName());
 
-        Link newLink = new Link(URI.create("https://a.com"), "Link");
+        Link newLink = new Link(URI.create("https://github.com/me/MyRep"), "Link");
         newLink.getTgChats().addAll(List.of(chat1, chat2));
 
         linkService.addLink(chat1.getChatId(), newLink.getUrl(), newLink.getName());
@@ -115,7 +115,7 @@ class ILinkServiceTest extends IntegrationTest {
     @Rollback
     void removeNotExistsLink_ShouldThrowLinkNotExistsException() {
         long tgChatId = 11L;
-        URI url = URI.create("https://a.com");
+        URI url = URI.create("https://github.com/me/MyRep");
         chatService.registerChat(tgChatId, "");
 
         Throwable res = catchThrowable(() -> linkService.removeLink(tgChatId, url));
@@ -129,7 +129,7 @@ class ILinkServiceTest extends IntegrationTest {
     void findAllByTgChatId() {
         TgChat chat1 = new TgChat(12L, "Chat1");
         chat1 = chatService.registerChat(chat1.getChatId(), chat1.getName());
-        Link newLink = new Link(URI.create("https://a.com"), "Link");
+        Link newLink = new Link(URI.create("https://github.com/me/MyRep"), "Link");
         newLink.getTgChats().add(chat1);
 
         newLink = linkService.addLink(chat1.getChatId(), newLink.getUrl(), newLink.getName());
@@ -149,8 +149,8 @@ class ILinkServiceTest extends IntegrationTest {
         chat1 = chatService.registerChat(chat1.getChatId(), chat1.getName());
         chat2 = chatService.registerChat(chat2.getChatId(), chat2.getName());
 
-        Link newLink1 = new Link(URI.create("https://a.com"), "Link1");
-        Link newLink2 = new Link(URI.create("https://a2.com"), "Link2");
+        Link newLink1 = new Link(URI.create("https://github.com/me/MyRep1"), "Link1");
+        Link newLink2 = new Link(URI.create("https://github.com/me/MyRep2"), "Link2");
 
         newLink1 = linkService.addLink(chat1.getChatId(), newLink1.getUrl(), newLink1.getName());
         linkService.addLink(chat1.getChatId(), newLink2.getUrl(), newLink2.getName());

@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono;
 public interface GitHubClient extends Client {
 
     Mono<GitHubRepoResponse> getRepository(GitHubRepoRequest request);
+
     Mono<GitHubRepoEventsResponse> getRepositoryEvents(GitHubRepoRequest request);
 
 }
