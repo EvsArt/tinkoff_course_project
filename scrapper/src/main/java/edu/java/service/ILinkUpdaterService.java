@@ -4,7 +4,6 @@ import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
 import edu.java.client.service.SupportedApi;
 import edu.java.dto.GitHubRepoEventResponse;
-import edu.java.dto.GitHubRepoEventsResponse;
 import edu.java.dto.GitHubRepoRequest;
 import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
@@ -96,25 +95,20 @@ public class ILinkUpdaterService implements LinkUpdaterService {
     private LinkUpdateInfo checkNewGitHubEvents(Link link) {
         GitHubRepoRequest request = linksParsingService.getGitHubRepoRequestByLink(link.getUrl().toString());
 
-        GitHubRepoEventsResponse response = gitHubClient.getRepositoryEvents(request).block();
+        GitHubRepoEventResponse response = gitHubClient.getLastRepositoryEvent(request).block();
 
         GitHubLinkInfo linkInfo = gitHubLinkInfoService.findLinkInfoByLinkUrl(link.getUrl());
 
-        int responseEventsCount = response.getEvents().size();
-        int savedEventsCount = linkInfo.getEventsCount();
+        long responseLastEventId = response.getId();
+        long savedLastEventId = linkInfo.getLastEventId();
 
-        List<String> newEventsTypes = response.getEvents().stream()
-            .limit(savedEventsCount - responseEventsCount)
-            .map(GitHubRepoEventResponse::getType)
-            .toList();
-
-        if (newEventsTypes.isEmpty()) {
+        if (responseLastEventId == savedLastEventId) {
             return LinkUpdateInfo.updateInfoWithoutUpdate();
         }
 
-        linkInfo.setEventsCount(responseEventsCount);
+        linkInfo.setLastEventId(responseLastEventId);
         gitHubLinkInfoService.updateLinkInfo(link.getId(), linkInfo);
-        String message = "New events: %s".formatted(newEventsTypes);
+        String message = "New event: %s".formatted(response.getType());
         return LinkUpdateInfo.updateInfoWithUpdate(message, link);
     }
 

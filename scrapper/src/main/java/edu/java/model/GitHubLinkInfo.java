@@ -14,6 +14,6 @@ public class GitHubLinkInfo {
 
     private long id;
     @NonNull private Link link;
-    @NonNull private Integer eventsCount;
+    @NonNull private Long lastEventId;
 
 }

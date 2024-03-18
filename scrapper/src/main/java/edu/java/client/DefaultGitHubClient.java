@@ -2,7 +2,7 @@ package edu.java.client;
 
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.GitHubApiPaths;
-import edu.java.dto.GitHubRepoEventsResponse;
+import edu.java.dto.GitHubRepoEventResponse;
 import edu.java.dto.GitHubRepoRequest;
 import edu.java.dto.GitHubRepoResponse;
 import edu.java.exceptions.status.ForbiddenException;
@@ -24,6 +24,7 @@ public class DefaultGitHubClient implements GitHubClient {
 
     private final WebClient webClient;
     private final ApiConfig.GitHubConfig config;
+    private static final int maxBufferSize = 1024*1024;
 
     private DefaultGitHubClient(WebClient webClient, ApiConfig.GitHubConfig config) {
         this.webClient = webClient;
@@ -62,6 +63,7 @@ public class DefaultGitHubClient implements GitHubClient {
                 HttpStatusCode::is5xxServerError,
                 resp -> Mono.error(ServerErrorException::new)
             )
+            .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(maxBufferSize))
             .build();
     }
 
@@ -84,15 +86,17 @@ public class DefaultGitHubClient implements GitHubClient {
     }
 
     @Override
-    public Mono<GitHubRepoEventsResponse> getRepositoryEvents(GitHubRepoRequest request) {
+    public Mono<GitHubRepoEventResponse> getLastRepositoryEvent(GitHubRepoRequest request) {
         return webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path(GitHubApiPaths.GET_REPOSITORY_EVENTS)
                 .queryParams(config.uriParameters())
+                .queryParam("per_page", 1)
                 .build(request.ownerName(), request.repositoryName())
             )
             .retrieve()
-            .bodyToMono(GitHubRepoEventsResponse.class);
+            .bodyToMono(GitHubRepoEventResponse[].class)
+            .map(arr -> arr[0]);    // its array with 1 element
     }
 
 }

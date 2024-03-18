@@ -34,7 +34,7 @@ create table github_link_info (
     id bigint generated always as identity,
     link_id bigint not null references link(id),
 
-    events_count integer not null,
+    last_event_id bigint not null,
 
     primary key(id)
 )

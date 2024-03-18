@@ -48,10 +48,10 @@ public class SqlQueries {
 
     public static final String GITHUB_LINK_INFO_FIELD_ID_NAME = "id";
     public static final String GITHUB_LINK_INFO_FIELD_LINK_ID_NAME = "link_id";
-    public static final String GITHUB_LINK_INFO_FIELD_EVENTS_COUNT_NAME = "events_count";
+    public static final String GITHUB_LINK_INFO_FIELD_LAST_EVENT_ID_NAME = "last_event_id";
     public static final List<String> GITHUB_LINK_INFO_FIELDS_NAMES_WITHOUT_ID = List.of(
         GITHUB_LINK_INFO_FIELD_LINK_ID_NAME,
-        GITHUB_LINK_INFO_FIELD_EVENTS_COUNT_NAME
+        GITHUB_LINK_INFO_FIELD_LAST_EVENT_ID_NAME
     );
 
     public static final String STACKOVERFLOW_LINK_INFO_FIELD_ID_NAME = "id";

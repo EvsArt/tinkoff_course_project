@@ -59,7 +59,7 @@ public class JdbcGitHubLinkInfoRepository implements GitHubLinkInfoRepository {
         KeyHolder idHolder = new GeneratedKeyHolder();
         int updated = jdbcClient.sql(sql)
             .param(SqlQueries.GITHUB_LINK_INFO_FIELD_LINK_ID_NAME, linkInfo.getLink().getId(), Types.BIGINT)
-            .param(SqlQueries.GITHUB_LINK_INFO_FIELD_EVENTS_COUNT_NAME, linkInfo.getEventsCount(), Types.INTEGER)
+            .param(SqlQueries.GITHUB_LINK_INFO_FIELD_LAST_EVENT_ID_NAME, linkInfo.getLastEventId(), Types.INTEGER)
             .update(idHolder, SqlQueries.GITHUB_LINK_INFO_FIELD_LINK_ID_NAME);
         if (updated == 0) {
             return Optional.empty();
@@ -81,7 +81,7 @@ public class JdbcGitHubLinkInfoRepository implements GitHubLinkInfoRepository {
             );
         int updated = jdbcClient.sql(sql)
             .param(SqlQueries.GITHUB_LINK_INFO_FIELD_LINK_ID_NAME, linkInfo.getLink().getId(), Types.BIGINT)
-            .param(SqlQueries.GITHUB_LINK_INFO_FIELD_EVENTS_COUNT_NAME, linkInfo.getEventsCount(), Types.INTEGER)
+            .param(SqlQueries.GITHUB_LINK_INFO_FIELD_LAST_EVENT_ID_NAME, linkInfo.getLastEventId(), Types.BIGINT)
             .param(
                 SqlQueries.GITHUB_LINK_INFO_FIELD_ID_NAME,
                 linkInfo.getId(),
