@@ -1,5 +1,6 @@
 package edu.java.service;
 
+import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.Link;
 import edu.java.model.TgChat;
 import edu.java.repository.LinkRepository;
@@ -112,27 +113,28 @@ class ILinkServiceTest extends IntegrationTest {
     @Test
     @Transactional
     @Rollback
-    void removeNotExistsLink_ShouldReturnEmptyLink() {
+    void removeNotExistsLink_ShouldThrowLinkNotExistsException() {
         long tgChatId = 11L;
         URI url = URI.create("https://a.com");
+        chatService.registerChat(tgChatId, "");
 
-        Link res = linkService.removeLink(tgChatId, url);
+        Throwable res = catchThrowable(() -> linkService.removeLink(tgChatId, url));
 
-        assertThat(res.getId()).isNull();
+        assertThat(res).isInstanceOf(LinkNotExistsException.class);
     }
 
     @Test
     @Transactional
     @Rollback
     void findAllByTgChatId() {
-        TgChat chat1 = new TgChat(1L, "Chat1");
+        TgChat chat1 = new TgChat(12L, "Chat1");
         chat1 = chatService.registerChat(chat1.getChatId(), chat1.getName());
         Link newLink = new Link(URI.create("https://a.com"), "Link");
         newLink.getTgChats().add(chat1);
 
         newLink = linkService.addLink(chat1.getChatId(), newLink.getUrl(), newLink.getName());
 
-        List<Link> res = linkService.findAllByTgChatId(chat1.getId());
+        List<Link> res = linkService.findAllByTgChatId(chat1.getChatId());
 
         assertThat(res.size()).isEqualTo(1);
         assertThat(res.get(0)).isEqualTo(newLink);

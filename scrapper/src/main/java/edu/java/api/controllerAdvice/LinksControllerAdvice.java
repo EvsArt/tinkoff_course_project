@@ -2,8 +2,8 @@ package edu.java.api.controllerAdvice;
 
 import edu.java.api.controller.LinksController;
 import edu.java.api.dto.ApiErrorResponse;
-import edu.java.api.exceptions.ChatNotExistException;
-import edu.java.api.exceptions.LinkNotExistsException;
+import edu.java.exceptions.ChatNotExistException;
+import edu.java.exceptions.LinkNotExistsException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -98,6 +98,36 @@ public class LinksControllerAdvice extends ResponseEntityExceptionHandler {
         ApiErrorResponse response =
             ApiErrorResponse.builder()
                 .description("Chat not exists")
+                .code(String.valueOf(status.value()))
+                .exceptionName(ex.getClass().getName())
+                .exceptionMessage(ex.getMessage())
+                .stacktrace(
+                    Arrays.stream(ex.getStackTrace())
+                        .map(StackTraceElement::toString)
+                        .toList()
+                )
+                .build();
+
+        MultiValueMap<String, String> headers = new MultiValueMapAdapter<>(Map.of(
+            HttpHeaders.CONTENT_TYPE, List.of(MediaType.APPLICATION_JSON.toString())
+        ));
+        return createResponseEntity(
+            response,
+            HttpHeaders.readOnlyHttpHeaders(headers),
+            status,
+            request
+        );
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgument(
+        RuntimeException ex, WebRequest request
+    ) {
+        HttpStatusCode status = HttpStatus.BAD_REQUEST;
+
+        ApiErrorResponse response =
+            ApiErrorResponse.builder()
+                .description(ex.getMessage())
                 .code(String.valueOf(status.value()))
                 .exceptionName(ex.getClass().getName())
                 .exceptionMessage(ex.getMessage())

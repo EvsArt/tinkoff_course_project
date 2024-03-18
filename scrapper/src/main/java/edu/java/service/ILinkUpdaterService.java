@@ -10,7 +10,7 @@ import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
 import edu.java.model.Link;
 import edu.java.model.LinkUpdateInfo;
-import edu.java.service.api.LinksParsingService;
+import edu.java.service.api.ILinksParsingService;
 import java.time.OffsetDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ILinkUpdaterService implements LinkUpdaterService {
 
-    private final LinksParsingService linksParsingService;
+    private final ILinksParsingService linksParsingService;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final LinkService linkService;
@@ -27,7 +27,7 @@ public class ILinkUpdaterService implements LinkUpdaterService {
     public ILinkUpdaterService(
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
-        LinksParsingService linksParsingService,
+        ILinksParsingService linksParsingService,
         LinkService linkService
     ) {
         this.gitHubClient = gitHubClient;
@@ -38,7 +38,7 @@ public class ILinkUpdaterService implements LinkUpdaterService {
 
     @Override
     public LinkUpdateInfo checkUpdates(Link link) {
-        SupportedApi api = SupportedApi.getApiByLink(link.getUrl());
+        SupportedApi api = SupportedApi.getApiByLink(link.getUrl().toString());
         return switch (api) {
             case GITHUB_REPO -> checkGitHubRepoUpdates(link);
             case STACKOVERFLOW_QUESTION -> checkStackOverFlowQuestionUpdates(link);
@@ -46,7 +46,7 @@ public class ILinkUpdaterService implements LinkUpdaterService {
     }
 
     public LinkUpdateInfo checkGitHubRepoUpdates(Link link) {
-        GitHubRepoRequest request = linksParsingService.getGitHubRepoRequestByLink(link.toString());
+        GitHubRepoRequest request = linksParsingService.getGitHubRepoRequestByLink(link.getUrl().toString());
 
         GitHubRepoResponse response = gitHubClient.getRepositoryByOwnerNameAndRepoName(request).block();
 
@@ -61,7 +61,7 @@ public class ILinkUpdaterService implements LinkUpdaterService {
     }
 
     public LinkUpdateInfo checkStackOverFlowQuestionUpdates(Link link) {
-        StackOverflowQuestionRequest request = linksParsingService.getQuestionRequestByLink(link.toString());
+        StackOverflowQuestionRequest request = linksParsingService.getQuestionRequestByLink(link.getUrl().toString());
 
         StackOverflowQuestionResponse response = stackOverflowClient.getQuestionById(request).block();
 

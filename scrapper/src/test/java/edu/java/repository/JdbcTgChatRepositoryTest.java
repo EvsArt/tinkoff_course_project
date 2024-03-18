@@ -7,8 +7,10 @@ import edu.java.repository.jdbc.JdbcTgChatRepository;
 import edu.java.scrapper.IntegrationTest;
 import java.net.URI;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,7 +202,7 @@ class JdbcTgChatRepositoryTest extends IntegrationTest {
         chatWithLink2 = chatRepository.insertTgChat(chatWithLink2).get();
         chatRepository.insertTgChat(chatWithoutLink).get();
 
-        List<TgChat> chatsWithLink = List.of(
+        Set<TgChat> chatsWithLink = Set.of(
             chatWithLink1, chatWithLink2
         );
 
@@ -214,7 +216,7 @@ class JdbcTgChatRepositoryTest extends IntegrationTest {
         link.setTgChats(chatsWithLink);
         Long linkId = linkRepository.insertLink(link).get().getId();
 
-        List<TgChat> resChats = chatRepository.findTgChatsByLinkId(linkId);
+        Set<TgChat> resChats = new HashSet<>(chatRepository.findTgChatsByLinkId(linkId));
 
         assertThat(resChats).isEqualTo(chatsWithLink);
     }

@@ -2,8 +2,8 @@ package edu.java.api.controllerAdvice;
 
 import edu.java.api.controller.ChatController;
 import edu.java.api.dto.ApiErrorResponse;
-import edu.java.api.exceptions.ChatAlreadyRegisteredException;
-import edu.java.api.exceptions.ChatNotExistException;
+import edu.java.exceptions.ChatAlreadyRegisteredException;
+import edu.java.exceptions.ChatNotExistException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;

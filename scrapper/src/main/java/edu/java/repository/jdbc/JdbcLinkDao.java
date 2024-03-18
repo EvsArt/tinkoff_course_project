@@ -8,6 +8,7 @@ import edu.java.service.SqlQueries;
 import java.net.URI;
 import java.sql.Types;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -131,7 +132,7 @@ public class JdbcLinkDao implements LinkRepository {
         if (link.isEmpty()) {
             return link;
         }
-        link.get().setTgChats(tgChatRepository.findTgChatsByLinkId(id));
+        link.get().setTgChats(new HashSet<>(tgChatRepository.findTgChatsByLinkId(id)));
         return link;
     }
 
@@ -147,7 +148,7 @@ public class JdbcLinkDao implements LinkRepository {
         if (link.isEmpty()) {
             return link;
         }
-        link.get().setTgChats(tgChatRepository.findTgChatsByLinkId(link.get().getId()));
+        link.get().setTgChats(new HashSet<>(tgChatRepository.findTgChatsByLinkId(link.get().getId())));
         return link;
     }
 
@@ -158,7 +159,7 @@ public class JdbcLinkDao implements LinkRepository {
         String sql = SqlQueries.findAllQuery(linkTableName);
         List<Link> links = jdbcClient.sql(sql)
             .query(Link.class).list();
-        links.forEach(link -> link.setTgChats(tgChatRepository.findTgChatsByLinkId(link.getId())));
+        links.forEach(link -> link.setTgChats(new HashSet<>(tgChatRepository.findTgChatsByLinkId(link.getId()))));
         return links;
     }
 
@@ -170,7 +171,7 @@ public class JdbcLinkDao implements LinkRepository {
         List<Link> links = jdbcClient.sql(sql)
             .param(SqlQueries.LINK_FIELD_LAST_CHECK_TIME_NAME, dateTime, Types.TIMESTAMP_WITH_TIMEZONE)
             .query(Link.class).list();
-        links.forEach(link -> link.setTgChats(tgChatRepository.findTgChatsByLinkId(link.getId())));
+        links.forEach(link -> link.setTgChats(new HashSet<>(tgChatRepository.findTgChatsByLinkId(link.getId()))));
         return links;
     }
 
@@ -178,16 +179,19 @@ public class JdbcLinkDao implements LinkRepository {
     @Transactional
     public List<Link> findLinksByTgChatId(Long id) {
         log.debug("findLinksByTgChatId() was called with id={}", id);
+        TgChat chat = tgChatRepository.findTgChatByChatId(id).get();
         String sql =
             SqlQueries.findFieldWhereQuery(
                 SqlQueries.LINK_TG_CHAT_TABLE_NAME,
                 SqlQueries.LINK_TG_CHAT_FIELD_LINK_NAME,
                 SqlQueries.LINK_TG_CHAT_FIELD_TG_CHAT_NAME
             );
+        log.error(sql);
         // getting links id from associative table
         List<Long> linksId = jdbcClient.sql(sql)
-            .param(SqlQueries.LINK_TG_CHAT_FIELD_TG_CHAT_NAME, id, Types.BIGINT)
+            .param(SqlQueries.LINK_TG_CHAT_FIELD_TG_CHAT_NAME, chat.getId(), Types.BIGINT)
             .query(Long.class).list();
+        log.error(linksId.toString());
 
         return linksId.stream()
             .map(linkId -> findLinkById(linkId).orElse(new Link()))

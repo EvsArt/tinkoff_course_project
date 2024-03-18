@@ -1,8 +1,9 @@
 package edu.java.api.controller;
 
-import edu.java.api.exceptions.ChatAlreadyRegisteredException;
-import edu.java.api.exceptions.ChatNotExistException;
-import edu.java.api.service.ChatService;
+import edu.java.exceptions.ChatAlreadyRegisteredException;
+import edu.java.exceptions.ChatNotExistException;
+import edu.java.model.TgChat;
+import edu.java.service.TgChatService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ChatController.class)
 class ChatControllerTest {
 
-    @MockBean ChatService chatService;
+    @MockBean TgChatService chatService;
     @Autowired MockMvc mockMvc;
 
     @Test
     void postRegisterShouldReturnOk() throws Exception {
         Long chatId = 1L;
-        Mockito.when(chatService.registry(chatId)).thenReturn(true);
+        String chatName = "myChat";
+        Mockito.when(chatService.registerChat(chatId, chatName)).thenReturn(new TgChat(chatId, chatName));
 
         mockMvc.perform(post("/tg-chat/" + chatId)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -46,7 +48,8 @@ class ChatControllerTest {
     @Test
     void postRegisterExistedChatShouldReturnBadRequest() throws Exception {
         Long chatId = 1L;
-        Mockito.when(chatService.registry(chatId)).thenReturn(false);
+        Mockito.when(chatService.registerChat(Mockito.eq(chatId), Mockito.any()))
+            .thenThrow(ChatAlreadyRegisteredException.class);
 
         mockMvc.perform(post("/tg-chat/" + chatId)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -56,8 +59,8 @@ class ChatControllerTest {
 
     @Test
     void deleteChatShouldReturnOk() throws Exception {
-        Long chatId = 1L;
-        Mockito.when(chatService.delete(chatId)).thenReturn(true);
+        long chatId = 1L;
+        Mockito.when(chatService.unregisterChat(chatId)).thenReturn(new TgChat(chatId, ""));
 
         mockMvc.perform(delete("/tg-chat/" + chatId)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -78,7 +81,7 @@ class ChatControllerTest {
     @Test
     void deleteNotExistedChatShouldReturnNotFound() throws Exception {
         Long chatId = 1L;
-        Mockito.when(chatService.registry(chatId)).thenReturn(false);
+        Mockito.when(chatService.unregisterChat(chatId)).thenThrow(ChatNotExistException.class);
 
         mockMvc.perform(delete("/tg-chat/" + chatId)
                 .contentType(MediaType.APPLICATION_JSON))

@@ -1,5 +1,7 @@
 package edu.java.service;
 
+import edu.java.exceptions.ChatAlreadyRegisteredException;
+import edu.java.exceptions.ChatNotExistException;
 import edu.java.model.TgChat;
 import edu.java.repository.LinkRepository;
 import edu.java.repository.TgChatRepository;
@@ -33,13 +35,12 @@ public class ITgChatService implements TgChatService {
      */
     @Override
     public TgChat registerChat(long chatId, String name) {
-        Optional<TgChat> existsChat = tgChatRepository.findTgChatByChatId(chatId);
+        boolean chatExisted = tgChatRepository.findTgChatByChatId(chatId).isPresent();
         log.info("Register chat chatId={}, name={}", chatId, name);
-        return existsChat
-            .orElseGet(
-                () -> tgChatRepository.insertTgChat(new TgChat(chatId, name))
-                    .orElse(new TgChat(chatId, name))
-            );
+        if (chatExisted) {
+            throw new ChatAlreadyRegisteredException();
+        }
+        return tgChatRepository.insertTgChat(new TgChat(chatId, name)).get();
     }
 
     /**
@@ -51,10 +52,13 @@ public class ITgChatService implements TgChatService {
      */
     @Override
     public TgChat unregisterChat(long chatId) {
-        Optional<TgChat> existsChat = tgChatRepository.removeTgChatByChatId(chatId);
-        linkRepository.removeLinksByTgChatId(chatId);
         log.info("Unregister chat chatId={}", chatId);
-        return existsChat.orElse(new TgChat(chatId, ""));
+        Optional<TgChat> existsChat = tgChatRepository.findTgChatByChatId(chatId);
+        if (existsChat.isEmpty()) {
+            throw new ChatNotExistException();
+        }
+        linkRepository.removeLinksByTgChatId(existsChat.get().getId());
+        return tgChatRepository.removeTgChatByChatId(chatId).get();
     }
 
 }

@@ -2,8 +2,8 @@ package edu.java.model;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class Link {
     @NonNull OffsetDateTime lastUpdateTime;
     @NonNull OffsetDateTime lastCheckTime;
 
-    List<TgChat> tgChats = new ArrayList<>();
+    Set<TgChat> tgChats = new HashSet<>();
 
     public Link(URI url, String name) {
         this.url = url;

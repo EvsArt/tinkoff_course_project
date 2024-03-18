@@ -9,6 +9,7 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
         TgChat chat2 = new TgChat(2L, "a");
         chat1 = chatRepository.insertTgChat(chat1).get();
         chat2 = chatRepository.insertTgChat(chat2).get();
-        link.setTgChats(List.of(chat1, chat2));
+        link.setTgChats(Set.of(chat1, chat2));
 
         Link res = linkRepository.insertLink(link).get();
 
@@ -65,7 +66,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
         TgChat chat2 = new TgChat(2L, "a");
         chat1 = chatRepository.insertTgChat(chat1).get();
         chat2 = chatRepository.insertTgChat(chat2).get();
-        link.setTgChats(List.of(chat1, chat2));
+        link.setTgChats(Set.of(chat1, chat2));
 
         Link res1 = linkRepository.insertLink(link).get();
         link.setUrl(URI.create("https://github.com/me/myRep2"));    // bc url is unique in table
@@ -120,8 +121,8 @@ class JdbcLinkDaoTest extends IntegrationTest {
         chat1 = chatRepository.insertTgChat(chat1).get();
         chat2 = chatRepository.insertTgChat(chat2).get();
         chat3 = chatRepository.insertTgChat(chat3).get();
-        oldLink.setTgChats(List.of(chat1, chat2));
-        newLink.setTgChats(List.of(chat3, chat2));
+        oldLink.setTgChats(Set.of(chat1, chat2));
+        newLink.setTgChats(Set.of(chat3, chat2));
 
         long id = linkRepository.insertLink(oldLink).get().getId();
 
@@ -288,13 +289,13 @@ class JdbcLinkDaoTest extends IntegrationTest {
         TgChat chat2 = new TgChat(2L, "a");
         chat1 = chatRepository.insertTgChat(chat1).get();
         chat2 = chatRepository.insertTgChat(chat2).get();
-        link1.setTgChats(List.of(chat1, chat2));
-        link2.setTgChats(List.of(chat2));
+        link1.setTgChats(Set.of(chat1, chat2));
+        link2.setTgChats(Set.of(chat2));
 
         link1 = linkRepository.insertLink(link1).get();
         linkRepository.insertLink(link2).get();
 
-        List<Link> res = linkRepository.findLinksByTgChatId(chat1.getId());
+        List<Link> res = linkRepository.findLinksByTgChatId(chat1.getChatId());
 
         assertThat(res.size()).isEqualTo(1);
         assertThat(res.get(0)).isEqualTo(link1);
@@ -322,8 +323,8 @@ class JdbcLinkDaoTest extends IntegrationTest {
         TgChat chat2 = new TgChat(2L, "a");
         chat1 = chatRepository.insertTgChat(chat1).get();
         chat2 = chatRepository.insertTgChat(chat2).get();
-        link1.setTgChats(List.of(chat1, chat2));
-        link2.setTgChats(List.of(chat2));
+        link1.setTgChats(Set.of(chat1, chat2));
+        link2.setTgChats(Set.of(chat2));
 
         link1 = linkRepository.insertLink(link1).get();
         linkRepository.insertLink(link2).get();
@@ -331,7 +332,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
         linkRepository.removeLinksByTgChatId(chat2.getId());
         List<Link> res = linkRepository.findAllLinks();
         // link2 should be removed bc only chat tracked it
-        link1.setTgChats(List.of(chat1));   // for clean equals (chat2 was removed)
+        link1.setTgChats(Set.of(chat1));   // for clean equals (chat2 was removed)
 
         assertThat(res.size()).isEqualTo(1);
         assertThat(res.get(0)).isEqualTo(link1);

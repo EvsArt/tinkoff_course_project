@@ -1,5 +1,7 @@
 package edu.java.service;
 
+import edu.java.exceptions.ChatAlreadyRegisteredException;
+import edu.java.exceptions.ChatNotExistException;
 import edu.java.model.TgChat;
 import edu.java.scrapper.IntegrationTest;
 import org.junit.jupiter.api.Test;
@@ -8,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
 @SpringBootTest
 class ITgChatServiceTest extends IntegrationTest {
@@ -27,11 +30,11 @@ class ITgChatServiceTest extends IntegrationTest {
     @Test
     @Rollback
     @Transactional
-    void registerExistsChat_shouldReturnChatWithId() {
-        TgChat res1 = chatService.registerChat(1L, "MyChat");
-        TgChat res2 = chatService.registerChat(1L, "MyChat");
+    void registerExistsChat_shouldThrowChatAlreadyRegisteredException() {
+        chatService.registerChat(1L, "MyChat");
+        Throwable res = catchThrowable(() -> chatService.registerChat(1L, "MyChat"));
 
-        assertThat(res1).isEqualTo(res2);
+        assertThat(res).isInstanceOf(ChatAlreadyRegisteredException.class);
     }
 
     @Test
@@ -49,10 +52,10 @@ class ITgChatServiceTest extends IntegrationTest {
     @Test
     @Rollback
     @Transactional
-    void unregisterNotExistsChat_shouldReturnChatWithoutId() {
+    void unregisterNotExistsChat_shouldThrowChatNotExistsException() {
         long chatId = 11L;
-        TgChat removedChat = chatService.unregisterChat(chatId);
+        Throwable res = catchThrowable(() -> chatService.unregisterChat(chatId));
 
-        assertThat(removedChat.getId()).isNull();
+        assertThat(res).isInstanceOf(ChatNotExistException.class);
     }
 }

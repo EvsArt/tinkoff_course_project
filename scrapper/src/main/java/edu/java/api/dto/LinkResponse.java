@@ -10,6 +10,5 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LinkResponse {
-    private Long id;
     private String url;
 }

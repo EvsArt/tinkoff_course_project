@@ -5,8 +5,11 @@ import edu.java.api.dto.AddLinkRequest;
 import edu.java.api.dto.LinkResponse;
 import edu.java.api.dto.ListLinksResponse;
 import edu.java.api.dto.RemoveLinkRequest;
-import edu.java.api.service.LinksService;
+import edu.java.model.Link;
+import edu.java.service.LinkService;
+import edu.java.service.api.LinksTransformService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,17 +25,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/links")
 public class LinksController implements ILinksController {
 
-    private final LinksService linksService;
+    private final LinkService linkService;
+    private final LinksTransformService linksTransformService;
 
-    public LinksController(LinksService linksService) {
-        this.linksService = linksService;
+    public LinksController(LinkService linkService, LinksTransformService linksTransformService) {
+        this.linkService = linkService;
+        this.linksTransformService = linksTransformService;
     }
 
     @GetMapping
     public ResponseEntity<ListLinksResponse> getLinks(@RequestHeader(Headers.TG_CHAT_ID) Long tgChatId) {
         log.debug("Getting links by id {}", tgChatId);
+        List<Link> links = linkService.findAllByTgChatId(tgChatId);
         return ResponseEntity.ok(
-            linksService.getListLinksResponseByTgChatId(tgChatId)
+            linksTransformService.toListLinksResponse(links)
         );
     }
 
@@ -42,8 +48,10 @@ public class LinksController implements ILinksController {
         @RequestBody @Valid AddLinkRequest requestBody
     ) {
         log.debug("Adding link {} to id {}", requestBody, tgChatId);
+        Link link = linksTransformService.toLink(requestBody);
+        link = linkService.addLink(tgChatId, link.getUrl(), link.getName());
         return ResponseEntity.ok(
-            linksService.saveLink(tgChatId, requestBody)
+            linksTransformService.toLinkResponse(link)
         );
     }
 
@@ -53,8 +61,10 @@ public class LinksController implements ILinksController {
         @RequestBody @Valid RemoveLinkRequest requestBody
     ) {
         log.debug("Removing link {} to id {}", requestBody, tgChatId);
+        Link link = linksTransformService.toLink(requestBody);
+        link = linkService.removeLink(tgChatId, link.getUrl());
         return ResponseEntity.ok(
-            linksService.removeLink(tgChatId, requestBody)
+            linksTransformService.toLinkResponse(link)
         );
     }
 

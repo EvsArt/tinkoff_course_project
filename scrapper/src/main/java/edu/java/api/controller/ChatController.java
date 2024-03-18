@@ -1,8 +1,7 @@
 package edu.java.api.controller;
 
-import edu.java.api.exceptions.ChatAlreadyRegisteredException;
-import edu.java.api.exceptions.ChatNotExistException;
-import edu.java.api.service.ChatService;
+import edu.java.model.TgChat;
+import edu.java.service.TgChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,30 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tg-chat")
 public class ChatController implements IChatController {
 
-    private final ChatService chatService;
+    private final TgChatService chatService;
 
-    public ChatController(ChatService chatService) {
+    public ChatController(TgChatService chatService) {
         this.chatService = chatService;
     }
 
     @PostMapping("/{id}")
     public void registerChat(@PathVariable Long id) {
-
-        if (!chatService.registry(id)) {
-            throw new ChatAlreadyRegisteredException();
-        }
-
-        log.debug(String.format("Chat %d was registered", id));
+        TgChat chat = chatService.registerChat(id, "");
+        log.debug(String.format("Chat %s was registered", chat));
     }
 
     @DeleteMapping("/{id}")
     public void deleteChat(@PathVariable Long id) {
-
-        if (!chatService.delete(id)) {
-            throw new ChatNotExistException();
-        }
-
-        log.debug(String.format("Chat %d was deleted", id));
+        TgChat chat = chatService.unregisterChat(id);
+        log.debug(String.format("Chat %s was deleted", chat));
     }
 
 }
