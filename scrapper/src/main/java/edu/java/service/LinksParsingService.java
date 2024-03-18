@@ -1,4 +1,4 @@
-package edu.java.service.api;
+package edu.java.service;
 
 import edu.java.dto.GitHubRepoRequest;
 import edu.java.dto.StackOverflowQuestionRequest;

@@ -10,7 +10,6 @@ import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
 import edu.java.model.Link;
 import edu.java.model.LinkUpdateInfo;
-import edu.java.service.api.ILinksParsingService;
 import java.time.OffsetDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

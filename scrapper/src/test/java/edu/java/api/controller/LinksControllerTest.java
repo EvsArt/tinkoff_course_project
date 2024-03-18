@@ -9,7 +9,7 @@ import edu.java.api.dto.RemoveLinkRequest;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.Link;
 import edu.java.service.LinkService;
-import edu.java.service.api.LinksTransformService;
+import edu.java.service.LinksTransformService;
 import java.net.URI;
 import java.util.List;
 import org.junit.jupiter.api.Test;

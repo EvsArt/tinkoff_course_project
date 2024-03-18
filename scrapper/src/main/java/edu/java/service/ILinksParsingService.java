@@ -1,4 +1,4 @@
-package edu.java.service.api;
+package edu.java.service;
 
 import edu.java.client.service.SupportedApi;
 import edu.java.dto.GitHubRepoRequest;

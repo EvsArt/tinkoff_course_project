@@ -7,7 +7,7 @@ import edu.java.api.dto.ListLinksResponse;
 import edu.java.api.dto.RemoveLinkRequest;
 import edu.java.model.Link;
 import edu.java.service.LinkService;
-import edu.java.service.api.LinksTransformService;
+import edu.java.service.LinksTransformService;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
