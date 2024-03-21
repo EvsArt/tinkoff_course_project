@@ -10,12 +10,12 @@ import java.net.URI;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IStackOverFlowLinkInfoService implements StackOverFlowLinkInfoService {
+public class StackOverFlowLinkInfoServiceImpl implements StackOverFlowLinkInfoService {
     private final StackOverflowClient stackOverflowClient;
     private final LinksParsingService linksParsingService;
     private final StackOverFlowLinkInfoRepository stackOverFlowLinkInfoRepository;
 
-    public IStackOverFlowLinkInfoService(
+    public StackOverFlowLinkInfoServiceImpl(
         StackOverflowClient stackOverflowClient,
         LinksParsingService linksParsingService,
         StackOverFlowLinkInfoRepository stackOverFlowLinkInfoRepository

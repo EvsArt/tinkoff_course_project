@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ISendUpdatesService implements SendUpdatesService {
+public class SendUpdatesServiceImpl implements SendUpdatesService {
 
     private final BotClient botClient;
 
     @Autowired
-    public ISendUpdatesService(BotClient botClient) {
+    public SendUpdatesServiceImpl(BotClient botClient) {
         this.botClient = botClient;
     }
 

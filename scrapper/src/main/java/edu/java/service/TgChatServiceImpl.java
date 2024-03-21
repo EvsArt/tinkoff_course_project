@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class ITgChatService implements TgChatService {
+public class TgChatServiceImpl implements TgChatService {
 
     private final TgChatRepository tgChatRepository;
     private final LinkRepository linkRepository;
 
     @Autowired
-    public ITgChatService(TgChatRepository tgChatRepository, LinkRepository linkRepository) {
+    public TgChatServiceImpl(TgChatRepository tgChatRepository, LinkRepository linkRepository) {
         this.tgChatRepository = tgChatRepository;
         this.linkRepository = linkRepository;
     }

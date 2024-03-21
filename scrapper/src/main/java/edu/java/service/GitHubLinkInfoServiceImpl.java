@@ -12,14 +12,14 @@ import java.net.URI;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IGitHubLinkInfoService implements GitHubLinkInfoService {
+public class GitHubLinkInfoServiceImpl implements GitHubLinkInfoService {
 
     private final GitHubClient gitHubClient;
     private final LinksParsingService linksParsingService;
     private final GitHubLinkInfoRepository gitHubLinkInfoRepository;
     private final LinkRepository linkRepository;
 
-    public IGitHubLinkInfoService(
+    public GitHubLinkInfoServiceImpl(
         GitHubClient gitHubClient,
         LinksParsingService linksParsingService,
         GitHubLinkInfoRepository gitHubLinkInfoRepository,

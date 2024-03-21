@@ -13,10 +13,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
 @SpringBootTest
-class ITgChatServiceTest extends IntegrationTest {
+class TgChatServiceImplTest extends IntegrationTest {
 
     @Autowired
-    private ITgChatService chatService;
+    private TgChatServiceImpl chatService;
 
     @Test
     @Rollback

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ILinksParsingService implements LinksParsingService {
+public class LinksParsingServiceImpl implements LinksParsingService {
 
     String repoNameRegExpGroup = "repoName";
     String ownerNameRegExpGroup = "ownerName";

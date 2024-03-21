@@ -15,13 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-public class ILinkService implements LinkService {
+public class LinkServiceImpl implements LinkService {
 
     private final LinkRepository linkRepository;
     private final TgChatRepository chatRepository;
     private final LinkInfoService linkInfoService;
 
-    public ILinkService(
+    public LinkServiceImpl(
         LinkRepository linkRepository,
         TgChatRepository chatRepository,
         LinkInfoService linkInfoService

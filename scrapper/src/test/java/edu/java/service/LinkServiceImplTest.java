@@ -17,10 +17,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
 @SpringBootTest
-class ILinkServiceTest extends IntegrationTest {
+class LinkServiceImplTest extends IntegrationTest {
 
     @Autowired
-    private ILinkService linkService;
+    private LinkServiceImpl linkService;
     @Autowired
     private TgChatService chatService;
     @Autowired
