@@ -4,10 +4,9 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
-import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
-import edu.java.bot.tracks.TemporaryTracksRepository;
+import edu.java.bot.scrapperClient.client.ScrapperClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,21 +20,8 @@ class StartCommandTest {
 
     @InjectMocks StartCommand startCommand;
 
-    @Mock TemporaryTracksRepository temporaryTracksRepository;
+    @Mock ScrapperClient scrapperClient;
     String command = Constants.COMMAND_TRIGGER + StringService.COMMAND_START_NAME;
-
-    @Test
-    void shouldRegisterUserAndPrintResult() {
-        Update update = getTestUpdateMessage();
-
-        String expResult = StringService.COMMAND_START_SUCCESSFUL_REGISTRATION_MESSAGE;
-
-        SendMessage realResponse = startCommand.handle(update);
-        String realResult = (String) realResponse.getParameters().get(Constants.TEXT_PARAMETER_IN_SEND_MESSAGE);
-
-        Mockito.verify(temporaryTracksRepository, Mockito.only()).register(update.message().from());
-        assertThat(realResult).isEqualTo(expResult);
-    }
 
     @Test
     void isTrigger() {

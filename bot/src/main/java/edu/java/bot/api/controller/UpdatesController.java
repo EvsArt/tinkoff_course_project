@@ -1,6 +1,9 @@
 package edu.java.bot.api.controller;
 
+import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.api.dto.LinkUpdateRequest;
+import edu.java.bot.bot.TgBot;
+import edu.java.bot.constants.StringService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/updates")
 public class UpdatesController implements IUpdatesController {
 
-    @Autowired
-    public UpdatesController() {
+    private final TgBot bot;
 
+    @Autowired
+    public UpdatesController(TgBot bot) {
+        this.bot = bot;
     }
 
     @PostMapping
@@ -24,6 +29,10 @@ public class UpdatesController implements IUpdatesController {
         @RequestBody @Valid LinkUpdateRequest update
     ) {
         log.debug(String.format("Update %s was accepted", update));
+        update.getTgChatIds()
+            .forEach(chatId -> bot.sendMessage(
+                new SendMessage(chatId, StringService.receiveUpdate(update.getUrl(), update.getDescription()))
+            ));
     }
 
 }

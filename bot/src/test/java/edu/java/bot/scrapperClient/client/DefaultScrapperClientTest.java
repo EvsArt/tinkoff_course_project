@@ -49,13 +49,12 @@ class DefaultScrapperClientTest {
         .build();
 
     private static final LinkResponse testLinkResponse = new LinkResponse(1L, URI.create("url"));
-
-    private static ScrapperClient client;
     private static final ListLinksResponse links = new ListLinksResponse(List.of(
         new LinkResponse(1L, URI.create("a")),
         new LinkResponse(2L, URI.create("b")),
         new LinkResponse(3L, URI.create("c"))
     ));
+    private static ScrapperClient client;
 
     @BeforeAll
     public static void setClient()
@@ -264,7 +263,8 @@ class DefaultScrapperClientTest {
     void postLinksWithOKStatus() throws JsonProcessingException {
         setupOKPostLinksStub();
 
-        LinkResponse realResponse = client.addLink(tgChatId, new AddLinkRequest()).block();
+        LinkResponse realResponse =
+            client.addLink(tgChatId, new AddLinkRequest(testLinkResponse.getUrl().toString())).block();
 
         assertThat(realResponse).isEqualTo(testLinkResponse);
     }
@@ -273,7 +273,8 @@ class DefaultScrapperClientTest {
     void postLinksWithBadRequestStatus() throws JsonProcessingException {
         setupBadRequestPostLinksStub();
 
-        Mono<LinkResponse> realResponseMono = client.addLink(tgChatId, new AddLinkRequest());
+        Mono<LinkResponse> realResponseMono =
+            client.addLink(tgChatId, new AddLinkRequest(testLinkResponse.getUrl().toString()));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(BadRequestException.class);
@@ -283,7 +284,8 @@ class DefaultScrapperClientTest {
     void postLinksWithNotFoundStatus() throws JsonProcessingException {
         setupNotFoundPostLinksStub();
 
-        Mono<LinkResponse> realResponseMono = client.addLink(tgChatId, new AddLinkRequest());
+        Mono<LinkResponse> realResponseMono =
+            client.addLink(tgChatId, new AddLinkRequest(testLinkResponse.getUrl().toString()));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class);
@@ -293,7 +295,8 @@ class DefaultScrapperClientTest {
     void deleteLinksWithOKStatus() throws JsonProcessingException {
         setupOKDeleteLinksStub();
 
-        LinkResponse realResponse = client.removeLink(tgChatId, new RemoveLinkRequest()).block();
+        LinkResponse realResponse =
+            client.removeLink(tgChatId, new RemoveLinkRequest(testLinkResponse.getUrl().toString())).block();
 
         assertThat(realResponse).isEqualTo(testLinkResponse);
     }
@@ -302,7 +305,8 @@ class DefaultScrapperClientTest {
     void deleteLinksWithBadRequestStatus() throws JsonProcessingException {
         setupBadRequestDeleteLinksStub();
 
-        Mono<LinkResponse> realResponseMono = client.removeLink(tgChatId, new RemoveLinkRequest());
+        Mono<LinkResponse> realResponseMono =
+            client.removeLink(tgChatId, new RemoveLinkRequest(testLinkResponse.getUrl().toString()));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(BadRequestException.class);
@@ -312,7 +316,8 @@ class DefaultScrapperClientTest {
     void deleteLinksWithNotFoundStatus() throws JsonProcessingException {
         setupNotFoundDeleteLinksStub();
 
-        Mono<LinkResponse> realResponseMono = client.removeLink(tgChatId, new RemoveLinkRequest());
+        Mono<LinkResponse> realResponseMono =
+            client.removeLink(tgChatId, new RemoveLinkRequest(testLinkResponse.getUrl().toString()));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class);

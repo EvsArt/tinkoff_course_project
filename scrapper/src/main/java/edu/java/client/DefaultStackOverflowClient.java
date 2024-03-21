@@ -3,6 +3,7 @@ package edu.java.client;
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.StackOverflowApiPaths;
 import edu.java.dto.StackOverflowQuestionListResponse;
+import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
 import edu.java.exceptions.status.BadRequestException;
 import edu.java.exceptions.status.ForbiddenException;
@@ -19,7 +20,7 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 @Slf4j
-public class DefaultStackOverflowClient implements AsyncStackOverflowClient {
+public class DefaultStackOverflowClient implements StackOverflowClient {
 
     private final WebClient webClient;
     private final ApiConfig.StackOverflowConfig config;
@@ -38,6 +39,7 @@ public class DefaultStackOverflowClient implements AsyncStackOverflowClient {
     private static WebClient buildWebClient(ApiConfig.StackOverflowConfig config) {
         HttpClient client = HttpClient
             .create()
+            .compress(true)     // Without that encoding broke
             .responseTimeout(config.connectionTimeout());
 
         return WebClient.builder()
@@ -66,31 +68,18 @@ public class DefaultStackOverflowClient implements AsyncStackOverflowClient {
     /**
      * Returns question info by its id
      *
-     * @param id is question id
+     * @param request is dto with question id
      * @return question info
      */
     @Override
-    public Mono<StackOverflowQuestionResponse> getQuestionById(Long id) {
+    public Mono<StackOverflowQuestionResponse> getQuestion(StackOverflowQuestionRequest request) {
         return webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path(StackOverflowApiPaths.GET_QUESTION)
                 .queryParams(config.uriParameters())
-                .build(id)
+                .build(request.questionId())
             )
             .retrieve()
-            .onStatus(
-                status -> status.isSameCodeAs(HttpStatus.BAD_REQUEST),
-                resp -> Mono.error(BadRequestException::new)
-            )
-            .onStatus(
-                status -> status.isSameCodeAs(HttpStatus.FORBIDDEN),
-                resp -> Mono.error(ForbiddenException::new)
-            )
-            .onStatus(
-                status -> status.isSameCodeAs(HttpStatus.NOT_FOUND),
-                resp -> Mono.error(ResourceNotFoundException::new)
-            )
-            .onStatus(HttpStatusCode::is5xxServerError, resp -> Mono.error(ServerErrorException::new))
             .bodyToMono(StackOverflowQuestionListResponse.class)
             .map(it -> it.items().getFirst());
     }

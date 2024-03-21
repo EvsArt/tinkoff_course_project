@@ -98,7 +98,6 @@ class DefaultBotClientTest {
         setupOKUpdatesStub();
 
         LinkUpdateRequest request = LinkUpdateRequest.builder()
-            .id(1L)
             .url("abc")
             .description("desc")
             .tgChatIds(List.of(1L, 2L, 3L))

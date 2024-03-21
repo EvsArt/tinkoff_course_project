@@ -70,6 +70,11 @@ public class MyTgBot implements TgBot {
     }
 
     @Override
+    public void sendMessage(SendMessage message) {
+        botCore.execute(message);
+    }
+
+    @Override
     public void onException(TelegramException e) {
         if (e.response() != null) {
             // got bad response from telegram

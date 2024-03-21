@@ -1,7 +1,7 @@
 package edu.java.bot.constants;
 
 import edu.java.bot.commands.Command;
-import edu.java.bot.tracks.Track;
+import edu.java.bot.links.Link;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,14 +38,14 @@ public class StringService {
     public static final String COMMAND_NOT_A_COMMAND_NOT_SUPPORTS_MESSAGE =
         "Suddenly bot doesn't support not-command messages";
     public static final String COMMAND_TRACK_NAME = "track";
-    public static final String COMMAND_TRACK_DESCRIPTION = "Start link tracking";
+    public static final String COMMAND_TRACK_DESCRIPTION = "Start url tracking";
     public static final Map<String, String> COMMAND_TRACK_ARGUMENTS_TO_DESCRIPTION = Map.of(
-        "link", "Link of the page you want to start tracking",
-        "name", "Your link name (Optional)"
+        "url", "Link of the page you want to start tracking",
+        "name", "Your url name (Optional)"
     );
     public static final String COMMAND_TRACK_HELPMESSAGE = String.format(
         """
-            Using: %s%s link [, name] or %s%s link
+            Using: %s%s url [, name] or %s%s url
             Arguments:
             %s
             """,
@@ -56,10 +56,10 @@ public class StringService {
         argumentsToString(COMMAND_TRACK_ARGUMENTS_TO_DESCRIPTION)
     );
     public static final String COMMAND_UNTRACK_NAME = "untrack";
-    public static final String COMMAND_UNTRACK_DESCRIPTION = "Stop link tracking";
-    public static final String COMMAND_UNTRACK_LINK_NOT_TRACKED = "This link didn't track";
+    public static final String COMMAND_UNTRACK_DESCRIPTION = "Stop url tracking";
+    public static final String COMMAND_UNTRACK_LINK_NOT_TRACKED = "This url didn't track";
     public static final Map<String, String> COMMAND_UNTRACK_ARGUMENTS_TO_DESCRIPTION = Map.of(
-        "linkName", "Name of the link you want to untrack"
+        "linkName", "Name of the url you want to untrack"
     );
     public static final String COMMAND_UNTRACK_HELPMESSAGE = String.format(
         """
@@ -96,31 +96,47 @@ public class StringService {
     public static String invalidTrackingLink(List<String> supportedServices) {
         StringBuilder builder = new StringBuilder();
         builder
-            .append("Invalid link!\n")
+            .append("Invalid url!\n")
             .append("Supported services:\n");
         supportedServices.forEach(it -> builder.append(String.format("-- %s\n", it)));
         return builder.toString();
     }
 
-    public static String startTracking(Track track) {
-        return String.format("Start tracking %s", track.link());
+    public static String startTracking(Link link) {
+        return String.format("Start tracking %s", link.url());
     }
 
-    public static String endTracking(Track track) {
-        return String.format("End tracking %s", track.link());
+    public static String endTracking(Link link) {
+        return String.format("End tracking %s", link.url());
     }
 
-    private static String trackInList(Track track) {
-        return String.format("-- %s: %s\n", track.name(), track.link());
+    public static String errorWithTrackLink(Link link) {
+        return String.format("Error with tracking link %s. Please try another one", link.url());
     }
 
-    public static String tracksToPrettyView(Set<Track> tracks) {
+    public static String errorWithUntrackLink(Link link) {
+        return String.format("Error with untracking link %s. Please try another one", link.url());
+    }
+
+    public static String errorWithGettingLinks() {
+        return "Error with getting links";
+    }
+
+    public static String linkNotExists(Link link) {
+        return String.format("Error with untracking link %s. Link not exists", link.url());
+    }
+
+    private static String trackInList(Link link) {
+        return String.format("-- %s: %s\n", link.name(), link.url());
+    }
+
+    public static String tracksToPrettyView(Set<Link> links) {
         StringBuilder builder = new StringBuilder();
-        if (tracks.isEmpty()) {
+        if (links.isEmpty()) {
             builder.append("There aren't any tracks");
         } else {
             builder.append("Your tracks:\n");
-            tracks.forEach(track -> builder.append(StringService.trackInList(track)));
+            links.forEach(track -> builder.append(StringService.trackInList(track)));
         }
         return builder.toString();
     }
@@ -150,4 +166,7 @@ public class StringService {
         return builder.toString();
     }
 
+    public static String receiveUpdate(String url, String description) {
+        return "Received update!\n%s\n%s".formatted(url, description);
+    }
 }
