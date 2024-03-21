@@ -1,10 +1,11 @@
-package edu.java.service;
+package edu.java.service.jdbc;
 
-import edu.java.domain.LinkRepository;
-import edu.java.domain.TgChatRepository;
+import edu.java.domain.jdbcRepository.JdbcLinkRepository;
+import edu.java.domain.jdbcRepository.JdbcTgChatRepository;
 import edu.java.exceptions.ChatAlreadyRegisteredException;
 import edu.java.exceptions.ChatNotExistException;
 import edu.java.model.TgChat;
+import edu.java.service.TgChatService;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class TgChatServiceImpl implements TgChatService {
+public class JdbcTgChatService implements TgChatService {
 
-    private final TgChatRepository tgChatRepository;
-    private final LinkRepository linkRepository;
+    private final JdbcTgChatRepository tgChatRepository;
+    private final JdbcLinkRepository linkRepository;
 
     @Autowired
-    public TgChatServiceImpl(TgChatRepository tgChatRepository, LinkRepository linkRepository) {
+    public JdbcTgChatService(JdbcTgChatRepository tgChatRepository, JdbcLinkRepository linkRepository) {
         this.tgChatRepository = tgChatRepository;
         this.linkRepository = linkRepository;
     }

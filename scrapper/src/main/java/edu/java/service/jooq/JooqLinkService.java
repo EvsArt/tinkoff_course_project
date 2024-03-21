@@ -1,11 +1,13 @@
-package edu.java.service;
+package edu.java.service.jooq;
 
-import edu.java.domain.LinkRepository;
-import edu.java.domain.TgChatRepository;
+import edu.java.domain.jooqRepository.JooqLinkRepository;
+import edu.java.domain.jooqRepository.JooqTgChatRepository;
 import edu.java.exceptions.ChatNotExistException;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.Link;
 import edu.java.model.TgChat;
+import edu.java.service.LinkInfoService;
+import edu.java.service.LinkService;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,15 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-public class LinkServiceImpl implements LinkService {
+public class JooqLinkService implements LinkService {
 
-    private final LinkRepository linkRepository;
-    private final TgChatRepository chatRepository;
+    private final JooqLinkRepository linkRepository;
+    private final JooqTgChatRepository chatRepository;
     private final LinkInfoService linkInfoService;
 
-    public LinkServiceImpl(
-        LinkRepository linkRepository,
-        TgChatRepository chatRepository,
+    public JooqLinkService(
+        JooqLinkRepository linkRepository,
+        JooqTgChatRepository chatRepository,
         LinkInfoService linkInfoService
     ) {
         this.linkRepository = linkRepository;

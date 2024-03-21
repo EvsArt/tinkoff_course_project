@@ -1,29 +1,31 @@
-package edu.java.service;
+package edu.java.service.jdbc;
 
 import edu.java.client.GitHubClient;
-import edu.java.domain.GitHubLinkInfoRepository;
-import edu.java.domain.LinkRepository;
+import edu.java.domain.jdbcRepository.JdbcGitHubLinkInfoRepository;
+import edu.java.domain.jdbcRepository.JdbcLinkRepository;
 import edu.java.dto.GitHubRepoEventResponse;
 import edu.java.dto.GitHubRepoRequest;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.GitHubLinkInfo;
 import edu.java.model.Link;
+import edu.java.service.GitHubLinkInfoService;
+import edu.java.service.LinksParsingService;
 import java.net.URI;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GitHubLinkInfoServiceImpl implements GitHubLinkInfoService {
+public class JdbcGitHubLinkInfoService implements GitHubLinkInfoService {
 
     private final GitHubClient gitHubClient;
     private final LinksParsingService linksParsingService;
-    private final GitHubLinkInfoRepository gitHubLinkInfoRepository;
-    private final LinkRepository linkRepository;
+    private final JdbcGitHubLinkInfoRepository gitHubLinkInfoRepository;
+    private final JdbcLinkRepository linkRepository;
 
-    public GitHubLinkInfoServiceImpl(
+    public JdbcGitHubLinkInfoService(
         GitHubClient gitHubClient,
         LinksParsingService linksParsingService,
-        GitHubLinkInfoRepository gitHubLinkInfoRepository,
-        LinkRepository linkRepository
+        JdbcGitHubLinkInfoRepository gitHubLinkInfoRepository,
+        JdbcLinkRepository linkRepository
     ) {
         this.gitHubClient = gitHubClient;
         this.linksParsingService = linksParsingService;

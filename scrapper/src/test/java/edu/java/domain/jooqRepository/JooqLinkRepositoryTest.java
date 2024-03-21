@@ -16,7 +16,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@SpringBootTest
 class JooqLinkRepositoryTest extends IntegrationTest {
 
     @Autowired

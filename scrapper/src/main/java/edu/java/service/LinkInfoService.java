@@ -2,6 +2,8 @@ package edu.java.service;
 
 import edu.java.client.service.SupportedApi;
 import edu.java.model.Link;
+import edu.java.service.GitHubLinkInfoService;
+import edu.java.service.StackOverFlowLinkInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

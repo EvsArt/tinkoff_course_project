@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LinkUpdaterServiceImpl implements LinkUpdaterService {
 
-    private final LinksParsingServiceImpl linksParsingService;
+    private final LinksParsingService linksParsingService;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final LinkService linkService;
@@ -31,7 +31,7 @@ public class LinkUpdaterServiceImpl implements LinkUpdaterService {
     public LinkUpdaterServiceImpl(
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
-        LinksParsingServiceImpl linksParsingService,
+        LinksParsingService linksParsingService,
         LinkService linkService,
         GitHubLinkInfoService gitHubLinkInfoService,
         StackOverFlowLinkInfoService stackOverFlowLinkInfoService

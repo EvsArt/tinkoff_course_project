@@ -5,6 +5,8 @@ import edu.java.api.dto.LinkResponse;
 import edu.java.api.dto.ListLinksResponse;
 import edu.java.api.dto.RemoveLinkRequest;
 import edu.java.model.Link;
+import edu.java.service.LinksParsingService;
+import edu.java.service.LinksTransformService;
 import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class LinksTransformServiceImpl implements LinksTransformService {
 
-    private final LinksParsingServiceImpl linksParsingService;
+    private final LinksParsingService linksParsingService;
 
     @Autowired
-    public LinksTransformServiceImpl(LinksParsingServiceImpl linksParsingService) {
+    public LinksTransformServiceImpl(LinksParsingService linksParsingService) {
         this.linksParsingService = linksParsingService;
     }
 

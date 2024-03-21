@@ -1,24 +1,26 @@
-package edu.java.service;
+package edu.java.service.jdbc;
 
 import edu.java.client.StackOverflowClient;
-import edu.java.domain.StackOverFlowLinkInfoRepository;
+import edu.java.domain.jdbcRepository.JdbcStackOverFlowLinkInfoRepository;
 import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
 import edu.java.model.Link;
 import edu.java.model.StackOverFlowLinkInfo;
+import edu.java.service.LinksParsingService;
+import edu.java.service.StackOverFlowLinkInfoService;
 import java.net.URI;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StackOverFlowLinkInfoServiceImpl implements StackOverFlowLinkInfoService {
+public class JdbcStackOverFlowLinkInfoService implements StackOverFlowLinkInfoService {
     private final StackOverflowClient stackOverflowClient;
     private final LinksParsingService linksParsingService;
-    private final StackOverFlowLinkInfoRepository stackOverFlowLinkInfoRepository;
+    private final JdbcStackOverFlowLinkInfoRepository stackOverFlowLinkInfoRepository;
 
-    public StackOverFlowLinkInfoServiceImpl(
+    public JdbcStackOverFlowLinkInfoService(
         StackOverflowClient stackOverflowClient,
         LinksParsingService linksParsingService,
-        StackOverFlowLinkInfoRepository stackOverFlowLinkInfoRepository
+        JdbcStackOverFlowLinkInfoRepository stackOverFlowLinkInfoRepository
     ) {
         this.stackOverflowClient = stackOverflowClient;
         this.linksParsingService = linksParsingService;

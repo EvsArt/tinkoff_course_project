@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class JdbcLinkRepository implements LinkRepository {
 
     private final JdbcClient jdbcClient;
-    private final TgChatRepository tgChatRepository;
+    private final JdbcTgChatRepository tgChatRepository;
     private final JdbcAssociativeTableRepository associativeTableRepository;
 
     private final String linkTableName = SqlQueries.LINK_TABLE_NAME;
@@ -35,7 +35,7 @@ public class JdbcLinkRepository implements LinkRepository {
     @Autowired
     public JdbcLinkRepository(
         JdbcClient jdbcClient,
-        TgChatRepository tgChatRepository,
+        JdbcTgChatRepository tgChatRepository,
         JdbcAssociativeTableRepository associativeTableRepository
     ) {
         this.jdbcClient = jdbcClient;
