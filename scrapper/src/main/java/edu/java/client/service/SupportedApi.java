@@ -1,7 +1,6 @@
 package edu.java.client.service;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Pattern;
 
 public enum SupportedApi {
@@ -17,14 +16,10 @@ public enum SupportedApi {
     }
 
     public static SupportedApi getApiByLink(String link) {
-        List<SupportedApi> foundApis = Arrays.stream(values())
+        return Arrays.stream(values())
             .filter(value -> value.linkPattern.matcher(link).matches())
-            .limit(1)
-            .toList();
-        if (foundApis.isEmpty()) {
-            throw new IllegalArgumentException("Unknown link format: " + link);
-        }
-        return foundApis.get(0);
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Unknown link format: " + link));
     }
 
     public Pattern getLinkPattern() {

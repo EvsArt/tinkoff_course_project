@@ -6,11 +6,14 @@ import edu.java.model.LinkUpdateInfo;
 import edu.java.service.LinkService;
 import edu.java.service.LinkUpdaterService;
 import edu.java.service.SendUpdatesService;
+import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -39,7 +42,7 @@ public class LinkUpdaterScheduler {
         this.sendUpdatesService = sendUpdatesService;
     }
 
-    @Scheduled(fixedDelayString = "PT" + "${app.scheduler.interval}")
+    @Scheduled(fixedDelayString = "#{['app-edu.java.configuration.ApplicationConfig'].scheduler().interval()}")
     public void update() {
         OffsetDateTime lastLinkCheckingTime = OffsetDateTime.now().minus(linkCheckerConfig.checkInterval());
 
