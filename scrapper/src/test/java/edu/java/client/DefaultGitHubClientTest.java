@@ -136,7 +136,7 @@ class DefaultGitHubClientTest {
         setupOKGetRepositoryStub();
 
         GitHubRepoResponse realResponse =
-            client.getRepositoryByOwnerNameAndRepoName(new GitHubRepoRequest(name, repo)).block();
+            client.getRepository(new GitHubRepoRequest(name, repo)).block();
 
         assertThat(realResponse).isEqualTo(expResponse);
     }
@@ -146,7 +146,7 @@ class DefaultGitHubClientTest {
         setupNotFoundGetRepositoryStub();
 
         Mono<GitHubRepoResponse> realResponseMono =
-            client.getRepositoryByOwnerNameAndRepoName(new GitHubRepoRequest(name, repo));
+            client.getRepository(new GitHubRepoRequest(name, repo));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class);
@@ -157,7 +157,7 @@ class DefaultGitHubClientTest {
         setupForbiddenGetRepositoryStub();
 
         Mono<GitHubRepoResponse> realResponseMono =
-            client.getRepositoryByOwnerNameAndRepoName(new GitHubRepoRequest(name, repo));
+            client.getRepository(new GitHubRepoRequest(name, repo));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ForbiddenException.class);
@@ -168,7 +168,7 @@ class DefaultGitHubClientTest {
         setupMovedPermanentlyGetRepositoryStub();
 
         Mono<GitHubRepoResponse> realResponseMono =
-            client.getRepositoryByOwnerNameAndRepoName(new GitHubRepoRequest(name, repo));
+            client.getRepository(new GitHubRepoRequest(name, repo));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(MovedPermanentlyException.class);
@@ -179,7 +179,7 @@ class DefaultGitHubClientTest {
         setupServerErrorGetRepositoryStub();
 
         Mono<GitHubRepoResponse> realResponseMono =
-            client.getRepositoryByOwnerNameAndRepoName(new GitHubRepoRequest(name, repo));
+            client.getRepository(new GitHubRepoRequest(name, repo));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ServerErrorException.class);

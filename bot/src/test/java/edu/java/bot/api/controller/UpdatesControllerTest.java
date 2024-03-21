@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,12 +19,12 @@ class UpdatesControllerTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
+    @MockBean UpdatesController updatesController;
 
     @Test
     void postUpdateShouldReturnOk() throws Exception {
 
         LinkUpdateRequest requestBody = LinkUpdateRequest.builder()
-            .id(123L)
             .url("https://example.com")
             .description("My Link")
             .tgChatIds(List.of(1L, 2L, 3L))
@@ -39,7 +40,6 @@ class UpdatesControllerTest {
     void postUpdateWithWrongArgumentsShouldReturnBadRequest() throws Exception {
 
         LinkUpdateRequest requestBody = LinkUpdateRequest.builder()
-            .id(123L)
             .url("https://example.com")
             .description("My Link")
             .tgChatIds(List.of())

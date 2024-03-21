@@ -25,7 +25,7 @@ public class SendUpdatesServiceImpl implements SendUpdatesService {
             .tgChatIds(updateInfo.getTgChatsIds())
             .build();
         try {
-            botClient.postUpdates(request);
+            botClient.postUpdates(request).block();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

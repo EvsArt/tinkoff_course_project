@@ -6,11 +6,13 @@ import edu.java.api.dto.LinkResponse;
 import edu.java.api.dto.ListLinksResponse;
 import edu.java.api.dto.RemoveLinkRequest;
 import edu.java.model.Link;
+import edu.java.service.LinkInfoService;
 import edu.java.service.LinkService;
 import edu.java.service.LinksTransformService;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +28,16 @@ public class LinksController implements ILinksController {
 
     private final LinkService linkService;
     private final LinksTransformService linksTransformService;
+    private final LinkInfoService linkInfoService;
 
-    public LinksController(LinkService linkService, LinksTransformService linksTransformService) {
+    @Autowired
+    public LinksController(
+        LinkService linkService, LinksTransformService linksTransformService,
+        LinkInfoService linkInfoService
+    ) {
         this.linkService = linkService;
         this.linksTransformService = linksTransformService;
+        this.linkInfoService = linkInfoService;
     }
 
     @GetMapping
@@ -47,6 +55,7 @@ public class LinksController implements ILinksController {
         log.debug("Adding link {} to id {}", requestBody, tgChatId);
         Link link = linksTransformService.toLink(requestBody);
         link = linkService.addLink(tgChatId, link.getUrl(), link.getName());
+        linkInfoService.addLinkInfoByLink(link);
         return linksTransformService.toLinkResponse(link);
     }
 
@@ -58,6 +67,7 @@ public class LinksController implements ILinksController {
         log.debug("Removing link {} to id {}", requestBody, tgChatId);
         Link link = linksTransformService.toLink(requestBody);
         link = linkService.removeLink(tgChatId, link.getUrl());
+        linkInfoService.removeLinkInfoByLink(link);
         return linksTransformService.toLinkResponse(link);
     }
 

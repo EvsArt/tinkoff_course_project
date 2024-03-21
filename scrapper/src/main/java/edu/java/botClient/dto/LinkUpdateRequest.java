@@ -1,15 +1,15 @@
 package edu.java.botClient.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonSerialize
+@Getter
 public class LinkUpdateRequest {
 
     List<Long> tgChatIds;

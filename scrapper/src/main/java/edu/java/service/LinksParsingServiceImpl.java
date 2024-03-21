@@ -14,6 +14,7 @@ public class LinksParsingServiceImpl implements LinksParsingService {
     String ownerNameRegExpGroup = "ownerName";
     String questionIdRegExpGroup = "questionId";
 
+    @Override
     public GitHubRepoRequest getGitHubRepoRequestByLink(String link) {
         Pattern linkPattern = SupportedApi.GITHUB_REPO.getLinkPattern();
         if (!linkPattern.matcher(link).matches()) {
@@ -28,7 +29,8 @@ public class LinksParsingServiceImpl implements LinksParsingService {
         );
     }
 
-    public StackOverflowQuestionRequest getQuestionRequestByLink(String link) {
+    @Override
+    public StackOverflowQuestionRequest getStackOverFlowQuestionRequestByLink(String link) {
         Pattern linkPattern = SupportedApi.STACKOVERFLOW_QUESTION.getLinkPattern();
         if (!linkPattern.matcher(link).matches()) {
             throw new IllegalArgumentException("Wrong StackOverFlow question link format!");
@@ -41,6 +43,7 @@ public class LinksParsingServiceImpl implements LinksParsingService {
         );
     }
 
+    @Override
     public String getLinkName(String link) {
         SupportedApi api = SupportedApi.getApiByLink(link);
         return switch (api) {

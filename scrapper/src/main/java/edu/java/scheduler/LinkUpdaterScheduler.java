@@ -6,6 +6,7 @@ import edu.java.model.LinkUpdateInfo;
 import edu.java.service.LinkService;
 import edu.java.service.LinkUpdaterService;
 import edu.java.service.SendUpdatesService;
+import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,10 @@ public class LinkUpdaterScheduler {
         needCheckingLinks.stream()
             .map(updaterService::checkUpdates)
             .filter(LinkUpdateInfo::isUpdated)
+            .peek(updateInfo -> linkService.setLastUpdateTime(
+                linkService.findByUrl(URI.create(updateInfo.getUrl())).getId(),
+                OffsetDateTime.now()
+            ))
             .forEach(sendUpdatesService::sendUpdate);
     }
 

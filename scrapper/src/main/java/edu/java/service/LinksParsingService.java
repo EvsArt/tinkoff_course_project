@@ -7,7 +7,7 @@ public interface LinksParsingService {
 
     GitHubRepoRequest getGitHubRepoRequestByLink(String link);
 
-    StackOverflowQuestionRequest getQuestionRequestByLink(String link);
+    StackOverflowQuestionRequest getStackOverFlowQuestionRequestByLink(String link);
 
     String getLinkName(String link);
 

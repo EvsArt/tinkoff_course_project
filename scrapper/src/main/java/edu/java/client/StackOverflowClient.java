@@ -6,6 +6,6 @@ import reactor.core.publisher.Mono;
 
 public interface StackOverflowClient extends Client {
 
-    Mono<StackOverflowQuestionResponse> getQuestionById(StackOverflowQuestionRequest request);
+    Mono<StackOverflowQuestionResponse> getQuestion(StackOverflowQuestionRequest request);
 
 }

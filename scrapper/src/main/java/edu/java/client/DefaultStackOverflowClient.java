@@ -39,6 +39,7 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
     private static WebClient buildWebClient(ApiConfig.StackOverflowConfig config) {
         HttpClient client = HttpClient
             .create()
+            .compress(true)     // Without that encoding broke
             .responseTimeout(config.connectionTimeout());
 
         return WebClient.builder()
@@ -71,7 +72,7 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
      * @return question info
      */
     @Override
-    public Mono<StackOverflowQuestionResponse> getQuestionById(StackOverflowQuestionRequest request) {
+    public Mono<StackOverflowQuestionResponse> getQuestion(StackOverflowQuestionRequest request) {
         return webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path(StackOverflowApiPaths.GET_QUESTION)

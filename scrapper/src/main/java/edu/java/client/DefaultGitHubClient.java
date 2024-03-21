@@ -2,6 +2,7 @@ package edu.java.client;
 
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.GitHubApiPaths;
+import edu.java.dto.GitHubRepoEventResponse;
 import edu.java.dto.GitHubRepoRequest;
 import edu.java.dto.GitHubRepoResponse;
 import edu.java.exceptions.status.ForbiddenException;
@@ -71,7 +72,7 @@ public class DefaultGitHubClient implements GitHubClient {
      * @return repository info
      */
     @Override
-    public Mono<GitHubRepoResponse> getRepositoryByOwnerNameAndRepoName(GitHubRepoRequest request) {
+    public Mono<GitHubRepoResponse> getRepository(GitHubRepoRequest request) {
         return webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path(GitHubApiPaths.GET_REPOSITORY)
@@ -80,6 +81,20 @@ public class DefaultGitHubClient implements GitHubClient {
             )
             .retrieve()
             .bodyToMono(GitHubRepoResponse.class);
+    }
+
+    @Override
+    public Mono<GitHubRepoEventResponse> getLastRepositoryEvent(GitHubRepoRequest request) {
+        return webClient.get()
+            .uri(uriBuilder -> uriBuilder
+                .path(GitHubApiPaths.GET_REPOSITORY_EVENTS)
+                .queryParams(config.uriParameters())
+                .queryParam("per_page", 1)
+                .build(request.ownerName(), request.repositoryName())
+            )
+            .retrieve()
+            .bodyToMono(GitHubRepoEventResponse[].class)
+            .map(arr -> arr[0]);    // its array with 1 element
     }
 
 }

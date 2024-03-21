@@ -1,10 +1,10 @@
 package edu.java.service;
 
+import edu.java.domain.LinkRepository;
+import edu.java.domain.TgChatRepository;
 import edu.java.exceptions.ChatAlreadyRegisteredException;
 import edu.java.exceptions.ChatNotExistException;
 import edu.java.model.TgChat;
-import edu.java.repository.LinkRepository;
-import edu.java.repository.TgChatRepository;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
