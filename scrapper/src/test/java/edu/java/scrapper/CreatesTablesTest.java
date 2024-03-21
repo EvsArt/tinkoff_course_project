@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
-public class TablesTest extends IntegrationTest {
+public class CreatesTablesTest extends IntegrationTest {
 
     @Test
-    void tableLinkExists() throws SQLException, InterruptedException {
+    void tableLinkExists() throws SQLException {
         Connection connection = POSTGRES.createConnection("");
 
         PreparedStatement linkStatement = connection.prepareStatement("select * from link");
@@ -20,7 +20,7 @@ public class TablesTest extends IntegrationTest {
     }
 
     @Test
-    void tableTgChatExists() throws SQLException, InterruptedException {
+    void tableTgChatExists() throws SQLException {
         Connection connection = POSTGRES.createConnection("");
 
         PreparedStatement tgChatStatement = connection.prepareStatement("select * from tg_chat");
@@ -30,7 +30,7 @@ public class TablesTest extends IntegrationTest {
     }
 
     @Test
-    void associationTableExists() throws SQLException, InterruptedException {
+    void associationTableExists() throws SQLException {
         Connection connection = POSTGRES.createConnection("");
 
         PreparedStatement associationTableStatement = connection.prepareStatement("select * from link_tg_chat");
