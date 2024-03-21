@@ -8,6 +8,7 @@ import edu.java.scrapper.IntegrationTest;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
+import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -82,7 +83,7 @@ class LinkServiceImplTest extends IntegrationTest {
         linkService.addLink(chat1.getChatId(), newLink.getUrl(), newLink.getName());
         linkService.removeLink(chat1.getChatId(), newLink.getUrl());
 
-        assertThat(linkRepository.findAllLinks().isEmpty()).isTrue();
+        AssertionsForInterfaceTypes.assertThat(linkRepository.findAllLinks()).isEmpty();
     }
 
     @Test
@@ -103,8 +104,8 @@ class LinkServiceImplTest extends IntegrationTest {
 
         List<Link> existLinks = linkRepository.findAllLinks();
 
-        assertThat(existLinks.size()).isEqualTo(1);
-        assertThat(existLinks.get(0).getTgChats().size()).isEqualTo(1);
+        AssertionsForInterfaceTypes.assertThat(existLinks).hasSize(1);
+        AssertionsForInterfaceTypes.assertThat(existLinks.get(0).getTgChats()).hasSize(1);
         assertThat(existLinks.get(0).getTgChats().contains(chat2)).isTrue();
     }
 
@@ -134,7 +135,7 @@ class LinkServiceImplTest extends IntegrationTest {
 
         List<Link> res = linkService.findAllByTgChatId(chat1.getChatId());
 
-        assertThat(res.size()).isEqualTo(1);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
         assertThat(res.get(0)).isEqualTo(newLink);
     }
 
@@ -156,7 +157,7 @@ class LinkServiceImplTest extends IntegrationTest {
 
         List<Link> res = linkService.findAll();
 
-        assertThat(res.size()).isEqualTo(2);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(2);
         assertThat(res.containsAll(List.of(newLink1, newLink2))).isTrue();
     }
 
@@ -185,7 +186,7 @@ class LinkServiceImplTest extends IntegrationTest {
 
         List<Link> res = linkService.findAllWhereLastCheckTimeBefore(needLastCheckTime);
 
-        assertThat(res.size()).isEqualTo(1);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
         assertThat(res.get(0).getName()).isEqualTo(uncheckedLink.getName());
     }
 }

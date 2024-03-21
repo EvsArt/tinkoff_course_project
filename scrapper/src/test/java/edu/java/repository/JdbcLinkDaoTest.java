@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -129,7 +130,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
 
         assertThat(res.getName()).isEqualTo(newName);
 
-        assertThat(res.getTgChats().size()).isEqualTo(newLink.getTgChats().size());
+        AssertionsForInterfaceTypes.assertThat(res.getTgChats()).hasSize(newLink.getTgChats().size());
         assertThat(res.getTgChats().containsAll(newLink.getTgChats())).isTrue();
         assertThat(newLink.getTgChats().containsAll(res.getTgChats())).isTrue();
     }
@@ -149,7 +150,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
 
         Optional<Link> res = linkRepository.updateLink(randomId, newLink);
 
-        assertThat(res.isEmpty()).isTrue();
+        assertThat(res).isEmpty();
     }
 
     @Test
@@ -169,7 +170,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
         Optional<Link> findAfterRemoveRes = linkRepository.findLinkById(id);
 
         assertThat(removeRes.get().getUrl()).isEqualTo(removeRes.get().getUrl());
-        assertThat(findAfterRemoveRes.isEmpty()).isTrue();
+        assertThat(findAfterRemoveRes).isEmpty();
     }
 
     @Test
@@ -181,8 +182,8 @@ class JdbcLinkDaoTest extends IntegrationTest {
         Optional<Link> removeRes = linkRepository.removeLinkById(id);
         Optional<Link> findAfterRemoveRes = linkRepository.removeLinkById(id);
 
-        assertThat(removeRes.isEmpty()).isTrue();
-        assertThat(findAfterRemoveRes.isEmpty()).isTrue();
+        assertThat(removeRes).isEmpty();
+        assertThat(findAfterRemoveRes).isEmpty();
     }
 
     @Test
@@ -211,7 +212,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
 
         Optional<Link> res = linkRepository.findLinkById(id);
 
-        assertThat(res.isEmpty()).isTrue();
+        assertThat(res).isEmpty();
     }
 
     @Test
@@ -241,7 +242,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
 
         Optional<Link> res = linkRepository.findLinkByURL(url);
 
-        assertThat(res.isEmpty()).isTrue();
+        assertThat(res).isEmpty();
     }
 
     @Test
@@ -262,7 +263,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
 
         List<Link> res = linkRepository.findAllLinks();
 
-        assertThat(res.size()).isEqualTo(insertCount);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(insertCount);
     }
 
     @Test
@@ -295,7 +296,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
 
         List<Link> res = linkRepository.findLinksByTgChatId(chat1.getChatId());
 
-        assertThat(res.size()).isEqualTo(1);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
         assertThat(res.get(0)).isEqualTo(link1);
     }
 
@@ -332,7 +333,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
         // link2 should be removed bc only chat tracked it
         link1.setTgChats(Set.of(chat1));   // for clean equals (chat2 was removed)
 
-        assertThat(res.size()).isEqualTo(1);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
         assertThat(res.get(0)).isEqualTo(link1);
     }
 
@@ -361,7 +362,7 @@ class JdbcLinkDaoTest extends IntegrationTest {
 
         List<Link> res = linkRepository.findAllWhereLastCheckTimeBefore(needLastCheckTime);
 
-        assertThat(res.size()).isEqualTo(1);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
         assertThat(res.get(0)).isEqualTo(uncheckedLink);
     }
 

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -88,7 +89,7 @@ class JdbcTgChatRepositoryTest extends IntegrationTest {
 
         Optional<TgChat> res = chatRepository.updateTgChat(randomId, newChat);
 
-        assertThat(res.isEmpty()).isTrue();
+        assertThat(res).isEmpty();
     }
 
     @Test
@@ -103,7 +104,7 @@ class JdbcTgChatRepositoryTest extends IntegrationTest {
         chat.setId(removeRes.get().getId());    // for clean equals
 
         assertThat(removeRes.get()).isEqualTo(chat);
-        assertThat(findAfterRemoveRes.isEmpty()).isTrue();
+        assertThat(findAfterRemoveRes).isEmpty();
     }
 
     @Test
@@ -115,8 +116,8 @@ class JdbcTgChatRepositoryTest extends IntegrationTest {
         Optional<TgChat> removeRes = chatRepository.removeTgChatById(id);
         Optional<TgChat> findAfterRemoveRes = chatRepository.findTgChatById(id);
 
-        assertThat(removeRes.isEmpty()).isTrue();
-        assertThat(findAfterRemoveRes.isEmpty()).isTrue();
+        assertThat(removeRes).isEmpty();
+        assertThat(findAfterRemoveRes).isEmpty();
     }
 
     @Test
@@ -140,7 +141,7 @@ class JdbcTgChatRepositoryTest extends IntegrationTest {
 
         Optional<TgChat> res = chatRepository.findTgChatById(id);
 
-        assertThat(res.isEmpty()).isTrue();
+        assertThat(res).isEmpty();
     }
 
     @Test
@@ -164,7 +165,7 @@ class JdbcTgChatRepositoryTest extends IntegrationTest {
 
         Optional<TgChat> res = chatRepository.findTgChatByChatId(chatId);
 
-        assertThat(res.isEmpty()).isTrue();
+        assertThat(res).isEmpty();
     }
 
     @Test
@@ -180,7 +181,7 @@ class JdbcTgChatRepositoryTest extends IntegrationTest {
 
         List<TgChat> res = chatRepository.findAllTgChats();
 
-        assertThat(res.size()).isEqualTo(insertCount);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(insertCount);
     }
 
     private TgChat createTgChatWithChatId(Long chatId) {
