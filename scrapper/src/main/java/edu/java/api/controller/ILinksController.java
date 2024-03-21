@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.http.ResponseEntity;
 
 public interface ILinksController {
 
@@ -25,7 +24,7 @@ public interface ILinksController {
                      description = "Некорректные параметры запроса",
                      content = @Content(mediaType = "application/json",
                                         schema = @Schema(implementation = ApiErrorResponse.class)))})
-    ResponseEntity<ListLinksResponse> getLinks(
+    ListLinksResponse getLinks(
         Long tgChatId
     );
 
@@ -40,7 +39,7 @@ public interface ILinksController {
                      description = "Некорректные параметры запроса",
                      content = @Content(mediaType = "application/json",
                                         schema = @Schema(implementation = ApiErrorResponse.class)))})
-    ResponseEntity<LinkResponse> addLink(
+    LinkResponse addLink(
         Long tgChatId,
         AddLinkRequest requestBody
     );
@@ -61,7 +60,7 @@ public interface ILinksController {
                      description = "Ссылка не найдена",
                      content = @Content(mediaType = "application/json",
                                         schema = @Schema(implementation = ApiErrorResponse.class)))})
-    ResponseEntity<LinkResponse> removeLink(
+    LinkResponse removeLink(
         Long tgChatId,
         RemoveLinkRequest requestBody
     );

@@ -13,7 +13,6 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,16 +41,14 @@ public class LinksController implements ILinksController {
     }
 
     @GetMapping
-    public ResponseEntity<ListLinksResponse> getLinks(@RequestHeader(Headers.TG_CHAT_ID) Long tgChatId) {
+    public ListLinksResponse getLinks(@RequestHeader(Headers.TG_CHAT_ID) Long tgChatId) {
         log.debug("Getting links by id {}", tgChatId);
         List<Link> links = linkService.findAllByTgChatId(tgChatId);
-        return ResponseEntity.ok(
-            linksTransformService.toListLinksResponse(links)
-        );
+        return linksTransformService.toListLinksResponse(links);
     }
 
     @PostMapping
-    public ResponseEntity<LinkResponse> addLink(
+    public LinkResponse addLink(
         @RequestHeader(Headers.TG_CHAT_ID) Long tgChatId,
         @RequestBody @Valid AddLinkRequest requestBody
     ) {
@@ -59,13 +56,11 @@ public class LinksController implements ILinksController {
         Link link = linksTransformService.toLink(requestBody);
         link = linkService.addLink(tgChatId, link.getUrl(), link.getName());
         linkInfoService.addLinkInfoByLink(link);
-        return ResponseEntity.ok(
-            linksTransformService.toLinkResponse(link)
-        );
+        return linksTransformService.toLinkResponse(link);
     }
 
     @DeleteMapping
-    public ResponseEntity<LinkResponse> removeLink(
+    public LinkResponse removeLink(
         @RequestHeader(Headers.TG_CHAT_ID) Long tgChatId,
         @RequestBody @Valid RemoveLinkRequest requestBody
     ) {
@@ -73,9 +68,7 @@ public class LinksController implements ILinksController {
         Link link = linksTransformService.toLink(requestBody);
         link = linkService.removeLink(tgChatId, link.getUrl());
         linkInfoService.removeLinkInfoByLink(link);
-        return ResponseEntity.ok(
-            linksTransformService.toLinkResponse(link)
-        );
+        return linksTransformService.toLinkResponse(link);
     }
 
 }
