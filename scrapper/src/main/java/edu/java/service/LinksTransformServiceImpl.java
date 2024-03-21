@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ILinksTransformService implements LinksTransformService {
+public class LinksTransformServiceImpl implements LinksTransformService {
 
-    private final ILinksParsingService linksParsingService;
+    private final LinksParsingServiceImpl linksParsingService;
 
     @Autowired
-    public ILinksTransformService(ILinksParsingService linksParsingService) {
+    public LinksTransformServiceImpl(LinksParsingServiceImpl linksParsingService) {
         this.linksParsingService = linksParsingService;
     }
 

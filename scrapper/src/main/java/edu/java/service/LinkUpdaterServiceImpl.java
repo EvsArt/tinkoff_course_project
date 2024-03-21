@@ -15,18 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ILinkUpdaterService implements LinkUpdaterService {
+public class LinkUpdaterServiceImpl implements LinkUpdaterService {
 
-    private final ILinksParsingService linksParsingService;
+    private final LinksParsingServiceImpl linksParsingService;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final LinkService linkService;
 
     @Autowired
-    public ILinkUpdaterService(
+    public LinkUpdaterServiceImpl(
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
-        ILinksParsingService linksParsingService,
+        LinksParsingServiceImpl linksParsingService,
         LinkService linkService
     ) {
         this.gitHubClient = gitHubClient;
