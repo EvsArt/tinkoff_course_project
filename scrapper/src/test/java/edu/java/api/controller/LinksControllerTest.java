@@ -7,7 +7,7 @@ import edu.java.api.dto.LinkResponse;
 import edu.java.api.dto.ListLinksResponse;
 import edu.java.api.dto.RemoveLinkRequest;
 import edu.java.exceptions.LinkNotExistsException;
-import edu.java.model.Link;
+import edu.java.model.entity.Link;
 import edu.java.service.LinkInfoService;
 import edu.java.service.LinkService;
 import edu.java.service.LinksTransformService;

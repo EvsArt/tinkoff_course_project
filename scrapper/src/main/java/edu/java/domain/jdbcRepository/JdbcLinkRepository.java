@@ -1,9 +1,8 @@
 package edu.java.domain.jdbcRepository;
 
 import edu.java.domain.LinkRepository;
-import edu.java.domain.TgChatRepository;
-import edu.java.model.Link;
-import edu.java.model.TgChat;
+import edu.java.model.entity.Link;
+import edu.java.model.entity.TgChat;
 import edu.java.service.SqlQueries;
 import java.net.URI;
 import java.sql.Types;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Primary
 @Repository
 public class JdbcLinkRepository implements LinkRepository {
 
@@ -32,7 +30,6 @@ public class JdbcLinkRepository implements LinkRepository {
     private final String linkTableName = SqlQueries.LINK_TABLE_NAME;
     private final List<String> linkFieldsNamesWithoutId = SqlQueries.LINK_FIELDS_NAMES_WITHOUT_ID;
 
-    @Autowired
     public JdbcLinkRepository(
         JdbcClient jdbcClient,
         JdbcTgChatRepository tgChatRepository,

@@ -1,0 +1,72 @@
+package edu.java.service.jpa;
+
+import edu.java.client.StackOverflowClient;
+import edu.java.domain.jpaRepository.JpaStackOverFlowLinkInfoRepository;
+import edu.java.dto.StackOverflowQuestionRequest;
+import edu.java.exceptions.LinkNotExistsException;
+import edu.java.model.entity.GitHubLinkInfo;
+import edu.java.model.entity.Link;
+import edu.java.model.entity.StackOverFlowLinkInfo;
+import edu.java.service.LinksParsingService;
+import edu.java.service.StackOverFlowLinkInfoService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.SerializationUtils;
+
+import java.net.URI;
+
+@Slf4j
+public class JpaStackOverFlowLinkInfoService implements StackOverFlowLinkInfoService {
+    private final JpaStackOverFlowLinkInfoRepository linkInfoRepository;
+    private final StackOverflowClient client;
+    private final LinksParsingService linksParsingService;
+
+    public JpaStackOverFlowLinkInfoService(
+        JpaStackOverFlowLinkInfoRepository linkInfoRepository,
+        StackOverflowClient client,
+        LinksParsingService linksParsingService
+    ) {
+        this.linkInfoRepository = linkInfoRepository;
+        this.client = client;
+        this.linksParsingService = linksParsingService;
+    }
+
+    @Override
+    public StackOverFlowLinkInfo findLinkInfoByLinkId(long linkId) {
+        log.debug("findLinkInfoByLinkId() was called with linkId={}", linkId);
+        return linkInfoRepository.findByLinkId(linkId).orElseThrow(LinkNotExistsException::new);
+    }
+
+    @Override
+    public StackOverFlowLinkInfo findLinkInfoByLinkUrl(URI url) {
+        log.debug("findLinkInfoByLinkUrl() was called with url={}", url);
+        return linkInfoRepository.findByLinkUrl(url).orElseThrow(LinkNotExistsException::new);
+    }
+
+    @Override
+    public StackOverFlowLinkInfo addLinkInfo(Link link) {
+        log.debug("addLinkInfo() was called with link={}", link);
+        StackOverflowQuestionRequest request =
+            linksParsingService.getStackOverFlowQuestionRequestByLink(link.getUrl().toString());
+        int answerCount = client.getQuestion(request).block().answerCount();
+
+        StackOverFlowLinkInfo linkInfo = linkInfoRepository.findByLinkUrl(link.getUrl())
+            .orElse(new StackOverFlowLinkInfo(link, answerCount));
+        return linkInfoRepository.save(linkInfo);
+    }
+
+    @Override
+    public StackOverFlowLinkInfo updateLinkInfo(long linkId, StackOverFlowLinkInfo linkInfo) {
+        log.debug("updateLinkInfo() was called with linkId={}, linkInfo={}", linkId, linkInfo);
+        StackOverFlowLinkInfo newLinkInfo = SerializationUtils.clone(linkInfo);
+        newLinkInfo.setId(linkId);
+        return newLinkInfo;
+    }
+
+    @Override
+    public StackOverFlowLinkInfo removeLinkInfoByLink(Link link) {
+        log.debug("removeLinkInfoByLink() was called with link={}", link);
+        StackOverFlowLinkInfo oldLinkInfo = linkInfoRepository.findByLinkUrl(link.getUrl()).orElseThrow(LinkNotExistsException::new);
+        linkInfoRepository.deleteByLink(link);
+        return oldLinkInfo;
+    }
+}

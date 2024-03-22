@@ -5,7 +5,7 @@ import edu.java.api.dto.AddLinkRequest;
 import edu.java.api.dto.LinkResponse;
 import edu.java.api.dto.ListLinksResponse;
 import edu.java.api.dto.RemoveLinkRequest;
-import edu.java.model.Link;
+import edu.java.model.entity.Link;
 import edu.java.service.LinkInfoService;
 import edu.java.service.LinkService;
 import edu.java.service.LinksTransformService;
@@ -67,7 +67,6 @@ public class LinksController implements ILinksController {
         log.debug("Removing link {} to id {}", requestBody, tgChatId);
         Link link = linksTransformService.toLink(requestBody);
         link = linkService.removeLink(tgChatId, link.getUrl());
-        linkInfoService.removeLinkInfoByLink(link);
         return linksTransformService.toLinkResponse(link);
     }
 

@@ -5,6 +5,7 @@ app:
     force-check-delay: 10s
   linkChecker:
     checkInterval: 1m
+  database-access-type: jpa
 
 api:
   github:
@@ -28,6 +29,10 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
   liquibase:
     enabled: false
 

@@ -1,6 +1,6 @@
 package edu.java.domain.jdbcRepository;
 
-import edu.java.model.Link;
+import edu.java.model.entity.Link;
 import edu.java.service.SqlQueries;
 import java.sql.Types;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
 @Slf4j
+@Repository
 public class JdbcAssociativeTableRepository {
 
     private final JdbcClient jdbcClient;

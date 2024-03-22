@@ -1,7 +1,7 @@
 package edu.java.service;
 
-import edu.java.model.Link;
-import edu.java.model.StackOverFlowLinkInfo;
+import edu.java.model.entity.Link;
+import edu.java.model.entity.StackOverFlowLinkInfo;
 import java.net.URI;
 
 public interface StackOverFlowLinkInfoService {

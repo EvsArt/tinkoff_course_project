@@ -1,6 +1,6 @@
 package edu.java.domain;
 
-import edu.java.model.GitHubLinkInfo;
+import edu.java.model.entity.GitHubLinkInfo;
 import java.net.URI;
 import java.util.Optional;
 

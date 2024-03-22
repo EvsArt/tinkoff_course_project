@@ -1,13 +1,10 @@
 package edu.java.service;
 
 import edu.java.client.service.SupportedApi;
-import edu.java.model.Link;
-import edu.java.service.GitHubLinkInfoService;
-import edu.java.service.StackOverFlowLinkInfoService;
+import edu.java.model.entity.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
 public class LinkInfoService {
 
     private final GitHubLinkInfoService gitHubLinkInfoService;

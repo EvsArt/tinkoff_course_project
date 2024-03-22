@@ -1,6 +1,6 @@
 package edu.java.api.controller;
 
-import edu.java.model.TgChat;
+import edu.java.model.entity.TgChat;
 import edu.java.service.TgChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;

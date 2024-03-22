@@ -4,21 +4,19 @@ import edu.java.domain.jdbcRepository.JdbcLinkRepository;
 import edu.java.domain.jdbcRepository.JdbcTgChatRepository;
 import edu.java.exceptions.ChatAlreadyRegisteredException;
 import edu.java.exceptions.ChatNotExistException;
-import edu.java.model.TgChat;
+import edu.java.model.entity.TgChat;
 import edu.java.service.TgChatService;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
 @Slf4j
 public class JdbcTgChatService implements TgChatService {
 
     private final JdbcTgChatRepository tgChatRepository;
     private final JdbcLinkRepository linkRepository;
 
-    @Autowired
     public JdbcTgChatService(JdbcTgChatRepository tgChatRepository, JdbcLinkRepository linkRepository) {
         this.tgChatRepository = tgChatRepository;
         this.linkRepository = linkRepository;

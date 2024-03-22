@@ -2,6 +2,8 @@ package edu.java.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import edu.java.model.entity.Link;
+import edu.java.model.entity.TgChat;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

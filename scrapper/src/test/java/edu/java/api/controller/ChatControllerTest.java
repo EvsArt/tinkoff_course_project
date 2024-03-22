@@ -2,7 +2,7 @@ package edu.java.api.controller;
 
 import edu.java.exceptions.ChatAlreadyRegisteredException;
 import edu.java.exceptions.ChatNotExistException;
-import edu.java.model.TgChat;
+import edu.java.model.entity.TgChat;
 import edu.java.service.TgChatService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

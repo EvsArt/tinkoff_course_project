@@ -1,8 +1,8 @@
 package edu.java.domain.jooqRepository;
 
 import edu.java.domain.LinkRepository;
-import edu.java.model.Link;
-import edu.java.model.TgChat;
+import edu.java.model.entity.Link;
+import edu.java.model.entity.TgChat;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
@@ -24,7 +24,6 @@ public class JooqLinkRepository implements LinkRepository {
     private final JooqAssociativeTableRepository associativeTableRepository;
     private final JooqTgChatRepository tgChatRepository;
 
-    @Autowired
     public JooqLinkRepository(
         DefaultDSLContext dsl,
         JooqAssociativeTableRepository associativeTableRepository,

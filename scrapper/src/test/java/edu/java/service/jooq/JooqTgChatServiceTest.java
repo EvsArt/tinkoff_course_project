@@ -2,7 +2,7 @@ package edu.java.service.jooq;
 
 import edu.java.exceptions.ChatAlreadyRegisteredException;
 import edu.java.exceptions.ChatNotExistException;
-import edu.java.model.TgChat;
+import edu.java.model.entity.TgChat;
 import edu.java.scrapper.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

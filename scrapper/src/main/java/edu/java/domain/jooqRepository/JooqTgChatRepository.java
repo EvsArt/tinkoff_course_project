@@ -1,7 +1,7 @@
 package edu.java.domain.jooqRepository;
 
 import edu.java.domain.TgChatRepository;
-import edu.java.model.TgChat;
+import edu.java.model.entity.TgChat;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,6 @@ public class JooqTgChatRepository implements TgChatRepository {
     private final DefaultDSLContext dsl;
     private final JooqAssociativeTableRepository associativeTableRepository;
 
-    @Autowired
     public JooqTgChatRepository(
         DefaultDSLContext dsl,
         JooqAssociativeTableRepository associativeTableRepository

@@ -1,6 +1,6 @@
 package edu.java.service;
 
-import edu.java.model.TgChat;
+import edu.java.model.entity.TgChat;
 
 public interface TgChatService {
 

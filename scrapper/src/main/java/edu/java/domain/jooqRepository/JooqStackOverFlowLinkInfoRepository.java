@@ -1,7 +1,7 @@
 package edu.java.domain.jooqRepository;
 
 import edu.java.domain.StackOverFlowLinkInfoRepository;
-import edu.java.model.StackOverFlowLinkInfo;
+import edu.java.model.entity.StackOverFlowLinkInfo;
 import java.net.URI;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,6 @@ public class JooqStackOverFlowLinkInfoRepository implements StackOverFlowLinkInf
 
     private final DefaultDSLContext dsl;
 
-    @Autowired
     public JooqStackOverFlowLinkInfoRepository(DefaultDSLContext dsl) {
         this.dsl = dsl;
     }

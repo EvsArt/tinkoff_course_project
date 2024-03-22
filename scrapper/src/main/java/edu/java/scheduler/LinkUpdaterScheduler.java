@@ -1,7 +1,7 @@
 package edu.java.scheduler;
 
 import edu.java.configuration.ApplicationConfig;
-import edu.java.model.Link;
+import edu.java.model.entity.Link;
 import edu.java.model.LinkUpdateInfo;
 import edu.java.service.LinkService;
 import edu.java.service.LinkUpdaterService;
@@ -40,7 +40,7 @@ public class LinkUpdaterScheduler {
         this.sendUpdatesService = sendUpdatesService;
     }
 
-    @Scheduled(fixedDelayString = "PT" + "${app.scheduler.interval}")
+    @Scheduled(fixedDelayString = "#{['app-edu.java.configuration.ApplicationConfig'].scheduler().interval()}")
     public void update() {
         OffsetDateTime lastLinkCheckingTime = OffsetDateTime.now().minus(linkCheckerConfig.checkInterval());
 

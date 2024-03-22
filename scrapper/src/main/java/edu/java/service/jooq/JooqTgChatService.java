@@ -4,21 +4,19 @@ import edu.java.domain.jooqRepository.JooqLinkRepository;
 import edu.java.domain.jooqRepository.JooqTgChatRepository;
 import edu.java.exceptions.ChatAlreadyRegisteredException;
 import edu.java.exceptions.ChatNotExistException;
-import edu.java.model.TgChat;
+import edu.java.model.entity.TgChat;
 import edu.java.service.TgChatService;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
 @Slf4j
 public class JooqTgChatService implements TgChatService {
 
     private final JooqTgChatRepository tgChatRepository;
     private final JooqLinkRepository linkRepository;
 
-    @Autowired
     public JooqTgChatService(JooqTgChatRepository tgChatRepository, JooqLinkRepository linkRepository) {
         this.tgChatRepository = tgChatRepository;
         this.linkRepository = linkRepository;

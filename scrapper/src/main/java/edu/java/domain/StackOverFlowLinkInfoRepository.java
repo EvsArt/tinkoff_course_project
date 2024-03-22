@@ -1,6 +1,6 @@
 package edu.java.domain;
 
-import edu.java.model.StackOverFlowLinkInfo;
+import edu.java.model.entity.StackOverFlowLinkInfo;
 import java.net.URI;
 import java.util.Optional;
 

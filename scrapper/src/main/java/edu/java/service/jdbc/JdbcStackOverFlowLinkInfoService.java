@@ -4,14 +4,13 @@ import edu.java.client.StackOverflowClient;
 import edu.java.domain.jdbcRepository.JdbcStackOverFlowLinkInfoRepository;
 import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
-import edu.java.model.Link;
-import edu.java.model.StackOverFlowLinkInfo;
+import edu.java.model.entity.Link;
+import edu.java.model.entity.StackOverFlowLinkInfo;
 import edu.java.service.LinksParsingService;
 import edu.java.service.StackOverFlowLinkInfoService;
 import java.net.URI;
 import org.springframework.stereotype.Service;
 
-@Service
 public class JdbcStackOverFlowLinkInfoService implements StackOverFlowLinkInfoService {
     private final StackOverflowClient stackOverflowClient;
     private final LinksParsingService linksParsingService;

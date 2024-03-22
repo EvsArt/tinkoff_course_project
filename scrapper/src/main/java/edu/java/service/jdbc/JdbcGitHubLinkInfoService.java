@@ -6,14 +6,13 @@ import edu.java.domain.jdbcRepository.JdbcLinkRepository;
 import edu.java.dto.GitHubRepoEventResponse;
 import edu.java.dto.GitHubRepoRequest;
 import edu.java.exceptions.LinkNotExistsException;
-import edu.java.model.GitHubLinkInfo;
-import edu.java.model.Link;
+import edu.java.model.entity.GitHubLinkInfo;
+import edu.java.model.entity.Link;
 import edu.java.service.GitHubLinkInfoService;
 import edu.java.service.LinksParsingService;
 import java.net.URI;
 import org.springframework.stereotype.Service;
 
-@Service
 public class JdbcGitHubLinkInfoService implements GitHubLinkInfoService {
 
     private final GitHubClient gitHubClient;

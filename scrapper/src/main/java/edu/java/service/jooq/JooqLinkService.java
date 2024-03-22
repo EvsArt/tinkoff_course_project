@@ -4,8 +4,8 @@ import edu.java.domain.jooqRepository.JooqLinkRepository;
 import edu.java.domain.jooqRepository.JooqTgChatRepository;
 import edu.java.exceptions.ChatNotExistException;
 import edu.java.exceptions.LinkNotExistsException;
-import edu.java.model.Link;
-import edu.java.model.TgChat;
+import edu.java.model.entity.Link;
+import edu.java.model.entity.TgChat;
 import edu.java.service.LinkInfoService;
 import edu.java.service.LinkService;
 import java.net.URI;
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Slf4j
 public class JooqLinkService implements LinkService {
 

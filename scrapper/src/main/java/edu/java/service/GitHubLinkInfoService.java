@@ -1,7 +1,7 @@
 package edu.java.service;
 
-import edu.java.model.GitHubLinkInfo;
-import edu.java.model.Link;
+import edu.java.model.entity.GitHubLinkInfo;
+import edu.java.model.entity.Link;
 import java.net.URI;
 
 public interface GitHubLinkInfoService {

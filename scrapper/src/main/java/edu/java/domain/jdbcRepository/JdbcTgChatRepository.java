@@ -1,7 +1,7 @@
 package edu.java.domain.jdbcRepository;
 
 import edu.java.domain.TgChatRepository;
-import edu.java.model.TgChat;
+import edu.java.model.entity.TgChat;
 import edu.java.service.SqlQueries;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Primary
 @Repository
 public class JdbcTgChatRepository implements TgChatRepository {
 
@@ -28,7 +27,6 @@ public class JdbcTgChatRepository implements TgChatRepository {
     private final String associativeTableName = SqlQueries.LINK_TG_CHAT_TABLE_NAME;
     private final List<String> tgChatFieldsNamesWithoutId = SqlQueries.TG_CHAT_FIELDS_NAMES_WITHOUT_ID;
 
-    @Autowired
     public JdbcTgChatRepository(
         JdbcClient jdbcClient,
         JdbcAssociativeTableRepository associativeTableRepository

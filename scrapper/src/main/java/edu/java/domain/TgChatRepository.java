@@ -1,6 +1,6 @@
 package edu.java.domain;
 
-import edu.java.model.TgChat;
+import edu.java.model.entity.TgChat;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;

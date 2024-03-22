@@ -2,8 +2,8 @@ package edu.java.service.jooq;
 
 import edu.java.domain.jooqRepository.JooqLinkRepository;
 import edu.java.exceptions.LinkNotExistsException;
-import edu.java.model.Link;
-import edu.java.model.TgChat;
+import edu.java.model.entity.Link;
+import edu.java.model.entity.TgChat;
 import edu.java.scrapper.IntegrationTest;
 import java.net.URI;
 import java.time.OffsetDateTime;

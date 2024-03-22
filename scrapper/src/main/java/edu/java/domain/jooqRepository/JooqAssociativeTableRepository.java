@@ -1,6 +1,6 @@
 package edu.java.domain.jooqRepository;
 
-import edu.java.model.Link;
+import edu.java.model.entity.Link;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.impl.DefaultDSLContext;
@@ -15,7 +15,6 @@ public class JooqAssociativeTableRepository {
 
     private final DefaultDSLContext dsl;
 
-    @Autowired
     public JooqAssociativeTableRepository(DefaultDSLContext dsl) {
         this.dsl = dsl;
     }

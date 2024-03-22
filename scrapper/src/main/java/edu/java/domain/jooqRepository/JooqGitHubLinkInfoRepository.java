@@ -1,7 +1,7 @@
 package edu.java.domain.jooqRepository;
 
 import edu.java.domain.GitHubLinkInfoRepository;
-import edu.java.model.GitHubLinkInfo;
+import edu.java.model.entity.GitHubLinkInfo;
 import java.net.URI;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,6 @@ public class JooqGitHubLinkInfoRepository implements GitHubLinkInfoRepository {
 
     private final DefaultDSLContext dsl;
 
-    @Autowired
     public JooqGitHubLinkInfoRepository(DefaultDSLContext dsl) {
         this.dsl = dsl;
     }
