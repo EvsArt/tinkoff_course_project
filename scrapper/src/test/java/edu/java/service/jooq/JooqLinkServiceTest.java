@@ -8,13 +8,17 @@ import edu.java.scrapper.IntegrationTest;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
+import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
+@TestPropertySource(properties="app.database-access-type=jooq")
 class JooqLinkServiceTest extends IntegrationTest {
 
     @Autowired
@@ -135,7 +139,7 @@ class JooqLinkServiceTest extends IntegrationTest {
 
         List<Link> res = linkService.findAllByTgChatId(chat1.getChatId());
 
-        assertThat(res.size()).isEqualTo(1);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
         assertThat(res.get(0)).isEqualTo(newLink);
     }
 

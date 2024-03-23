@@ -3,6 +3,10 @@ package edu.java.domain.jooqRepository;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.TgChat;
 import edu.java.scrapper.IntegrationTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
@@ -10,10 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class JooqTgChatRepositoryTest extends IntegrationTest {
@@ -30,6 +30,7 @@ class JooqTgChatRepositoryTest extends IntegrationTest {
         TgChat chat = new TgChat(123L, "aa");
 
         TgChat res = chatRepository.insertTgChat(chat).get();
+        System.out.println(chatRepository.findAllTgChats());
         chat.setId(res.getId());    // for clean equals
 
         assertThat(res).isEqualTo(chat);
@@ -71,8 +72,7 @@ class JooqTgChatRepositoryTest extends IntegrationTest {
         TgChat newChat = new TgChat(newChatId, "aa");
         long id = chatRepository.insertTgChat(oldChat).get().getId();
 
-        chatRepository.updateTgChat(id, newChat);
-        TgChat res = chatRepository.findTgChatById(id).get();
+        TgChat res = chatRepository.updateTgChat(id, newChat).get();
 
         assertThat(res.getChatId()).isEqualTo(newChatId);
     }
@@ -157,12 +157,12 @@ class JooqTgChatRepositoryTest extends IntegrationTest {
     @Test
     @Rollback
     @Transactional
-    void findLinkByUncreatedURL() {
+    void findUncreatedLink() {
         long chatId = 123L;
 
         Optional<TgChat> res = chatRepository.findTgChatByChatId(chatId);
 
-        assertThat(res.isEmpty()).isTrue();
+        assertThat(res).isEmpty();
     }
 
     @Test
@@ -170,7 +170,6 @@ class JooqTgChatRepositoryTest extends IntegrationTest {
     @Transactional
     void findAllTgChats() {
         int insertCount = 5;
-        TgChat chat = new TgChat(123L, "aa");
 
         Stream.iterate(1L, it -> it + 1)
             .limit(insertCount)

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -281,8 +282,8 @@ class JooqLinkRepositoryTest extends IntegrationTest {
             OffsetDateTime.parse("2024-03-15T11:17:31+03:00"),
             OffsetDateTime.parse("2024-03-15T11:19:32+03:00")
         );
-        TgChat chat1 = new TgChat(1L, "a");
-        TgChat chat2 = new TgChat(2L, "a");
+        TgChat chat1 = new TgChat(11L, "a");
+        TgChat chat2 = new TgChat(21L, "a");
         chat1 = chatRepository.insertTgChat(chat1).get();
         chat2 = chatRepository.insertTgChat(chat2).get();
         link1.setTgChats(Set.of(chat1, chat2));
@@ -293,7 +294,7 @@ class JooqLinkRepositoryTest extends IntegrationTest {
 
         List<Link> res = linkRepository.findLinksByTgChatId(chat1.getId());
 
-        assertThat(res.size()).isEqualTo(1);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
         assertThat(res.get(0)).isEqualTo(link1);
     }
 

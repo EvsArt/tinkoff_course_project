@@ -34,7 +34,7 @@ public class JpaLinkService implements LinkService {
     public Link addLink(long tgChatId, URI url, String name) {
         log.debug("addLink() was called with tgChatId={}, url={}, name={}", tgChatId, url, name);
         Link newLink = linkRepository.findByUrl(url).orElse(new Link(url, name));
-        TgChat chat = chatRepository.findTgChatByChatId(tgChatId).orElseThrow(ChatNotExistException::new);
+        TgChat chat = chatRepository.findTgChatByChatId(tgChatId).orElseThrow(IllegalArgumentException::new);
         newLink.add(chat);
         return linkRepository.save(newLink);
     }

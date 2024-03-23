@@ -28,11 +28,16 @@ public class Link implements Serializable {
     private Long id;
 
     @Convert(converter = UriStringConverter.class)
+    @Column(name = "url")
     @NonNull private URI url;
+    @Column(name = "name")
     @NonNull private String name;
 
+    @Column(name = "created_at")
     @NonNull private OffsetDateTime createdAt;
+    @Column(name = "last_update_time")
     @NonNull private OffsetDateTime lastUpdateTime;
+    @Column(name = "last_check_time")
     @NonNull private OffsetDateTime lastCheckTime;
 
     @Delegate

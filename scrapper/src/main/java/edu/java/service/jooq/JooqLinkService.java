@@ -11,6 +11,7 @@ import edu.java.service.LinkService;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,11 +63,10 @@ public class JooqLinkService implements LinkService {
     @Override
     @Transactional
     public List<Link> findAllByTgChatId(long tgChatId) {
-        boolean chatExists = chatRepository.findTgChatByChatId(tgChatId).isPresent();
-        if (!chatExists) {
-            throw new ChatNotExistException();
-        }
-        return linkRepository.findLinksByTgChatId(tgChatId);
+        Optional<TgChat> existedChat = chatRepository.findTgChatByChatId(tgChatId);
+        existedChat.orElseThrow(ChatNotExistException::new);
+
+        return linkRepository.findLinksByTgChatId(existedChat.get().getId());
     }
 
     @Override

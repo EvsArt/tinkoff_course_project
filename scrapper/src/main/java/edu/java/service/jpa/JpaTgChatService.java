@@ -6,6 +6,7 @@ import edu.java.exceptions.ChatNotExistException;
 import edu.java.model.entity.TgChat;
 import edu.java.service.TgChatService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
@@ -22,7 +23,11 @@ public class JpaTgChatService implements TgChatService {
     public TgChat registerChat(long tgChatId, String name) {
         log.debug("registerChat() was called with tgChatId={}, name={}", tgChatId, name);
         TgChat chat = new TgChat(tgChatId, name);
-        return tgChatRepository.save(chat);
+        try {
+            return tgChatRepository.save(chat);
+        } catch (DataIntegrityViolationException e) {
+            throw new ChatAlreadyRegisteredException();
+        }
     }
 
     @Override

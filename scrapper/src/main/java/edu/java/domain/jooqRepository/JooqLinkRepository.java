@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import static edu.java.domain.jooq.Tables.LINK;
 import static edu.java.domain.jooq.Tables.LINK_TG_CHAT;
+import static edu.java.domain.jooq.Tables.TG_CHAT;
 
 @Slf4j
 @Repository
@@ -148,7 +149,6 @@ public class JooqLinkRepository implements LinkRepository {
     @Override
     public List<Link> findLinksByTgChatId(Long id) {
         log.debug("findLinksByTgChatId() was called with id={}", id);
-        // getting links id from associative table
         List<Link> links = dsl
             .select(LINK)
             .from(LINK_TG_CHAT)

@@ -1,9 +1,10 @@
-package edu.java.service.jdbc;
+package edu.java.service.jpa;
 
 import edu.java.exceptions.ChatAlreadyRegisteredException;
 import edu.java.exceptions.ChatNotExistException;
 import edu.java.model.entity.TgChat;
 import edu.java.scrapper.IntegrationTest;
+import edu.java.service.jooq.JooqTgChatService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -12,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
-@TestPropertySource(properties="app.database-access-type=jdbc")
-class JdbcTgChatServiceTest extends IntegrationTest {
+@TestPropertySource(properties="app.database-access-type=jpa")
+class JpaTgChatServiceTest extends IntegrationTest {
 
     @Autowired
-    private JdbcTgChatService chatService;
+    private JpaTgChatService chatService;
 
     @Test
     @Rollback
@@ -31,8 +32,9 @@ class JdbcTgChatServiceTest extends IntegrationTest {
     @Rollback
     @Transactional
     void registerExistsChat_shouldThrowChatAlreadyRegisteredException() {
-        chatService.registerChat(1L, "MyChat");
-        Throwable res = catchThrowable(() -> chatService.registerChat(1L, "MyChat"));
+        long chatId = 1L;
+        chatService.registerChat(chatId, "MyChat");
+        Throwable res = catchThrowable(() -> chatService.registerChat(chatId, "MyChat"));
 
         assertThat(res).isInstanceOf(ChatAlreadyRegisteredException.class);
     }

@@ -1,6 +1,6 @@
-package edu.java.service.jdbc;
+package edu.java.service.jpa;
 
-import edu.java.domain.jdbcRepository.JdbcLinkRepository;
+import edu.java.domain.jpaRepository.JpaLinkRepository;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.TgChat;
@@ -8,6 +8,7 @@ import edu.java.scrapper.IntegrationTest;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
+import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -16,15 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
-@TestPropertySource(properties="app.database-access-type=jdbc")
-class JdbcLinkServiceTest extends IntegrationTest {
+@TestPropertySource(properties = "app.database-access-type=jpa")
+class JpaLinkServiceTest extends IntegrationTest {
 
     @Autowired
-    private JdbcLinkService linkService;
+    private JpaLinkService linkService;
     @Autowired
-    private JdbcTgChatService chatService;
+    private JpaTgChatService chatService;
     @Autowired
-    private JdbcLinkRepository linkRepository;
+    private JpaLinkRepository linkRepository;
 
     @Test
     @Transactional
@@ -85,7 +86,7 @@ class JdbcLinkServiceTest extends IntegrationTest {
         linkService.addLink(chat1.getChatId(), newLink.getUrl(), newLink.getName());
         linkService.removeLink(chat1.getChatId(), newLink.getUrl());
 
-        assertThat(linkRepository.findAllLinks().isEmpty()).isTrue();
+        AssertionsForInterfaceTypes.assertThat(linkRepository.findAll()).isEmpty();
     }
 
     @Test
@@ -104,10 +105,10 @@ class JdbcLinkServiceTest extends IntegrationTest {
         linkService.addLink(chat2.getChatId(), newLink.getUrl(), newLink.getName());
         linkService.removeLink(chat1.getChatId(), newLink.getUrl());
 
-        List<Link> existLinks = linkRepository.findAllLinks();
+        List<Link> existLinks = linkRepository.findAll();
 
-        assertThat(existLinks.size()).isEqualTo(1);
-        assertThat(existLinks.get(0).getTgChats().size()).isEqualTo(1);
+        AssertionsForInterfaceTypes.assertThat(existLinks).hasSize(1);
+        AssertionsForInterfaceTypes.assertThat(existLinks.get(0).getTgChats()).hasSize(1);
         assertThat(existLinks.get(0).getTgChats().contains(chat2)).isTrue();
     }
 
@@ -137,7 +138,7 @@ class JdbcLinkServiceTest extends IntegrationTest {
 
         List<Link> res = linkService.findAllByTgChatId(chat1.getChatId());
 
-        assertThat(res.size()).isEqualTo(1);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
         assertThat(res.get(0)).isEqualTo(newLink);
     }
 
@@ -159,7 +160,7 @@ class JdbcLinkServiceTest extends IntegrationTest {
 
         List<Link> res = linkService.findAll();
 
-        assertThat(res.size()).isEqualTo(2);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(2);
         assertThat(res.containsAll(List.of(newLink1, newLink2))).isTrue();
     }
 
@@ -188,7 +189,7 @@ class JdbcLinkServiceTest extends IntegrationTest {
 
         List<Link> res = linkService.findAllWhereLastCheckTimeBefore(needLastCheckTime);
 
-        assertThat(res.size()).isEqualTo(1);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
         assertThat(res.get(0).getName()).isEqualTo(uncheckedLink.getName());
     }
 }

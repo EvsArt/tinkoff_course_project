@@ -13,8 +13,6 @@ import java.util.Optional;
 @Repository
 public interface JpaLinkRepository extends JpaRepository<Link, Long> {
 
-    int deleteLinkByTgChatsContainsAndUrl(TgChat tgChat, URI url);
-
     Optional<Link> findById(long id);
     Optional<Link> findByUrl(URI url);
 
@@ -22,5 +20,5 @@ public interface JpaLinkRepository extends JpaRepository<Link, Long> {
 
     List<Link> findByTgChatsContains(TgChat chat);
 
-    boolean existsByUrl(URI url);
+    List<Link> findAll();
 }

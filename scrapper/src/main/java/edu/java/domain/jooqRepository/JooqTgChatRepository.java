@@ -5,6 +5,8 @@ import edu.java.model.entity.TgChat;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Record;
+import org.jooq.Result;
 import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,13 +30,13 @@ public class JooqTgChatRepository implements TgChatRepository {
     }
 
     @Override
-    @Transactional
     public Optional<TgChat> insertTgChat(TgChat chat) {
         log.debug("insertTgChat() was called with chat={}", chat);
         int updated = dsl.insertInto(TG_CHAT)
             .set(TG_CHAT.CHAT_ID, chat.getChatId())
             .set(TG_CHAT.NAME, chat.getName())
             .execute();
+        log.debug("Executed: {}", updated);
         if (updated == 0) {
             return Optional.empty();
         }
@@ -77,10 +79,10 @@ public class JooqTgChatRepository implements TgChatRepository {
     @Override
     public Optional<TgChat> removeTgChatByChatId(Long chatId) {
         log.debug("removeTgChatByChatId() was called with chatId={}", chatId);
+        Optional<TgChat> oldTgChat = findTgChatByChatId(chatId);
         int updated = dsl.deleteFrom(TG_CHAT)
             .where(TG_CHAT.CHAT_ID.eq(chatId))
             .execute();
-        Optional<TgChat> oldTgChat = findTgChatByChatId(chatId);
         if (oldTgChat.isEmpty()) {
             return oldTgChat;
         }
@@ -100,7 +102,6 @@ public class JooqTgChatRepository implements TgChatRepository {
     }
 
     @Override
-    @Transactional
     public Optional<TgChat> findTgChatByChatId(Long chatId) {
         log.debug("findTgChatByChatId() was called with chatId={}", chatId);
         return dsl.select()
@@ -110,7 +111,6 @@ public class JooqTgChatRepository implements TgChatRepository {
     }
 
     @Override
-    @Transactional
     public List<TgChat> findAllTgChats() {
         log.debug("findAllTgChats() was called");
         return dsl.select()
@@ -119,7 +119,6 @@ public class JooqTgChatRepository implements TgChatRepository {
     }
 
     @Override
-    @Transactional
     public List<TgChat> findTgChatsByLinkId(Long linkId) {
         log.debug("findTgChatsByLinkId() was called with linkId={}", linkId);
         return dsl.select(TG_CHAT)
