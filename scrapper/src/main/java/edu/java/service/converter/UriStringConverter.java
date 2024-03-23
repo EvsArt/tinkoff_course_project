@@ -2,7 +2,6 @@ package edu.java.service.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-
 import java.net.URI;
 
 @Converter

@@ -4,7 +4,6 @@ import edu.java.model.entity.Link;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.impl.DefaultDSLContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import static edu.java.domain.jooq.Tables.LINK_TG_CHAT;

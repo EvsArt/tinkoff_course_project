@@ -8,12 +8,11 @@ import edu.java.model.entity.Link;
 import edu.java.model.entity.TgChat;
 import edu.java.service.LinkInfoService;
 import edu.java.service.LinkService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 public class JpaLinkService implements LinkService {
@@ -22,7 +21,8 @@ public class JpaLinkService implements LinkService {
     private final JpaTgChatRepository chatRepository;
     private final LinkInfoService linkInfoService;
 
-    public JpaLinkService(JpaLinkRepository linkRepository, JpaTgChatRepository chatRepository,
+    public JpaLinkService(
+        JpaLinkRepository linkRepository, JpaTgChatRepository chatRepository,
         LinkInfoService linkInfoService
     ) {
         this.linkRepository = linkRepository;
@@ -47,7 +47,7 @@ public class JpaLinkService implements LinkService {
         Link oldLink = linkRepository.findByUrl(url).orElseThrow(LinkNotExistsException::new);
         oldLink.remove(chat);
         linkRepository.save(oldLink);
-        if(oldLink.getTgChats().isEmpty()) {
+        if (oldLink.getTgChats().isEmpty()) {
             linkRepository.delete(oldLink);
         }
         return oldLink;

@@ -11,14 +11,13 @@ import java.util.List;
 import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
-@TestPropertySource(properties="app.database-access-type=jooq")
+@TestPropertySource(properties = "app.database-access-type=jooq")
 class JooqLinkServiceTest extends IntegrationTest {
 
     @Autowired

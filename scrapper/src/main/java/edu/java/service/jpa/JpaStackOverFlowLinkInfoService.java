@@ -4,15 +4,14 @@ import edu.java.client.StackOverflowClient;
 import edu.java.domain.jpaRepository.JpaStackOverFlowLinkInfoRepository;
 import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.exceptions.LinkNotExistsException;
-import edu.java.model.entity.GitHubLinkInfo;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.StackOverFlowLinkInfo;
 import edu.java.service.LinksParsingService;
 import edu.java.service.StackOverFlowLinkInfoService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.SerializationUtils;
-
 import java.net.URI;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.SerializationUtils;
 
 @Slf4j
 public class JpaStackOverFlowLinkInfoService implements StackOverFlowLinkInfoService {
@@ -31,18 +30,21 @@ public class JpaStackOverFlowLinkInfoService implements StackOverFlowLinkInfoSer
     }
 
     @Override
+    @Transactional
     public StackOverFlowLinkInfo findLinkInfoByLinkId(long linkId) {
         log.debug("findLinkInfoByLinkId() was called with linkId={}", linkId);
         return linkInfoRepository.findByLinkId(linkId).orElseThrow(LinkNotExistsException::new);
     }
 
     @Override
+    @Transactional
     public StackOverFlowLinkInfo findLinkInfoByLinkUrl(URI url) {
         log.debug("findLinkInfoByLinkUrl() was called with url={}", url);
         return linkInfoRepository.findByLinkUrl(url).orElseThrow(LinkNotExistsException::new);
     }
 
     @Override
+    @Transactional
     public StackOverFlowLinkInfo addLinkInfo(Link link) {
         log.debug("addLinkInfo() was called with link={}", link);
         StackOverflowQuestionRequest request =
@@ -55,6 +57,7 @@ public class JpaStackOverFlowLinkInfoService implements StackOverFlowLinkInfoSer
     }
 
     @Override
+    @Transactional
     public StackOverFlowLinkInfo updateLinkInfo(long linkId, StackOverFlowLinkInfo linkInfo) {
         log.debug("updateLinkInfo() was called with linkId={}, linkInfo={}", linkId, linkInfo);
         StackOverFlowLinkInfo newLinkInfo = SerializationUtils.clone(linkInfo);
@@ -63,9 +66,11 @@ public class JpaStackOverFlowLinkInfoService implements StackOverFlowLinkInfoSer
     }
 
     @Override
+    @Transactional
     public StackOverFlowLinkInfo removeLinkInfoByLink(Link link) {
         log.debug("removeLinkInfoByLink() was called with link={}", link);
-        StackOverFlowLinkInfo oldLinkInfo = linkInfoRepository.findByLinkUrl(link.getUrl()).orElseThrow(LinkNotExistsException::new);
+        StackOverFlowLinkInfo oldLinkInfo =
+            linkInfoRepository.findByLinkUrl(link.getUrl()).orElseThrow(LinkNotExistsException::new);
         linkInfoRepository.deleteByLink(link);
         return oldLinkInfo;
     }

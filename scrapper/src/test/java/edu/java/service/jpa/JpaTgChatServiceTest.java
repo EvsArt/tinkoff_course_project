@@ -4,7 +4,6 @@ import edu.java.exceptions.ChatAlreadyRegisteredException;
 import edu.java.exceptions.ChatNotExistException;
 import edu.java.model.entity.TgChat;
 import edu.java.scrapper.IntegrationTest;
-import edu.java.service.jooq.JooqTgChatService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -13,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
-@TestPropertySource(properties="app.database-access-type=jpa")
+@TestPropertySource(properties = "app.database-access-type=jpa")
 class JpaTgChatServiceTest extends IntegrationTest {
 
     @Autowired

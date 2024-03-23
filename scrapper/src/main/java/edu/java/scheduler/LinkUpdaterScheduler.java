@@ -1,8 +1,8 @@
 package edu.java.scheduler;
 
 import edu.java.configuration.ApplicationConfig;
-import edu.java.model.entity.Link;
 import edu.java.model.LinkUpdateInfo;
+import edu.java.model.entity.Link;
 import edu.java.service.LinkService;
 import edu.java.service.LinkUpdaterService;
 import edu.java.service.SendUpdatesService;

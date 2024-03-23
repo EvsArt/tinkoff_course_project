@@ -1,17 +1,29 @@
 package edu.java.model.entity;
 
 import edu.java.service.converter.UriStringConverter;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.Delegate;
-import org.hibernate.validator.constraints.UniqueElements;
-import org.jetbrains.annotations.NotNull;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import java.io.Serial;
 import java.io.Serializable;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.Delegate;
+import org.jetbrains.annotations.NotNull;
 
 @Data
 @AllArgsConstructor

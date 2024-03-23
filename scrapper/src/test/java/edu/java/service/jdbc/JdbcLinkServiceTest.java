@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
-@TestPropertySource(properties="app.database-access-type=jdbc")
+@TestPropertySource(properties = "app.database-access-type=jdbc")
 class JdbcLinkServiceTest extends IntegrationTest {
 
     @Autowired

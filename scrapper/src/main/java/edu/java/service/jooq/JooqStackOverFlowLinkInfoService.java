@@ -9,7 +9,6 @@ import edu.java.model.entity.StackOverFlowLinkInfo;
 import edu.java.service.LinksParsingService;
 import edu.java.service.StackOverFlowLinkInfoService;
 import java.net.URI;
-import org.springframework.stereotype.Service;
 
 public class JooqStackOverFlowLinkInfoService implements StackOverFlowLinkInfoService {
     private final StackOverflowClient stackOverflowClient;

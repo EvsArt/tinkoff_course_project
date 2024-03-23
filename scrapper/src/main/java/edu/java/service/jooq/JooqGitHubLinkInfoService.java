@@ -11,7 +11,6 @@ import edu.java.model.entity.Link;
 import edu.java.service.GitHubLinkInfoService;
 import edu.java.service.LinksParsingService;
 import java.net.URI;
-import org.springframework.stereotype.Service;
 
 public class JooqGitHubLinkInfoService implements GitHubLinkInfoService {
 

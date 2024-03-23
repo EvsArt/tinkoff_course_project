@@ -1,7 +1,5 @@
 package edu.java.domain.jpaRepository;
 
-import edu.java.domain.jdbcRepository.JdbcLinkRepository;
-import edu.java.domain.jdbcRepository.JdbcTgChatRepository;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.TgChat;
 import edu.java.scrapper.IntegrationTest;

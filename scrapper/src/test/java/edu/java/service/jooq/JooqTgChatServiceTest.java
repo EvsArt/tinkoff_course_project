@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
-@TestPropertySource(properties="app.database-access-type=jooq")
+@TestPropertySource(properties = "app.database-access-type=jooq")
 class JooqTgChatServiceTest extends IntegrationTest {
 
     @Autowired
