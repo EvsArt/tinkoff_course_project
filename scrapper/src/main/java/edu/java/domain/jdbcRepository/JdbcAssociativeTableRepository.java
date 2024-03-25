@@ -5,12 +5,14 @@ import edu.java.service.SqlQueries;
 import java.sql.Types;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Repository
+@ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jdbc")
 public class JdbcAssociativeTableRepository {
 
     private final JdbcClient jdbcClient;

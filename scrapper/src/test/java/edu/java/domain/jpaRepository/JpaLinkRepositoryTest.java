@@ -2,7 +2,6 @@ package edu.java.domain.jpaRepository;
 
 import edu.java.model.entity.Link;
 import edu.java.model.entity.TgChat;
-import edu.java.scrapper.IntegrationTest;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
@@ -10,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+import edu.java.scrapper.JpaIntegrationTest;
 import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +17,16 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class JpaLinkRepositoryTest extends IntegrationTest {
+@Rollback
+@Transactional
+class JpaLinkRepositoryTest extends JpaIntegrationTest {
 
     @Autowired
-    private JpaLinkRepository linkRepository;
+    private JpaLinkRepository jpaLinkRepository;
     @Autowired
-    private JpaTgChatRepository chatRepository;
+    private JpaTgChatRepository jpaTgChatRepository;
 
     @Test
-    @Rollback
-    @Transactional
     void insertLink() {
         Link link = new Link(
             URI.create("https://github.com/me/myRep"),
@@ -37,11 +37,11 @@ class JpaLinkRepositoryTest extends IntegrationTest {
         );
         TgChat chat1 = new TgChat(1L, "a");
         TgChat chat2 = new TgChat(2L, "a");
-        chat1 = chatRepository.save(chat1);
-        chat2 = chatRepository.save(chat2);
+        chat1 = jpaTgChatRepository.save(chat1);
+        chat2 = jpaTgChatRepository.save(chat2);
         link.setTgChats(Set.of(chat1, chat2));
 
-        Link res = linkRepository.save(link);
+        Link res = jpaLinkRepository.save(link);
 
         assertThat(res.getName()).isEqualTo(link.getName());
         assertThat(res.getUrl()).isEqualTo(link.getUrl());
@@ -50,8 +50,6 @@ class JpaLinkRepositoryTest extends IntegrationTest {
     }
 
     @Test
-    @Rollback
-    @Transactional
     void updateLink() {
         String oldName = "name1";
         String newName = "name2";
@@ -72,31 +70,29 @@ class JpaLinkRepositoryTest extends IntegrationTest {
         TgChat chat1 = new TgChat(1L, "a");
         TgChat chat2 = new TgChat(2L, "a");
         TgChat chat3 = new TgChat(3L, "a");
-        chat1 = chatRepository.save(chat1);
-        chat2 = chatRepository.save(chat2);
-        chat3 = chatRepository.save(chat3);
+        chat1 = jpaTgChatRepository.save(chat1);
+        chat2 = jpaTgChatRepository.save(chat2);
+        chat3 = jpaTgChatRepository.save(chat3);
         Set<TgChat> chats12 = new HashSet<>();
         chats12.addAll(List.of(chat1, chat2));
         Set<TgChat> chats32 = new HashSet<>();
         chats32.addAll(List.of(chat3, chat2));
 
-        long id = linkRepository.save(oldLink).getId();
+        long id = jpaLinkRepository.save(oldLink).getId();
 
         newLink.setId(id);
-        linkRepository.save(newLink);
+        jpaLinkRepository.save(newLink);
 
-        Link res = linkRepository.findById(id).get();
+        Link res = jpaLinkRepository.findById(id).get();
 
         assertThat(res.getName()).isEqualTo(newName);
 
         AssertionsForInterfaceTypes.assertThat(res.getTgChats()).hasSize(newLink.getTgChats().size());
-        assertThat(res.getTgChats().containsAll(newLink.getTgChats())).isTrue();
-        assertThat(newLink.getTgChats().containsAll(res.getTgChats())).isTrue();
+        AssertionsForInterfaceTypes.assertThat(res.getTgChats()).containsAll(newLink.getTgChats());
+        AssertionsForInterfaceTypes.assertThat(newLink.getTgChats()).containsAll(res.getTgChats());
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findLinkById() {
         Link link = new Link(
             URI.create("https://github.com/me/myRep"),
@@ -105,27 +101,23 @@ class JpaLinkRepositoryTest extends IntegrationTest {
             OffsetDateTime.parse("2024-03-15T11:17:31+03:00"),
             OffsetDateTime.parse("2024-03-15T11:19:32+03:00")
         );
-        long id = linkRepository.save(link).getId();
+        long id = jpaLinkRepository.save(link).getId();
 
-        Link res = linkRepository.findById(id).get();
+        Link res = jpaLinkRepository.findById(id).get();
 
         assertThat(res.getUrl()).isEqualTo(link.getUrl());
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findLinkByWrongIdShouldReturnEmptyOptional() {
         long id = 123L;
 
-        Optional<Link> res = linkRepository.findById(id);
+        Optional<Link> res = jpaLinkRepository.findById(id);
 
         assertThat(res).isEmpty();
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findLinkByURL() {
         URI url = URI.create("https://github.com/me/myRep");
         Link link = new Link(
@@ -135,27 +127,23 @@ class JpaLinkRepositoryTest extends IntegrationTest {
             OffsetDateTime.parse("2024-03-15T11:17:31+03:00"),
             OffsetDateTime.parse("2024-03-15T11:19:32+03:00")
         );
-        linkRepository.save(link);
+        jpaLinkRepository.save(link);
 
-        Link res = linkRepository.findByUrl(url).get();
+        Link res = jpaLinkRepository.findByUrl(url).get();
 
         assertThat(res.getUrl()).isEqualTo(link.getUrl());
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findLinkByUncreatedURL() {
         URI url = URI.create("https://github.com/me/myRep");
 
-        Optional<Link> res = linkRepository.findByUrl(url);
+        Optional<Link> res = jpaLinkRepository.findByUrl(url);
 
         assertThat(res).isEmpty();
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findAllTgChats() {
         int insertCount = 5;
         Link link = new Link(
@@ -167,16 +155,14 @@ class JpaLinkRepositoryTest extends IntegrationTest {
         );
 
         Stream.iterate(1, it -> it + 1).limit(insertCount)
-            .forEach(it -> linkRepository.save(createLinkWithUniqueUrlWithNum(it)));
+            .forEach(it -> jpaLinkRepository.save(createLinkWithUniqueUrlWithNum(it)));
 
-        List<Link> res = linkRepository.findAll();
+        List<Link> res = jpaLinkRepository.findAll();
 
         AssertionsForInterfaceTypes.assertThat(res).hasSize(insertCount);
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findLinksByTgChatId() {
         Link link1 = new Link(
             URI.create("https://github.com/me/myRep1"),
@@ -194,23 +180,21 @@ class JpaLinkRepositoryTest extends IntegrationTest {
         );
         TgChat chat1 = new TgChat(12L, "a");
         TgChat chat2 = new TgChat(22L, "a");
-        chat1 = chatRepository.save(chat1);
-        chat2 = chatRepository.save(chat2);
+        chat1 = jpaTgChatRepository.save(chat1);
+        chat2 = jpaTgChatRepository.save(chat2);
         link1.setTgChats(Set.of(chat1, chat2));
         link2.setTgChats(Set.of(chat2));
 
-        link1 = linkRepository.save(link1);
-        linkRepository.save(link2);
+        link1 = jpaLinkRepository.save(link1);
+        jpaLinkRepository.save(link2);
 
-        List<Link> res = linkRepository.findByTgChatsContains(chat1);
+        List<Link> res = jpaLinkRepository.findByTgChatsContains(chat1);
 
         AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
-        assertThat(res.get(0)).isEqualTo(link1);
+        assertThat(res.getFirst()).isEqualTo(link1);
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findAllWhereLastCheckTimeBefore() {
         OffsetDateTime needLastCheckTime = OffsetDateTime.parse("2024-03-15T11:17:31+03:00");
         Link checkedLink = new Link(
@@ -228,13 +212,13 @@ class JpaLinkRepositoryTest extends IntegrationTest {
             needLastCheckTime.minusDays(1)
         );
 
-        linkRepository.save(checkedLink);
-        uncheckedLink = linkRepository.save(uncheckedLink);
+        jpaLinkRepository.save(checkedLink);
+        uncheckedLink = jpaLinkRepository.save(uncheckedLink);
 
-        List<Link> res = linkRepository.findByLastCheckTimeIsBefore(needLastCheckTime);
+        List<Link> res = jpaLinkRepository.findByLastCheckTimeIsBefore(needLastCheckTime);
 
         AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
-        assertThat(res.get(0)).isEqualTo(uncheckedLink);
+        assertThat(res.getFirst()).isEqualTo(uncheckedLink);
     }
 
     private Link createLinkWithUniqueUrlWithNum(int num) {

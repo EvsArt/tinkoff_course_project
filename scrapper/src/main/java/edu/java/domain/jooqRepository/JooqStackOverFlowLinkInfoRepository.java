@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.impl.DefaultDSLContext;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import static edu.java.domain.jooq.Tables.GITHUB_LINK_INFO;
@@ -14,6 +15,7 @@ import static edu.java.domain.jooq.Tables.STACKOVERFLOW_LINK_INFO;
 
 @Slf4j
 @Repository
+@ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jooq")
 public class JooqStackOverFlowLinkInfoRepository implements StackOverFlowLinkInfoRepository {
 
     private final DefaultDSLContext dsl;

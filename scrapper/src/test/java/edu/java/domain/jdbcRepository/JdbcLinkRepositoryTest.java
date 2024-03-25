@@ -9,22 +9,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+import edu.java.scrapper.JdbcIntegrationTest;
+import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class JdbcLinkRepositoryTest extends IntegrationTest {
-
-    @Autowired
-    private JdbcLinkRepository linkRepository;
-    @Autowired
-    private JdbcTgChatRepository chatRepository;
+@Rollback
+@Transactional
+class JdbcLinkRepositoryTest extends JdbcIntegrationTest {
 
     @Test
-    @Rollback
-    @Transactional
     void insertLink() {
         Link link = new Link(
             URI.create("https://github.com/me/myRep"),
@@ -35,11 +34,11 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
         );
         TgChat chat1 = new TgChat(1L, "a");
         TgChat chat2 = new TgChat(2L, "a");
-        chat1 = chatRepository.insertTgChat(chat1).get();
-        chat2 = chatRepository.insertTgChat(chat2).get();
+        chat1 = jdbcTgChatRepository.insertTgChat(chat1).get();
+        chat2 = jdbcTgChatRepository.insertTgChat(chat2).get();
         link.setTgChats(Set.of(chat1, chat2));
 
-        Link res = linkRepository.insertLink(link).get();
+        Link res = jdbcLinkRepository.insertLink(link).get();
 
         assertThat(res.getName()).isEqualTo(link.getName());
         assertThat(res.getUrl()).isEqualTo(link.getUrl());
@@ -48,8 +47,6 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
     }
 
     @Test
-    @Rollback
-    @Transactional
     void insertLinkShouldCreatesWithDifferentIds() {
         Link link = new Link(
             URI.create("https://github.com/me/myRep"),
@@ -60,20 +57,18 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
         );
         TgChat chat1 = new TgChat(1L, "a");
         TgChat chat2 = new TgChat(2L, "a");
-        chat1 = chatRepository.insertTgChat(chat1).get();
-        chat2 = chatRepository.insertTgChat(chat2).get();
+        chat1 = jdbcTgChatRepository.insertTgChat(chat1).get();
+        chat2 = jdbcTgChatRepository.insertTgChat(chat2).get();
         link.setTgChats(Set.of(chat1, chat2));
 
-        Link res1 = linkRepository.insertLink(link).get();
+        Link res1 = jdbcLinkRepository.insertLink(link).get();
         link.setUrl(URI.create("https://github.com/me/myRep2"));    // bc url is unique in table
-        Link res2 = linkRepository.insertLink(link).get();
+        Link res2 = jdbcLinkRepository.insertLink(link).get();
 
         assertThat(res1.getId()).isNotEqualTo(res2.getId());
     }
 
     @Test
-    @Rollback
-    @Transactional
     void insertLinkWithIdShouldIgnoreIt() {
         Link link = new Link(
             URI.create("https://github.com/me/myRep"),
@@ -83,17 +78,15 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
             OffsetDateTime.parse("2024-03-15T11:19:32+03:00")
         );
 
-        Link res1 = linkRepository.insertLink(link).get();
+        Link res1 = jdbcLinkRepository.insertLink(link).get();
         link.setUrl(URI.create("https://github.com/me/myRep2"));    // bc url is unique in table
-        Link res2 = linkRepository.insertLink(link).get();
+        Link res2 = jdbcLinkRepository.insertLink(link).get();
 
         // if ids not equal them not equal 111
         assertThat(res1.getId()).isNotEqualTo(res2.getId());
     }
 
     @Test
-    @Rollback
-    @Transactional
     void updateLink() {
         String oldName = "name1";
         String newName = "name2";
@@ -114,27 +107,25 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
         TgChat chat1 = new TgChat(1L, "a");
         TgChat chat2 = new TgChat(2L, "a");
         TgChat chat3 = new TgChat(3L, "a");
-        chat1 = chatRepository.insertTgChat(chat1).get();
-        chat2 = chatRepository.insertTgChat(chat2).get();
-        chat3 = chatRepository.insertTgChat(chat3).get();
+        chat1 = jdbcTgChatRepository.insertTgChat(chat1).get();
+        chat2 = jdbcTgChatRepository.insertTgChat(chat2).get();
+        chat3 = jdbcTgChatRepository.insertTgChat(chat3).get();
         oldLink.setTgChats(Set.of(chat1, chat2));
         newLink.setTgChats(Set.of(chat3, chat2));
 
-        long id = linkRepository.insertLink(oldLink).get().getId();
+        long id = jdbcLinkRepository.insertLink(oldLink).get().getId();
 
-        linkRepository.updateLink(id, newLink);
-        Link res = linkRepository.findLinkById(id).get();
+        jdbcLinkRepository.updateLink(id, newLink);
+        Link res = jdbcLinkRepository.findLinkById(id).get();
 
         assertThat(res.getName()).isEqualTo(newName);
 
-        assertThat(res.getTgChats().size()).isEqualTo(newLink.getTgChats().size());
-        assertThat(res.getTgChats().containsAll(newLink.getTgChats())).isTrue();
-        assertThat(newLink.getTgChats().containsAll(res.getTgChats())).isTrue();
+        AssertionsForInterfaceTypes.assertThat(res.getTgChats()).hasSize(newLink.getTgChats().size());
+        AssertionsForInterfaceTypes.assertThat(res.getTgChats()).containsAll(newLink.getTgChats());
+        AssertionsForInterfaceTypes.assertThat(newLink.getTgChats()).containsAll(res.getTgChats());
     }
 
     @Test
-    @Rollback
-    @Transactional
     void updateLinkWithWrongIdShouldReturnEmptyOptional() {
         long randomId = 11L;
         Link newLink = new Link(
@@ -145,14 +136,12 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
             OffsetDateTime.parse("2024-03-15T11:19:32+03:00")
         );
 
-        Optional<Link> res = linkRepository.updateLink(randomId, newLink);
+        Optional<Link> res = jdbcLinkRepository.updateLink(randomId, newLink);
 
-        assertThat(res.isEmpty()).isTrue();
+        assertThat(res).isEmpty();
     }
 
     @Test
-    @Rollback
-    @Transactional
     void removeLinkByIdShouldReturnWhatItDeleted() {
         Link link = new Link(
             URI.create("https://github.com/me/myRep"),
@@ -161,31 +150,27 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
             OffsetDateTime.parse("2024-03-15T11:17:31+03:00"),
             OffsetDateTime.parse("2024-03-15T11:19:32+03:00")
         );
-        long id = linkRepository.insertLink(link).get().getId();
+        long id = jdbcLinkRepository.insertLink(link).get().getId();
 
-        Optional<Link> removeRes = linkRepository.removeLinkById(id);
-        Optional<Link> findAfterRemoveRes = linkRepository.findLinkById(id);
+        Optional<Link> removeRes = jdbcLinkRepository.removeLinkById(id);
+        Optional<Link> findAfterRemoveRes = jdbcLinkRepository.findLinkById(id);
 
         assertThat(removeRes.get().getUrl()).isEqualTo(removeRes.get().getUrl());
-        assertThat(findAfterRemoveRes.isEmpty()).isTrue();
+        assertThat(findAfterRemoveRes).isEmpty();
     }
 
     @Test
-    @Rollback
-    @Transactional
     void removeLinkWithWrongIdShouldDoSimilarWithNullRemoveRes() {
         long id = 15L;
 
-        Optional<Link> removeRes = linkRepository.removeLinkById(id);
-        Optional<Link> findAfterRemoveRes = linkRepository.removeLinkById(id);
+        Optional<Link> removeRes = jdbcLinkRepository.removeLinkById(id);
+        Optional<Link> findAfterRemoveRes = jdbcLinkRepository.removeLinkById(id);
 
-        assertThat(removeRes.isEmpty()).isTrue();
-        assertThat(findAfterRemoveRes.isEmpty()).isTrue();
+        assertThat(removeRes).isEmpty();
+        assertThat(findAfterRemoveRes).isEmpty();
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findLinkById() {
         Link link = new Link(
             URI.create("https://github.com/me/myRep"),
@@ -194,27 +179,23 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
             OffsetDateTime.parse("2024-03-15T11:17:31+03:00"),
             OffsetDateTime.parse("2024-03-15T11:19:32+03:00")
         );
-        long id = linkRepository.insertLink(link).get().getId();
+        long id = jdbcLinkRepository.insertLink(link).get().getId();
 
-        Link res = linkRepository.findLinkById(id).get();
+        Link res = jdbcLinkRepository.findLinkById(id).get();
 
         assertThat(res.getUrl()).isEqualTo(link.getUrl());
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findLinkByWrongIdShouldReturnEmptyOptional() {
         long id = 123L;
 
-        Optional<Link> res = linkRepository.findLinkById(id);
+        Optional<Link> res = jdbcLinkRepository.findLinkById(id);
 
-        assertThat(res.isEmpty()).isTrue();
+        assertThat(res).isEmpty();
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findLinkByURL() {
         URI url = URI.create("https://github.com/me/myRep");
         Link link = new Link(
@@ -224,27 +205,23 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
             OffsetDateTime.parse("2024-03-15T11:17:31+03:00"),
             OffsetDateTime.parse("2024-03-15T11:19:32+03:00")
         );
-        linkRepository.insertLink(link);
+        jdbcLinkRepository.insertLink(link);
 
-        Link res = linkRepository.findLinkByURL(url).get();
+        Link res = jdbcLinkRepository.findLinkByURL(url).get();
 
         assertThat(res.getUrl()).isEqualTo(link.getUrl());
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findLinkByUncreatedURL() {
         URI url = URI.create("https://github.com/me/myRep");
 
-        Optional<Link> res = linkRepository.findLinkByURL(url);
+        Optional<Link> res = jdbcLinkRepository.findLinkByURL(url);
 
-        assertThat(res.isEmpty()).isTrue();
+        assertThat(res).isEmpty();
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findAllTgChats() {
         int insertCount = 5;
         Link link = new Link(
@@ -256,16 +233,14 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
         );
 
         Stream.iterate(1, it -> it + 1).limit(insertCount)
-            .forEach(it -> linkRepository.insertLink(createLinkWithUniqueUrlWithNum(it)));
+            .forEach(it -> jdbcLinkRepository.insertLink(createLinkWithUniqueUrlWithNum(it)));
 
-        List<Link> res = linkRepository.findAllLinks();
+        List<Link> res = jdbcLinkRepository.findAllLinks();
 
-        assertThat(res.size()).isEqualTo(insertCount);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(insertCount);
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findLinksByTgChatId() {
         Link link1 = new Link(
             URI.create("https://github.com/me/myRep1"),
@@ -283,23 +258,21 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
         );
         TgChat chat1 = new TgChat(12L, "a");
         TgChat chat2 = new TgChat(22L, "a");
-        chat1 = chatRepository.insertTgChat(chat1).get();
-        chat2 = chatRepository.insertTgChat(chat2).get();
+        chat1 = jdbcTgChatRepository.insertTgChat(chat1).get();
+        chat2 = jdbcTgChatRepository.insertTgChat(chat2).get();
         link1.setTgChats(Set.of(chat1, chat2));
         link2.setTgChats(Set.of(chat2));
 
-        link1 = linkRepository.insertLink(link1).get();
-        linkRepository.insertLink(link2).get();
+        link1 = jdbcLinkRepository.insertLink(link1).get();
+        jdbcLinkRepository.insertLink(link2).get();
 
-        List<Link> res = linkRepository.findLinksByTgChatId(chat1.getChatId());
+        List<Link> res = jdbcLinkRepository.findLinksByTgChatId(chat1.getChatId());
 
-        assertThat(res.size()).isEqualTo(1);
-        assertThat(res.get(0)).isEqualTo(link1);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
+        assertThat(res.getFirst()).isEqualTo(link1);
     }
 
     @Test
-    @Rollback
-    @Transactional
     void removeLinksByTgChatId_linkWithoutChatsShouldToBeRemoved() {
         Link link1 = new Link(
             URI.create("https://github.com/me/myRep1"),
@@ -317,26 +290,24 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
         );
         TgChat chat1 = new TgChat(1L, "a");
         TgChat chat2 = new TgChat(2L, "a");
-        chat1 = chatRepository.insertTgChat(chat1).get();
-        chat2 = chatRepository.insertTgChat(chat2).get();
+        chat1 = jdbcTgChatRepository.insertTgChat(chat1).get();
+        chat2 = jdbcTgChatRepository.insertTgChat(chat2).get();
         link1.setTgChats(Set.of(chat1, chat2));
         link2.setTgChats(Set.of(chat2));
 
-        link1 = linkRepository.insertLink(link1).get();
-        linkRepository.insertLink(link2).get();
+        link1 = jdbcLinkRepository.insertLink(link1).get();
+        jdbcLinkRepository.insertLink(link2).get();
 
-        linkRepository.removeLinksByTgChatId(chat2.getId());
-        List<Link> res = linkRepository.findAllLinks();
+        jdbcLinkRepository.removeLinksByTgChatId(chat2.getId());
+        List<Link> res = jdbcLinkRepository.findAllLinks();
         // link2 should be removed bc only chat tracked it
         link1.setTgChats(Set.of(chat1));   // for clean equals (chat2 was removed)
 
-        assertThat(res.size()).isEqualTo(1);
-        assertThat(res.get(0)).isEqualTo(link1);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
+        assertThat(res.getFirst()).isEqualTo(link1);
     }
 
     @Test
-    @Rollback
-    @Transactional
     void findAllWhereLastCheckTimeBefore() {
         OffsetDateTime needLastCheckTime = OffsetDateTime.parse("2024-03-15T11:17:31+03:00");
         Link checkedLink = new Link(
@@ -354,13 +325,13 @@ class JdbcLinkRepositoryTest extends IntegrationTest {
             needLastCheckTime.minusDays(1)
         );
 
-        linkRepository.insertLink(checkedLink).get();
-        uncheckedLink = linkRepository.insertLink(uncheckedLink).get();
+        jdbcLinkRepository.insertLink(checkedLink).get();
+        uncheckedLink = jdbcLinkRepository.insertLink(uncheckedLink).get();
 
-        List<Link> res = linkRepository.findAllWhereLastCheckTimeBefore(needLastCheckTime);
+        List<Link> res = jdbcLinkRepository.findAllWhereLastCheckTimeBefore(needLastCheckTime);
 
-        assertThat(res.size()).isEqualTo(1);
-        assertThat(res.get(0)).isEqualTo(uncheckedLink);
+        AssertionsForInterfaceTypes.assertThat(res).hasSize(1);
+        assertThat(res.getFirst()).isEqualTo(uncheckedLink);
     }
 
     private Link createLinkWithUniqueUrlWithNum(int num) {

@@ -10,6 +10,7 @@ import java.sql.Types;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Repository
+@ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jdbc")
 public class JdbcGitHubLinkInfoRepository implements GitHubLinkInfoRepository {
 
     private final JdbcClient jdbcClient;
