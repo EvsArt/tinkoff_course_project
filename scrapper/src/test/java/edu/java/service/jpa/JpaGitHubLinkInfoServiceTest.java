@@ -107,8 +107,7 @@ class JpaGitHubLinkInfoServiceTest extends JpaIntegrationTest {
         GitHubLinkInfo newLinkInfo = new GitHubLinkInfo(link, 666L);
 
         oldLinkInfo = jpaGitHubLinkInfoRepository.save(oldLinkInfo);
-        newLinkInfo.setId(oldLinkInfo.getId());     // setting id needs for updating instead of saving
-        jpaGitHubLinkInfoRepository.save(newLinkInfo);
+        newLinkInfo = jpaGitHubLinkInfoService.updateLinkInfo(oldLinkInfo.getId(), newLinkInfo);
 
         GitHubLinkInfo res = jpaGitHubLinkInfoService.findLinkInfoByLinkUrl(link.getUrl());
 

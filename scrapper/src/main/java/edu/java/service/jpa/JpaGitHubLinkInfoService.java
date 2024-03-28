@@ -2,8 +2,11 @@ package edu.java.service.jpa;
 
 import edu.java.client.GitHubClient;
 import edu.java.domain.jpaRepository.JpaGitHubLinkInfoRepository;
+import edu.java.domain.jpaRepository.JpaLinkRepository;
 import edu.java.dto.GitHubRepoRequest;
 import edu.java.exceptions.LinkNotExistsException;
+import edu.java.exceptions.status.ResourceNotFoundException;
+import edu.java.exceptions.status.StatusException;
 import edu.java.model.entity.GitHubLinkInfo;
 import edu.java.model.entity.Link;
 import edu.java.service.GitHubLinkInfoService;
@@ -14,41 +17,47 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.SerializationUtils;
 
 @Slf4j
+@Transactional
 public class JpaGitHubLinkInfoService implements GitHubLinkInfoService {
 
     private final JpaGitHubLinkInfoRepository linkInfoRepository;
+    private final JpaLinkRepository linkRepository;
     private final GitHubClient client;
     private final LinksParsingService linksParsingService;
 
     public JpaGitHubLinkInfoService(
-        JpaGitHubLinkInfoRepository linkInfoRepository, GitHubClient client,
-        LinksParsingService linksParsingService
+            JpaGitHubLinkInfoRepository linkInfoRepository, JpaLinkRepository linkRepository, GitHubClient client,
+            LinksParsingService linksParsingService
     ) {
         this.linkInfoRepository = linkInfoRepository;
+        this.linkRepository = linkRepository;
         this.client = client;
         this.linksParsingService = linksParsingService;
     }
 
     @Override
-    @Transactional
     public GitHubLinkInfo findLinkInfoByLinkId(long linkId) {
         log.debug("findLinkInfoByLinkId() was called with linkId={}", linkId);
         return linkInfoRepository.findByLinkId(linkId).orElseThrow(LinkNotExistsException::new);
     }
 
     @Override
-    @Transactional
     public GitHubLinkInfo findLinkInfoByLinkUrl(URI url) {
         log.debug("findLinkInfoByLinkUrl() was called with url={}", url);
         return linkInfoRepository.findByLinkUrl(url).orElseThrow(LinkNotExistsException::new);
     }
 
     @Override
-    @Transactional
     public GitHubLinkInfo addLinkInfo(Link link) {
         log.debug("addLinkInfo() was called with link={}", link);
         GitHubRepoRequest request = linksParsingService.getGitHubRepoRequestByLink(link.getUrl().toString());
-        long lastEventId = client.getLastRepositoryEvent(request).block().getId();
+        long lastEventId;
+        try {
+            lastEventId = client.getLastRepositoryEvent(request).block().getId();
+        } catch (StatusException e) {
+            linkRepository.delete(link);
+            throw new ResourceNotFoundException();
+        }
 
         GitHubLinkInfo linkInfo = linkInfoRepository.findByLinkUrl(link.getUrl())
             .orElse(new GitHubLinkInfo(link, lastEventId));
@@ -56,16 +65,15 @@ public class JpaGitHubLinkInfoService implements GitHubLinkInfoService {
     }
 
     @Override
-    @Transactional
     public GitHubLinkInfo updateLinkInfo(long linkId, GitHubLinkInfo linkInfo) {
         log.debug("updateLinkInfo() was called with linkId={}, linkInfo={}", linkId, linkInfo);
-        GitHubLinkInfo newLinkInfo = SerializationUtils.clone(linkInfo);
+        GitHubLinkInfo newLinkInfo = linkInfo.clone();
         newLinkInfo.setId(linkId);
+        linkInfoRepository.save(newLinkInfo);
         return newLinkInfo;
     }
 
     @Override
-    @Transactional
     public GitHubLinkInfo removeLinkInfoByLink(Link link) {
         log.debug("removeLinkInfoByLink() was called with link={}", link);
         GitHubLinkInfo oldLinkInfo =

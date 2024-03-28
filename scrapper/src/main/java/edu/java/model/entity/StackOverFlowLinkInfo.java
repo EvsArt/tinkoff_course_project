@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "stackoverflow_link_info")
-public class StackOverFlowLinkInfo implements Serializable {
+public class StackOverFlowLinkInfo implements Serializable, Cloneable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -34,4 +34,17 @@ public class StackOverFlowLinkInfo implements Serializable {
     @NonNull private Link link;
     @Column(name = "answers_count")
     @NonNull private Integer answersCount;
+
+    @Override
+    public StackOverFlowLinkInfo clone() {
+        try {
+            StackOverFlowLinkInfo clone = (StackOverFlowLinkInfo) super.clone();
+            clone.setId(id);
+            clone.setLink(link.clone());
+            clone.setAnswersCount(answersCount);
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

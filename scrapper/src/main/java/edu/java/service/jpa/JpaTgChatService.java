@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@Transactional
 public class JpaTgChatService implements TgChatService {
 
     private final JpaTgChatRepository tgChatRepository;
@@ -19,7 +20,6 @@ public class JpaTgChatService implements TgChatService {
     }
 
     @Override
-    @Transactional
     public TgChat registerChat(long tgChatId, String name) {
         log.debug("registerChat() was called with tgChatId={}, name={}", tgChatId, name);
         TgChat chat = new TgChat(tgChatId, name);
@@ -31,7 +31,6 @@ public class JpaTgChatService implements TgChatService {
     }
 
     @Override
-    @Transactional
     public TgChat unregisterChat(long tgChatId) {
         log.debug("unregisterChat() was called with tgChatId={}", tgChatId);
         TgChat oldChat = tgChatRepository.findTgChatByChatId(tgChatId).orElseThrow(ChatNotExistException::new);

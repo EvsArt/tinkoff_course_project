@@ -80,7 +80,8 @@ public class DefaultGitHubClient implements GitHubClient {
                 .build(request.ownerName(), request.repositoryName())
             )
             .retrieve()
-            .bodyToMono(GitHubRepoResponse.class);
+            .bodyToMono(GitHubRepoResponse.class)
+            .retryWhen(config.retry().toReactorRetry());
     }
 
     @Override

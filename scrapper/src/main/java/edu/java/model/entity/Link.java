@@ -17,6 +17,7 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-public class Link implements Serializable {
+public class Link implements Serializable, Cloneable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -53,7 +54,7 @@ public class Link implements Serializable {
     @NonNull private OffsetDateTime lastCheckTime;
 
     @Delegate
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "link_tg_chat",
                inverseJoinColumns = @JoinColumn(name = "tg_chat_id"))
     private Set<TgChat> tgChats = new HashSet<>();
@@ -66,4 +67,20 @@ public class Link implements Serializable {
         this.lastCheckTime = OffsetDateTime.now();
     }
 
+    @Override
+    public Link clone() {
+        try {
+            Link clone = (Link) super.clone();
+            clone.setId(id);
+            clone.setName(name);
+            clone.setUrl(url);
+            clone.setCreatedAt(createdAt);
+            clone.setLastUpdateTime(lastUpdateTime);
+            clone.setLastCheckTime(lastCheckTime);
+            clone.setTgChats(tgChats.stream().map(TgChat::clone).collect(Collectors.toSet()));
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

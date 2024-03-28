@@ -1,4 +1,11 @@
 package edu.java.exceptions.status;
 
-public class MovedPermanentlyException extends RuntimeException {
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+public class MovedPermanentlyException extends StatusException {
+
+    @Getter
+    private final HttpStatus status = HttpStatus.MOVED_PERMANENTLY;
+
 }

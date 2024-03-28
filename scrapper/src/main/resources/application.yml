@@ -4,22 +4,40 @@ app:
     interval: 10s
     force-check-delay: 10s
   linkChecker:
-    checkInterval: 1m
+    checkInterval: 15s
   database-access-type: jpa
 
 api:
   github:
     connection-timeout: 10s
     url: https://api.github.com
+    retry:
+      max-attempts: 3
+      strategy: linear
+      interval: 3s
+      codes:
+        - 500
   stackoverflow:
     connection-timeout: 10s
     url: https://api.stackexchange.com
     uri-parameters:
       site: stackoverflow
+    retry:
+      max-attempts: 3
+      strategy: linear
+      interval: 3s
+      codes:
+        - 500
 
 tgbot:
   url: http://localhost:8090
   connection-timeout: 10s
+  retry:
+    max-attempts: 3
+    strategy: linear
+    interval: 3s
+    codes:
+      - 500
 
 spring:
   application:

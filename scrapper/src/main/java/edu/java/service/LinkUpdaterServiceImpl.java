@@ -7,6 +7,7 @@ import edu.java.dto.GitHubRepoEventResponse;
 import edu.java.dto.GitHubRepoRequest;
 import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
+import edu.java.exceptions.status.ForbiddenException;
 import edu.java.model.LinkUpdateInfo;
 import edu.java.model.entity.GitHubLinkInfo;
 import edu.java.model.entity.Link;
@@ -14,10 +15,13 @@ import edu.java.model.entity.StackOverFlowLinkInfo;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 public class LinkUpdaterServiceImpl implements LinkUpdaterService {
 
     private final LinksParsingService linksParsingService;
@@ -48,10 +52,15 @@ public class LinkUpdaterServiceImpl implements LinkUpdaterService {
     public LinkUpdateInfo checkUpdates(Link link) {
         SupportedApi api = SupportedApi.getApiByLink(link.getUrl().toString());
         linkService.setLastCheckTime(link.getId(), OffsetDateTime.now());
-        return switch (api) {
-            case GITHUB_REPO -> checkGitHubRepoUpdates(link);
-            case STACKOVERFLOW_QUESTION -> checkStackOverFlowQuestionUpdates(link);
-        };
+        try {
+            return switch (api) {
+                case GITHUB_REPO -> checkGitHubRepoUpdates(link);
+                case STACKOVERFLOW_QUESTION -> checkStackOverFlowQuestionUpdates(link);
+            };
+        } catch (ForbiddenException e) {
+            log.error("Request forbidden on {}", api);
+            return LinkUpdateInfo.updateInfoWithoutUpdate();
+        }
     }
 
     public LinkUpdateInfo checkGitHubRepoUpdates(Link link) {
@@ -88,7 +97,7 @@ public class LinkUpdaterServiceImpl implements LinkUpdaterService {
 
         if (responseEventsCount == savedEventsCount) {
             linkInfo.setAnswersCount(responseEventsCount);
-            stackOverFlowLinkInfoService.updateLinkInfo(link.getId(), linkInfo);
+            stackOverFlowLinkInfoService.updateLinkInfo(linkInfo.getId(), linkInfo);
             return LinkUpdateInfo.updateInfoWithoutUpdate();
         }
         return LinkUpdateInfo.updateInfoWithUpdate("There is a new answer!", link);
@@ -109,7 +118,7 @@ public class LinkUpdaterServiceImpl implements LinkUpdaterService {
         }
 
         linkInfo.setLastEventId(responseLastEventId);
-        gitHubLinkInfoService.updateLinkInfo(link.getId(), linkInfo);
+        gitHubLinkInfoService.updateLinkInfo(linkInfo.getId(), linkInfo);
         String message = "New event: %s".formatted(response.getType());
         return LinkUpdateInfo.updateInfoWithUpdate(message, link);
     }

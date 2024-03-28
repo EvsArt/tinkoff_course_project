@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@Transactional
 public class JpaLinkService implements LinkService {
 
     private final JpaLinkRepository linkRepository;
@@ -40,7 +41,6 @@ public class JpaLinkService implements LinkService {
     }
 
     @Override
-    @Transactional
     public Link removeLink(long tgChatId, URI url) {
         log.debug("removeLink() was called with tgChatId={}, url={}", tgChatId, url);
         TgChat chat = chatRepository.findTgChatByChatId(tgChatId).orElseThrow(ChatNotExistException::new);
