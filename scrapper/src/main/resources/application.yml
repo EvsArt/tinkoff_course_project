@@ -5,6 +5,13 @@ app:
     force-check-delay: 10s
   linkChecker:
     checkInterval: 15s
+  controller:
+    tg-chat:
+      limit: 20
+      interval: 30m
+    links:
+      limit: 20
+      interval: 30m
   database-access-type: jpa
 
 api:

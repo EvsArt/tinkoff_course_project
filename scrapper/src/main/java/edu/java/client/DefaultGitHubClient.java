@@ -9,6 +9,7 @@ import edu.java.exceptions.status.ForbiddenException;
 import edu.java.exceptions.status.MovedPermanentlyException;
 import edu.java.exceptions.status.ResourceNotFoundException;
 import edu.java.exceptions.status.ServerErrorException;
+import edu.java.exceptions.status.TooManyRequestsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -60,6 +61,10 @@ public class DefaultGitHubClient implements GitHubClient {
                 resp -> Mono.error(ResourceNotFoundException::new)
             )
             .defaultStatusHandler(
+                status -> status.isSameCodeAs(HttpStatus.TOO_MANY_REQUESTS),
+                resp -> Mono.error(TooManyRequestsException::new)
+            )
+            .defaultStatusHandler(
                 HttpStatusCode::is5xxServerError,
                 resp -> Mono.error(ServerErrorException::new)
             )
@@ -82,7 +87,7 @@ public class DefaultGitHubClient implements GitHubClient {
             )
             .retrieve()
             .bodyToMono(GitHubRepoResponse.class)
-            .retryWhen(config.retryConfig().toReactorRetry())
+            .retryWhen(config.retry().toReactorRetry())
             .onErrorMap(it -> (Exceptions.isRetryExhausted(it)) ? it.getCause() : it);  // removing retryEx wrapper
     }
 
@@ -97,7 +102,7 @@ public class DefaultGitHubClient implements GitHubClient {
             )
             .retrieve()
             .bodyToMono(GitHubRepoEventResponse[].class)
-            .retryWhen(config.retryConfig().toReactorRetry())
+            .retryWhen(config.retry().toReactorRetry())
             .onErrorMap(it -> (Exceptions.isRetryExhausted(it)) ? it.getCause() : it)  // removing retryEx wrapper
             .map(arr -> arr[0]);    // its array with 1 element
     }

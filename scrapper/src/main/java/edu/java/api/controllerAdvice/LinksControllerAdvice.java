@@ -7,6 +7,7 @@ import edu.java.exceptions.LinkNotExistsException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import edu.java.exceptions.status.TooManyRequestsException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -51,6 +52,36 @@ public class LinksControllerAdvice extends ResponseEntityExceptionHandler {
 
         headers.addAll(newHeaders);
 
+        return createResponseEntity(
+            response,
+            HttpHeaders.readOnlyHttpHeaders(headers),
+            status,
+            request
+        );
+    }
+
+    @ExceptionHandler(TooManyRequestsException.class)
+    public ResponseEntity<Object> handleTooManyRequests(
+        RuntimeException ex, WebRequest request
+    ) {
+        HttpStatusCode status = HttpStatus.TOO_MANY_REQUESTS;
+
+        ApiErrorResponse response =
+            ApiErrorResponse.builder()
+                .description("Too many requests! Try later!")
+                .code(String.valueOf(status.value()))
+                .exceptionName(ex.getClass().getName())
+                .exceptionMessage(ex.getMessage())
+                .stacktrace(
+                    Arrays.stream(ex.getStackTrace())
+                        .map(StackTraceElement::toString)
+                        .toList()
+                )
+                .build();
+
+        MultiValueMap<String, String> headers = new MultiValueMapAdapter<>(Map.of(
+            HttpHeaders.CONTENT_TYPE, List.of(MediaType.APPLICATION_JSON.toString())
+        ));
         return createResponseEntity(
             response,
             HttpHeaders.readOnlyHttpHeaders(headers),

@@ -11,6 +11,6 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 public record BotConfig(
     @DefaultValue(DefaultUrl.BOT_DEFAULT_URL) URL url,
     Duration connectionTimeout,
-    RetryConfig retryConfig
+    RetryConfig retry
 ) {
 }

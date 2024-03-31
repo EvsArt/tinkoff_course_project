@@ -18,7 +18,7 @@ public record ApiConfig(
         @DefaultValue(DefaultUrl.GITHUB_DEFAULT_URL) URL url,
         MultiValueMap<String, String> uriParameters,
         Duration connectionTimeout,
-        RetryConfig retryConfig
+        RetryConfig retry
     ) {
     }
 
@@ -26,7 +26,7 @@ public record ApiConfig(
         @DefaultValue(DefaultUrl.STACKOVERFLOW_DEFAULT_URL) URL url,
         MultiValueMap<String, String> uriParameters,
         Duration connectionTimeout,
-        RetryConfig retryConfig
+        RetryConfig retry
     ) {
     }
 
