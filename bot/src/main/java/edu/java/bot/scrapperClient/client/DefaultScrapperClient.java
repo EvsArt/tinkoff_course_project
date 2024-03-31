@@ -14,6 +14,7 @@ import edu.java.bot.scrapperClient.dto.RemoveLinkRequest;
 import edu.java.bot.scrapperClient.exceptions.status.BadRequestException;
 import edu.java.bot.scrapperClient.exceptions.status.ResourceNotFoundException;
 import edu.java.bot.scrapperClient.exceptions.status.ServerErrorException;
+import edu.java.bot.scrapperClient.exceptions.status.TooManyRequestsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
@@ -63,6 +65,10 @@ public class DefaultScrapperClient implements ScrapperClient {
                 resp -> Mono.error(ResourceNotFoundException::new)
             )
             .defaultStatusHandler(
+                status -> status.isSameCodeAs(HttpStatus.TOO_MANY_REQUESTS),
+                resp -> Mono.error(TooManyRequestsException::new)
+            )
+            .defaultStatusHandler(
                 HttpStatusCode::is5xxServerError,
                 resp -> Mono.error(ServerErrorException::new)
             )
@@ -77,7 +83,9 @@ public class DefaultScrapperClient implements ScrapperClient {
                 .build(id)
             )
             .retrieve()
-            .bodyToMono(RegisterChatResponse.class);
+            .bodyToMono(RegisterChatResponse.class)
+            .retryWhen(config.retry().toReactorRetry())
+            .onErrorMap(it -> (Exceptions.isRetryExhausted(it)) ? it.getCause() : it);  // removing retryEx wrapper
     }
 
     @Override
@@ -88,7 +96,9 @@ public class DefaultScrapperClient implements ScrapperClient {
                 .build(id)
             )
             .retrieve()
-            .bodyToMono(DeleteChatResponse.class);
+            .bodyToMono(DeleteChatResponse.class)
+            .retryWhen(config.retry().toReactorRetry())
+            .onErrorMap(it -> (Exceptions.isRetryExhausted(it)) ? it.getCause() : it);  // removing retryEx wrapper
     }
 
     @Override
@@ -100,7 +110,9 @@ public class DefaultScrapperClient implements ScrapperClient {
             )
             .header(Headers.TG_CHAT_ID, String.valueOf(tgChatId))
             .retrieve()
-            .bodyToMono(ListLinksResponse.class);
+            .bodyToMono(ListLinksResponse.class)
+            .retryWhen(config.retry().toReactorRetry())
+            .onErrorMap(it -> (Exceptions.isRetryExhausted(it)) ? it.getCause() : it);  // removing retryEx wrapper
     }
 
     @Override
@@ -114,7 +126,9 @@ public class DefaultScrapperClient implements ScrapperClient {
                 .header(Headers.TG_CHAT_ID, String.valueOf(tgChatId))
                 .body(BodyInserters.fromValue(objectMapper.writer().writeValueAsString(addLinkRequest)))
                 .retrieve()
-                .bodyToMono(LinkResponse.class);
+                .bodyToMono(LinkResponse.class)
+                .retryWhen(config.retry().toReactorRetry())
+                .onErrorMap(it -> (Exceptions.isRetryExhausted(it)) ? it.getCause() : it);  // removing retryEx wrapper
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -131,7 +145,9 @@ public class DefaultScrapperClient implements ScrapperClient {
                 .header(Headers.TG_CHAT_ID, String.valueOf(tgChatId))
                 .body(BodyInserters.fromValue(objectMapper.writer().writeValueAsString(removeLinkRequest)))
                 .retrieve()
-                .bodyToMono(LinkResponse.class);
+                .bodyToMono(LinkResponse.class)
+                .retryWhen(config.retry().toReactorRetry())
+                .onErrorMap(it -> (Exceptions.isRetryExhausted(it)) ? it.getCause() : it);  // removing retryEx wrapper
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

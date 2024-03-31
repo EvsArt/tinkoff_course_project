@@ -38,7 +38,7 @@ public class LinksController implements ILinksController {
     public LinksController(
         LinkService linkService, LinksTransformService linksTransformService,
         LinkInfoService linkInfoService,
-        @Qualifier("LinksRateLimitBucket") Bucket bucket
+        @Qualifier("linksRateLimitBucket") Bucket bucket
     ) {
         this.linkService = linkService;
         this.linksTransformService = linksTransformService;

@@ -21,7 +21,7 @@ public class ChatController implements IChatController {
     private final Bucket bucket;
 
     public ChatController(TgChatService chatService,
-        @Qualifier("TgChatRateLimitBucket") Bucket bucket
+        @Qualifier("tgChatRateLimitBucket") Bucket bucket
     ) {
         this.chatService = chatService;
         this.bucket = bucket;

@@ -3,9 +3,7 @@ package edu.java.bot.scrapperClient.exceptions.status;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-public class BadRequestException extends StatusException {
-
+public class TooManyRequestsException extends StatusException {
     @Getter
-    private final HttpStatus status = HttpStatus.BAD_REQUEST;
-
+    private final HttpStatus status = HttpStatus.TOO_MANY_REQUESTS;
 }

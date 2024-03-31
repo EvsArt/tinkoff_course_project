@@ -24,7 +24,7 @@ public class ChatControllerRateLimitTest {
 
     @Autowired MockMvc mockMvc;
     @MockBean TgChatService chatService;
-    @MockBean(name = "TgChatRateLimitBucket") Bucket bucket;
+    @MockBean(name = "tgChatRateLimitBucket") Bucket bucket;
 
     @Test
     void postRequest_shouldReturnTooManyRequests() throws Exception {

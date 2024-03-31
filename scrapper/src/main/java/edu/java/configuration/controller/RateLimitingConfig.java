@@ -15,7 +15,7 @@ public class RateLimitingConfig {
     }
 
     @Bean
-    public Bucket TgChatRateLimitBucket() {
+    public Bucket tgChatRateLimitBucket() {
         ControllerConfig.TgChat config = controllerConfig.tgChat();
         Bandwidth limit = Bandwidth.builder()
             .capacity(config.limit())
@@ -27,7 +27,7 @@ public class RateLimitingConfig {
     }
 
     @Bean
-    public Bucket LinksRateLimitBucket() {
+    public Bucket linksRateLimitBucket() {
         ControllerConfig.Links config = controllerConfig.links();
         Bandwidth limit = Bandwidth.builder()
             .capacity(config.limit())

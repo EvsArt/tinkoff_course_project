@@ -28,7 +28,7 @@ public class LinksControllerRateLimitTest {
     @MockBean LinkService linkService;
     @MockBean LinksTransformService linksTransformService;
     @MockBean LinkInfoService linkInfoService;
-    @MockBean(name = "LinksRateLimitBucket") Bucket bucket;
+    @MockBean(name = "linksRateLimitBucket") Bucket bucket;
 
     @Test
     void getRequest_shouldReturnTooManyRequests() throws Exception {
