@@ -3,7 +3,7 @@ package edu.java.client;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.configuration.ApiConfig;
-import edu.java.configuration.model.Retry;
+import edu.java.configuration.retry.RetryConfig;
 import edu.java.constants.StackOverflowApiPaths;
 import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
@@ -64,7 +64,7 @@ class DefaultStackOverflowClientTest {
                 new URI(String.format("http://%s:%d", host, port)).toURL(),
                 new MultiValueMapAdapter<>(new HashMap<>()),
                 Duration.of(10, ChronoUnit.SECONDS),
-                new Retry(0, Retry.Strategy.CONSTANT, List.of(500), Duration.ofMillis(10))
+                new RetryConfig(1, RetryConfig.Strategy.LINEAR, List.of(500), Duration.ofMillis(10))
             )
         );
     }

@@ -67,10 +67,9 @@ public class JpaAccessConfiguration {
     @Bean
     public LinkService linkService(
         JpaLinkRepository linkRepository,
-        JpaTgChatRepository tgChatRepository,
-        LinkInfoService linkInfoService
+        JpaTgChatRepository tgChatRepository
     ) {
-        return new JpaLinkService(linkRepository, tgChatRepository, linkInfoService);
+        return new JpaLinkService(linkRepository, tgChatRepository);
     }
 
 }

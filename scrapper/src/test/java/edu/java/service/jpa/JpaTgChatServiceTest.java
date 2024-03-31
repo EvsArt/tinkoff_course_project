@@ -5,7 +5,6 @@ import edu.java.exceptions.ChatNotExistException;
 import edu.java.model.entity.TgChat;
 import edu.java.scrapper.JpaIntegrationTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

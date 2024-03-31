@@ -14,7 +14,6 @@ import edu.java.service.LinksParsingService;
 import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.SerializationUtils;
 
 @Slf4j
 @Transactional
@@ -26,8 +25,8 @@ public class JpaGitHubLinkInfoService implements GitHubLinkInfoService {
     private final LinksParsingService linksParsingService;
 
     public JpaGitHubLinkInfoService(
-            JpaGitHubLinkInfoRepository linkInfoRepository, JpaLinkRepository linkRepository, GitHubClient client,
-            LinksParsingService linksParsingService
+        JpaGitHubLinkInfoRepository linkInfoRepository, JpaLinkRepository linkRepository, GitHubClient client,
+        LinksParsingService linksParsingService
     ) {
         this.linkInfoRepository = linkInfoRepository;
         this.linkRepository = linkRepository;
@@ -67,7 +66,7 @@ public class JpaGitHubLinkInfoService implements GitHubLinkInfoService {
     @Override
     public GitHubLinkInfo updateLinkInfo(long linkId, GitHubLinkInfo linkInfo) {
         log.debug("updateLinkInfo() was called with linkId={}, linkInfo={}", linkId, linkInfo);
-        GitHubLinkInfo newLinkInfo = linkInfo.clone();
+        GitHubLinkInfo newLinkInfo = new GitHubLinkInfo(linkInfo);
         newLinkInfo.setId(linkId);
         linkInfoRepository.save(newLinkInfo);
         return newLinkInfo;

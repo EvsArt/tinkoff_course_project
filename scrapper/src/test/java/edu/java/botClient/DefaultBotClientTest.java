@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import edu.java.configuration.BotConfig;
 import edu.java.botClient.dto.ApiErrorResponse;
 import edu.java.botClient.dto.LinkUpdateRequest;
 import edu.java.botClient.dto.PostUpdatesResponse;
-import edu.java.configuration.model.Retry;
+import edu.java.configuration.BotConfig;
+import edu.java.configuration.retry.RetryConfig;
 import edu.java.constants.BotApiPaths;
 import edu.java.exceptions.status.BadRequestException;
 import edu.java.exceptions.status.ServerErrorException;
@@ -49,7 +49,7 @@ class DefaultBotClientTest {
             new BotConfig(
                 new URI(String.format("http://%s:%d", host, port)).toURL(),
                 Duration.of(10, ChronoUnit.SECONDS),
-                new Retry(0, Retry.Strategy.CONSTANT, List.of(500), Duration.ofMillis(10))
+                new RetryConfig(0, RetryConfig.Strategy.CONSTANT, List.of(500), Duration.ofMillis(10))
             )
         );
     }

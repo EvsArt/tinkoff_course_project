@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
@@ -81,7 +82,9 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
             )
             .retrieve()
             .bodyToMono(StackOverflowQuestionListResponse.class)
-            .map(it -> it.items().getFirst());
+            .map(it -> it.items().getFirst())
+            .retryWhen(config.retryConfig().toReactorRetry())
+            .onErrorMap(it -> (Exceptions.isRetryExhausted(it)) ? it.getCause() : it);  // removing retryEx wrapper
     }
 
 }

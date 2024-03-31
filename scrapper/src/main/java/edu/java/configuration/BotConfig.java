@@ -1,6 +1,6 @@
 package edu.java.configuration;
 
-import edu.java.configuration.model.Retry;
+import edu.java.configuration.retry.RetryConfig;
 import edu.java.constants.DefaultUrl;
 import java.net.URL;
 import java.time.Duration;
@@ -11,6 +11,6 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 public record BotConfig(
     @DefaultValue(DefaultUrl.BOT_DEFAULT_URL) URL url,
     Duration connectionTimeout,
-    Retry retry
+    RetryConfig retryConfig
 ) {
 }

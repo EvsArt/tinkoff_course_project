@@ -2,9 +2,9 @@ package edu.java.botClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.java.configuration.BotConfig;
 import edu.java.botClient.dto.LinkUpdateRequest;
 import edu.java.botClient.dto.PostUpdatesResponse;
+import edu.java.configuration.BotConfig;
 import edu.java.constants.BotApiPaths;
 import edu.java.exceptions.status.BadRequestException;
 import edu.java.exceptions.status.ServerErrorException;

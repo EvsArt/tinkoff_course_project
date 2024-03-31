@@ -21,10 +21,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "github_link_info")
-public class GitHubLinkInfo implements Serializable, Cloneable {
+public class GitHubLinkInfo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    public GitHubLinkInfo(GitHubLinkInfo info) {
+        this.id = info.getId();
+        this.link = info.getLink();
+        this.lastEventId = info.getLastEventId();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,16 +41,4 @@ public class GitHubLinkInfo implements Serializable, Cloneable {
     @Column(name = "last_event_id")
     @NonNull private Long lastEventId;
 
-    @Override
-    public GitHubLinkInfo clone() {
-        try {
-            GitHubLinkInfo clone = (GitHubLinkInfo) super.clone();
-            clone.setId(id);
-            clone.setLink(link.clone());
-            clone.setLastEventId(lastEventId);
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
 }

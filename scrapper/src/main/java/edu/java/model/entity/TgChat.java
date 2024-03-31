@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.io.Serial;
 import java.io.Serializable;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,10 +18,16 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-public class TgChat implements Serializable, Cloneable {
+public class TgChat implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    public TgChat(TgChat chat) {
+        this.id = chat.getId();
+        this.chatId = chat.getChatId();
+        this.name = chat.getName();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,17 +37,4 @@ public class TgChat implements Serializable, Cloneable {
     @NonNull private Long chatId;
     @Column(name = "name")
     @NonNull private String name;
-
-    @Override
-    public TgChat clone() {
-        try {
-            TgChat clone = (TgChat) super.clone();
-            clone.setId(id);
-            clone.setChatId(chatId);
-            clone.setName(name);
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
 }

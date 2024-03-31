@@ -1,36 +1,41 @@
-package edu.java.configuration.model;
+package edu.java.configuration.retry;
 
 import edu.java.exceptions.status.StatusException;
 import java.time.Duration;
 import java.util.List;
 import java.util.function.Predicate;
+import lombok.Getter;
 import lombok.ToString;
+import reactor.util.retry.Retry;
 import reactor.util.retry.RetryBackoffSpec;
 import reactor.util.retry.RetrySpec;
 
 @ToString
-public final class Retry {
-    private final int maxAttempts;
+public final class RetryConfig {
+    @Getter private final int maxAttempts;
     private final Strategy strategy;
-    private final Duration interval;
+    @Getter private final Duration interval;
+    @Getter private final double jitter = 0.5;
     private final Predicate<Throwable> statusFilterPredicate;
 
-    public Retry(int maxAttempts, Strategy strategy, List<Integer> codes, Duration interval) {
+    public RetryConfig(int maxAttempts, Strategy strategy, List<Integer> codes, Duration interval) {
         this.maxAttempts = maxAttempts;
         this.strategy = strategy;
         this.interval = interval;
         statusFilterPredicate =
-            ex -> !(ex instanceof StatusException) ||
-                codes.contains(((StatusException) ex).getStatus().value());
+            ex -> !(ex instanceof StatusException)
+                || codes.contains(((StatusException) ex).getStatus().value());
     }
 
-    public reactor.util.retry.Retry toReactorRetry() {
+    public Retry toReactorRetry() {
         return switch (strategy) {
-            case CONSTANT -> RetrySpec.max(maxAttempts)
+            case CONSTANT -> RetrySpec.fixedDelay(maxAttempts, interval)
                 .filter(statusFilterPredicate);
-            case LINEAR -> RetryBackoffSpec.fixedDelay(maxAttempts, interval)
-                .filter(statusFilterPredicate);
+            case LINEAR -> LinearRetryService.createRetry(
+                maxAttempts, interval, statusFilterPredicate
+            );
             case EXPONENTIAL -> RetryBackoffSpec.backoff(maxAttempts, interval)
+                .jitter(jitter)
                 .filter(statusFilterPredicate);
         };
 

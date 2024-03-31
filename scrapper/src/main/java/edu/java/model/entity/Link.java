@@ -17,7 +17,6 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-public class Link implements Serializable, Cloneable {
+public class Link implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -59,28 +58,21 @@ public class Link implements Serializable, Cloneable {
                inverseJoinColumns = @JoinColumn(name = "tg_chat_id"))
     private Set<TgChat> tgChats = new HashSet<>();
 
+    public Link(Link link) {
+        this.id = link.getId();
+        this.url = link.getUrl();
+        this.name = link.getName();
+        this.createdAt = link.getCreatedAt();
+        this.lastCheckTime = link.getLastCheckTime();
+        this.lastUpdateTime = link.getLastUpdateTime();
+        this.tgChats = link.getTgChats();
+    }
+
     public Link(@NotNull URI url, @NotNull String name) {
         this.url = url;
         this.name = name;
         this.createdAt = OffsetDateTime.now();
         this.lastUpdateTime = OffsetDateTime.now();
         this.lastCheckTime = OffsetDateTime.now();
-    }
-
-    @Override
-    public Link clone() {
-        try {
-            Link clone = (Link) super.clone();
-            clone.setId(id);
-            clone.setName(name);
-            clone.setUrl(url);
-            clone.setCreatedAt(createdAt);
-            clone.setLastUpdateTime(lastUpdateTime);
-            clone.setLastCheckTime(lastCheckTime);
-            clone.setTgChats(tgChats.stream().map(TgChat::clone).collect(Collectors.toSet()));
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
@@ -81,7 +82,8 @@ public class DefaultGitHubClient implements GitHubClient {
             )
             .retrieve()
             .bodyToMono(GitHubRepoResponse.class)
-            .retryWhen(config.retry().toReactorRetry());
+            .retryWhen(config.retryConfig().toReactorRetry())
+            .onErrorMap(it -> (Exceptions.isRetryExhausted(it)) ? it.getCause() : it);  // removing retryEx wrapper
     }
 
     @Override
@@ -95,6 +97,8 @@ public class DefaultGitHubClient implements GitHubClient {
             )
             .retrieve()
             .bodyToMono(GitHubRepoEventResponse[].class)
+            .retryWhen(config.retryConfig().toReactorRetry())
+            .onErrorMap(it -> (Exceptions.isRetryExhausted(it)) ? it.getCause() : it)  // removing retryEx wrapper
             .map(arr -> arr[0]);    // its array with 1 element
     }
 

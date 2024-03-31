@@ -2,20 +2,16 @@ package edu.java.domain.jdbcRepository;
 
 import edu.java.model.entity.Link;
 import edu.java.model.entity.TgChat;
-import edu.java.scrapper.IntegrationTest;
+import edu.java.scrapper.JdbcIntegrationTest;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import edu.java.scrapper.JdbcIntegrationTest;
 import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

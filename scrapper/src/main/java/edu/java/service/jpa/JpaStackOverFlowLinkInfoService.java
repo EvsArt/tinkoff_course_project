@@ -72,7 +72,7 @@ public class JpaStackOverFlowLinkInfoService implements StackOverFlowLinkInfoSer
     @Transactional
     public StackOverFlowLinkInfo updateLinkInfo(long linkId, StackOverFlowLinkInfo linkInfo) {
         log.debug("updateLinkInfo() was called with linkId={}, linkInfo={}", linkId, linkInfo);
-        StackOverFlowLinkInfo newLinkInfo = linkInfo.clone();
+        StackOverFlowLinkInfo newLinkInfo = new StackOverFlowLinkInfo(linkInfo);
         newLinkInfo.setId(linkId);
         linkInfoRepository.save(newLinkInfo);
         return newLinkInfo;

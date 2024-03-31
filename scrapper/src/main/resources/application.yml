@@ -16,7 +16,7 @@ api:
       strategy: linear
       interval: 3s
       codes:
-        - 500
+        - 403
   stackoverflow:
     connection-timeout: 10s
     url: https://api.stackexchange.com
@@ -27,7 +27,7 @@ api:
       strategy: linear
       interval: 3s
       codes:
-        - 500
+        - 403
 
 tgbot:
   url: http://localhost:8090
@@ -37,7 +37,7 @@ tgbot:
     strategy: linear
     interval: 3s
     codes:
-      - 500
+      - 403
 
 spring:
   application:
