@@ -1,15 +1,15 @@
 package edu.java.bot.scrapperClient.config.retry;
 
 import jakarta.validation.constraints.NotNull;
+import java.time.Duration;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
 import lombok.experimental.UtilityClass;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
-import java.time.Duration;
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
 
 @UtilityClass
 public class LinearRetryService {

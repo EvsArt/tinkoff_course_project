@@ -1,9 +1,9 @@
 package edu.java.bot.scrapperClient.config;
 
 import edu.java.bot.constants.DefaultUrl;
+import edu.java.bot.scrapperClient.config.retry.RetryConfig;
 import java.net.URL;
 import java.time.Duration;
-import edu.java.bot.scrapperClient.config.retry.RetryConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 

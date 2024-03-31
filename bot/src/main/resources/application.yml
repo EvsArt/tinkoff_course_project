@@ -1,9 +1,19 @@
 app:
   telegram-token: ${TG_TOKEN}
+  controller:
+    updates:
+      limit: 50
+      interval: 1m
 
 scrapper:
   url: http://localhost:8080
   connection-timeout: 10s
+  retry:
+    max-attempts: 3
+    strategy: exponential
+    interval: 3s
+    codes:
+      - 429
 
 spring:
   application:

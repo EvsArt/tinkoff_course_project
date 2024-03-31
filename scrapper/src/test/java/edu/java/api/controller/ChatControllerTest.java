@@ -4,6 +4,8 @@ import edu.java.exceptions.ChatAlreadyRegisteredException;
 import edu.java.exceptions.ChatNotExistException;
 import edu.java.model.entity.TgChat;
 import edu.java.service.TgChatService;
+import io.github.bucket4j.Bucket;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,12 @@ class ChatControllerTest {
 
     @MockBean TgChatService chatService;
     @Autowired MockMvc mockMvc;
+    @MockBean(name = "tgChatRateLimitBucket") Bucket bucket;
+
+    @BeforeEach
+    void setBucket() {
+        Mockito.when(bucket.tryConsume(Mockito.anyLong())).thenReturn(true);
+    }
 
     @Test
     void postRegisterShouldReturnOk() throws Exception {

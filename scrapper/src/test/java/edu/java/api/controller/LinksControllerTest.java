@@ -11,8 +11,10 @@ import edu.java.model.entity.Link;
 import edu.java.service.LinkInfoService;
 import edu.java.service.LinkService;
 import edu.java.service.LinksTransformService;
+import io.github.bucket4j.Bucket;
 import java.net.URI;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +38,14 @@ class LinksControllerTest {
     @MockBean LinkService linksService;
     @MockBean LinksTransformService linksTransformService;
     @MockBean LinkInfoService linkInfoService;
+    @MockBean(name = "linksRateLimitBucket") Bucket bucket;
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setBucket() {
+        Mockito.when(bucket.tryConsume(Mockito.anyLong())).thenReturn(true);
+    }
 
     @Test
     void getLinksShouldReturnOk() throws Exception {

@@ -7,6 +7,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.bot.api.dto.ApiErrorResponse;
 import edu.java.bot.constants.ScrapperApiPaths;
 import edu.java.bot.scrapperClient.config.ScrapperConfig;
+import edu.java.bot.scrapperClient.config.retry.RetryConfig;
 import edu.java.bot.scrapperClient.dto.AddLinkRequest;
 import edu.java.bot.scrapperClient.dto.LinkResponse;
 import edu.java.bot.scrapperClient.dto.ListLinksResponse;
@@ -62,7 +63,8 @@ class DefaultScrapperClientTest {
         client = DefaultScrapperClient.create(
             new ScrapperConfig(
                 new URI(String.format("http://%s:%d", host, port)).toURL(),
-                Duration.of(10, ChronoUnit.SECONDS)
+                Duration.of(10, ChronoUnit.SECONDS),
+                new RetryConfig(1, RetryConfig.Strategy.CONSTANT, List.of(500), Duration.ofMillis(10))
             )
         );
     }
