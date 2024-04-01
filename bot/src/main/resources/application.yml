@@ -1,5 +1,10 @@
 app:
   telegram-token: ${TG_TOKEN}
+  useQueue: true
+  kafka-updates-topic:
+    name: updatesTopic
+    partitions: 10
+    replicas: 1
 
 scrapper:
   url: http://localhost:8080
