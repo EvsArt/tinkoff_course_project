@@ -105,11 +105,11 @@ public class LinkUpdaterServiceImpl implements LinkUpdaterService {
         long responseLastEventId = response.getId();
         long savedLastEventId = linkInfo.getLastEventId();
 
+        System.out.println(responseLastEventId);
+        System.out.println(savedLastEventId);
         if (responseLastEventId == savedLastEventId) {
             return LinkUpdateInfo.updateInfoWithoutUpdate();
         }
-        System.out.println(responseLastEventId);
-        System.out.println(savedLastEventId);
         linkInfo.setLastEventId(responseLastEventId);
         gitHubLinkInfoService.updateLinkInfo(linkInfo.getId(), linkInfo);
         String message = "New event: %s".formatted(response.getType());
