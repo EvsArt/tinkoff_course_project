@@ -3,6 +3,7 @@ package edu.java.client;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.configuration.ApiConfig;
+import edu.java.configuration.retry.RetryConfig;
 import edu.java.constants.GitHubApiPaths;
 import edu.java.dto.GitHubRepoRequest;
 import edu.java.dto.GitHubRepoResponse;
@@ -17,6 +18,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
+import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -60,7 +62,8 @@ class DefaultGitHubClientTest {
             new ApiConfig.GitHubConfig(
                 new URI(String.format("http://%s:%d", host, port)).toURL(),
                 new MultiValueMapAdapter<>(new HashMap<>()),
-                Duration.of(10, ChronoUnit.SECONDS)
+                Duration.of(10, ChronoUnit.SECONDS),
+                new RetryConfig(1, RetryConfig.Strategy.CONSTANT, List.of(500), Duration.ofMillis(10))
             )
         );
     }

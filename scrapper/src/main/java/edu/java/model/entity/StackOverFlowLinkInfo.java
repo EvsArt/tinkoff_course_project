@@ -26,6 +26,12 @@ public class StackOverFlowLinkInfo implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    public StackOverFlowLinkInfo(StackOverFlowLinkInfo info) {
+        this.id = info.getId();
+        this.link = info.getLink();
+        this.answersCount = info.getAnswersCount();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

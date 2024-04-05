@@ -53,10 +53,20 @@ public class Link implements Serializable {
     @NonNull private OffsetDateTime lastCheckTime;
 
     @Delegate
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "link_tg_chat",
                inverseJoinColumns = @JoinColumn(name = "tg_chat_id"))
     private Set<TgChat> tgChats = new HashSet<>();
+
+    public Link(Link link) {
+        this.id = link.getId();
+        this.url = link.getUrl();
+        this.name = link.getName();
+        this.createdAt = link.getCreatedAt();
+        this.lastCheckTime = link.getLastCheckTime();
+        this.lastUpdateTime = link.getLastUpdateTime();
+        this.tgChats = link.getTgChats();
+    }
 
     public Link(@NotNull URI url, @NotNull String name) {
         this.url = url;
@@ -65,5 +75,4 @@ public class Link implements Serializable {
         this.lastUpdateTime = OffsetDateTime.now();
         this.lastCheckTime = OffsetDateTime.now();
     }
-
 }

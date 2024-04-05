@@ -1,5 +1,6 @@
 package edu.java.configuration;
 
+import edu.java.configuration.retry.RetryConfig;
 import edu.java.constants.DefaultUrl;
 import jakarta.validation.constraints.NotNull;
 import java.net.URL;
@@ -16,14 +17,16 @@ public record ApiConfig(
     public record GitHubConfig(
         @DefaultValue(DefaultUrl.GITHUB_DEFAULT_URL) URL url,
         MultiValueMap<String, String> uriParameters,
-        Duration connectionTimeout
+        Duration connectionTimeout,
+        RetryConfig retry
     ) {
     }
 
     public record StackOverflowConfig(
         @DefaultValue(DefaultUrl.STACKOVERFLOW_DEFAULT_URL) URL url,
         MultiValueMap<String, String> uriParameters,
-        Duration connectionTimeout
+        Duration connectionTimeout,
+        RetryConfig retry
     ) {
     }
 

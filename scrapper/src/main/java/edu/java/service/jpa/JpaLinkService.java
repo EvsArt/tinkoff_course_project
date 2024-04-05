@@ -6,7 +6,6 @@ import edu.java.exceptions.ChatNotExistException;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.TgChat;
-import edu.java.service.LinkInfoService;
 import edu.java.service.LinkService;
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -15,19 +14,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@Transactional
 public class JpaLinkService implements LinkService {
 
     private final JpaLinkRepository linkRepository;
     private final JpaTgChatRepository chatRepository;
-    private final LinkInfoService linkInfoService;
 
     public JpaLinkService(
-        JpaLinkRepository linkRepository, JpaTgChatRepository chatRepository,
-        LinkInfoService linkInfoService
+        JpaLinkRepository linkRepository, JpaTgChatRepository chatRepository
     ) {
         this.linkRepository = linkRepository;
         this.chatRepository = chatRepository;
-        this.linkInfoService = linkInfoService;
     }
 
     @Override
@@ -40,7 +37,6 @@ public class JpaLinkService implements LinkService {
     }
 
     @Override
-    @Transactional
     public Link removeLink(long tgChatId, URI url) {
         log.debug("removeLink() was called with tgChatId={}, url={}", tgChatId, url);
         TgChat chat = chatRepository.findTgChatByChatId(tgChatId).orElseThrow(ChatNotExistException::new);

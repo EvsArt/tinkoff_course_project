@@ -2,7 +2,6 @@ package edu.java.configuration;
 
 import edu.java.botClient.BotClient;
 import edu.java.botClient.DefaultBotClient;
-import edu.java.botClient.config.BotConfig;
 import edu.java.client.DefaultGitHubClient;
 import edu.java.client.DefaultStackOverflowClient;
 import edu.java.client.GitHubClient;

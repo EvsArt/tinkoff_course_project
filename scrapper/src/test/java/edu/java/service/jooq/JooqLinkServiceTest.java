@@ -1,16 +1,14 @@
 package edu.java.service.jooq;
 
-import edu.java.domain.jooqRepository.JooqLinkRepository;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.TgChat;
+import edu.java.scrapper.JooqIntegrationTest;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
-import edu.java.scrapper.JooqIntegrationTest;
 import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

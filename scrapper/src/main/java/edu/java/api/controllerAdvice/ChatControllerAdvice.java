@@ -4,6 +4,7 @@ import edu.java.api.controller.ChatController;
 import edu.java.api.dto.ApiErrorResponse;
 import edu.java.exceptions.ChatAlreadyRegisteredException;
 import edu.java.exceptions.ChatNotExistException;
+import edu.java.exceptions.status.TooManyRequestsException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,36 @@ public class ChatControllerAdvice extends ResponseEntityExceptionHandler {
         ApiErrorResponse response =
             ApiErrorResponse.builder()
                 .description("Chat has already registered")
+                .code(String.valueOf(status.value()))
+                .exceptionName(ex.getClass().getName())
+                .exceptionMessage(ex.getMessage())
+                .stacktrace(
+                    Arrays.stream(ex.getStackTrace())
+                        .map(StackTraceElement::toString)
+                        .toList()
+                )
+                .build();
+
+        MultiValueMap<String, String> headers = new MultiValueMapAdapter<>(Map.of(
+            HttpHeaders.CONTENT_TYPE, List.of(MediaType.APPLICATION_JSON.toString())
+        ));
+        return createResponseEntity(
+            response,
+            HttpHeaders.readOnlyHttpHeaders(headers),
+            status,
+            request
+        );
+    }
+
+    @ExceptionHandler(TooManyRequestsException.class)
+    public ResponseEntity<Object> handleTooManyRequests(
+        RuntimeException ex, WebRequest request
+    ) {
+        HttpStatusCode status = HttpStatus.TOO_MANY_REQUESTS;
+
+        ApiErrorResponse response =
+            ApiErrorResponse.builder()
+                .description("Too many requests! Try later!")
                 .code(String.valueOf(status.value()))
                 .exceptionName(ex.getClass().getName())
                 .exceptionMessage(ex.getMessage())

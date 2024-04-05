@@ -1,22 +1,20 @@
 package edu.java.service.jpa;
 
 import edu.java.client.StackOverflowClient;
-import edu.java.domain.jpaRepository.JpaStackOverFlowLinkInfoRepository;
 import edu.java.dto.StackOverflowQuestionResponse;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.StackOverFlowLinkInfo;
 import edu.java.model.entity.TgChat;
 import edu.java.scrapper.JpaIntegrationTest;
+import java.net.URI;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
-import java.net.URI;
-import java.time.OffsetDateTime;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
@@ -65,7 +63,8 @@ class JpaStackOverFlowLinkInfoServiceTest extends JpaIntegrationTest {
 
     @Test
     void findLinkInfoByNotExistsUrl_shouldThrowLinkNotExistsException() {
-        Throwable finding = catchThrowable(() -> jpaStackOverFlowLinkInfoService.findLinkInfoByLinkUrl(URI.create("MyUrl")));
+        Throwable finding =
+            catchThrowable(() -> jpaStackOverFlowLinkInfoService.findLinkInfoByLinkUrl(URI.create("MyUrl")));
 
         assertThat(finding).isInstanceOf(LinkNotExistsException.class);
     }
@@ -126,7 +125,8 @@ class JpaStackOverFlowLinkInfoServiceTest extends JpaIntegrationTest {
         StackOverFlowLinkInfo deletedLinkInfo = jpaStackOverFlowLinkInfoService.removeLinkInfoByLink(link);
 
         Throwable findingDeletedLinkInfo =
-            catchThrowable(() -> jpaStackOverFlowLinkInfoService.findLinkInfoByLinkUrl(URI.create("http://github.com/rep/name")));
+            catchThrowable(() -> jpaStackOverFlowLinkInfoService.findLinkInfoByLinkUrl(URI.create(
+                "http://github.com/rep/name")));
 
         assertThat(deletedLinkInfo).isEqualTo(linkInfo);
         assertThat(findingDeletedLinkInfo).isInstanceOf(LinkNotExistsException.class);

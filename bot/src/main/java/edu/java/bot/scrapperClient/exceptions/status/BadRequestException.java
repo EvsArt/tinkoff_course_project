@@ -1,4 +1,11 @@
 package edu.java.bot.scrapperClient.exceptions.status;
 
-public class BadRequestException extends RuntimeException {
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+public class BadRequestException extends StatusException {
+
+    @Getter
+    private final HttpStatus status = HttpStatus.BAD_REQUEST;
+
 }

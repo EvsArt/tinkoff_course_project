@@ -3,6 +3,7 @@ package edu.java.client;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.configuration.ApiConfig;
+import edu.java.configuration.retry.RetryConfig;
 import edu.java.constants.StackOverflowApiPaths;
 import edu.java.dto.StackOverflowQuestionRequest;
 import edu.java.dto.StackOverflowQuestionResponse;
@@ -19,6 +20,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
+import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -61,7 +63,8 @@ class DefaultStackOverflowClientTest {
             new ApiConfig.StackOverflowConfig(
                 new URI(String.format("http://%s:%d", host, port)).toURL(),
                 new MultiValueMapAdapter<>(new HashMap<>()),
-                Duration.of(10, ChronoUnit.SECONDS)
+                Duration.of(10, ChronoUnit.SECONDS),
+                new RetryConfig(1, RetryConfig.Strategy.LINEAR, List.of(500), Duration.ofMillis(10))
             )
         );
     }

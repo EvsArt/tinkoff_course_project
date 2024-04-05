@@ -26,6 +26,12 @@ public class GitHubLinkInfo implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    public GitHubLinkInfo(GitHubLinkInfo info) {
+        this.id = info.getId();
+        this.link = info.getLink();
+        this.lastEventId = info.getLastEventId();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

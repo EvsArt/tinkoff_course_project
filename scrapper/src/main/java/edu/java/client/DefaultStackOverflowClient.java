@@ -9,6 +9,7 @@ import edu.java.exceptions.status.BadRequestException;
 import edu.java.exceptions.status.ForbiddenException;
 import edu.java.exceptions.status.ResourceNotFoundException;
 import edu.java.exceptions.status.ServerErrorException;
+import edu.java.exceptions.status.TooManyRequestsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
@@ -59,6 +61,10 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
                 resp -> Mono.error(ResourceNotFoundException::new)
             )
             .defaultStatusHandler(
+                status -> status.isSameCodeAs(HttpStatus.TOO_MANY_REQUESTS),
+                resp -> Mono.error(TooManyRequestsException::new)
+            )
+            .defaultStatusHandler(
                 HttpStatusCode::is5xxServerError,
                 resp -> Mono.error(ServerErrorException::new)
             )
@@ -81,7 +87,9 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
             )
             .retrieve()
             .bodyToMono(StackOverflowQuestionListResponse.class)
-            .map(it -> it.items().getFirst());
+            .map(it -> it.items().getFirst())
+            .retryWhen(config.retry().toReactorRetry())
+            .onErrorMap(it -> (Exceptions.isRetryExhausted(it)) ? it.getCause() : it);  // removing retryEx wrapper
     }
 
 }

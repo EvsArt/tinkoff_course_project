@@ -28,10 +28,12 @@
         <!-- Other -->
         <jetbrains-annotations.version>24.1.0</jetbrains-annotations.version>
         <java-telegram-bot-api.version>7.0.1</java-telegram-bot-api.version>
+        <bucket4j.version>8.7.0</bucket4j.version>
 
         <!-- Tests -->
         <testcontainers.version>1.19.4</testcontainers.version>
         <wiremock.version>3.3.1</wiremock.version>
+        <mockwebserver.version>4.12.0</mockwebserver.version>
 
         <!-- Plugins -->
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
@@ -54,6 +56,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.bucket4j</groupId>
+                <artifactId>bucket4j-core</artifactId>
+                <version>${bucket4j.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.github.pengrad</groupId>
                 <artifactId>java-telegram-bot-api</artifactId>
@@ -124,6 +132,12 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <version>${mockwebserver.version}</version>
             <scope>test</scope>
         </dependency>
 

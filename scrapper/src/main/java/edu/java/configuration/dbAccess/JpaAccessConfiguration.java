@@ -35,18 +35,25 @@ public class JpaAccessConfiguration {
     public GitHubLinkInfoService gitHubLinkInfoService(
         JpaGitHubLinkInfoRepository jpaGitHubLinkInfoRepository,
         GitHubClient client,
+        JpaLinkRepository linkRepository,
         LinksParsingService linksParsingService
     ) {
-        return new JpaGitHubLinkInfoService(jpaGitHubLinkInfoRepository, client, linksParsingService);
+        return new JpaGitHubLinkInfoService(jpaGitHubLinkInfoRepository, linkRepository, client, linksParsingService);
     }
 
     @Bean
     public StackOverFlowLinkInfoService stackOverFlowLinkInfoService(
         JpaStackOverFlowLinkInfoRepository jpaStackOverFlowLinkInfoRepository,
+        JpaLinkRepository jpaLinkRepository,
         StackOverflowClient client,
         LinksParsingService linksParsingService
     ) {
-        return new JpaStackOverFlowLinkInfoService(jpaStackOverFlowLinkInfoRepository, client, linksParsingService);
+        return new JpaStackOverFlowLinkInfoService(
+            jpaStackOverFlowLinkInfoRepository,
+            jpaLinkRepository,
+            client,
+            linksParsingService
+        );
     }
 
     @Bean
@@ -60,10 +67,9 @@ public class JpaAccessConfiguration {
     @Bean
     public LinkService linkService(
         JpaLinkRepository linkRepository,
-        JpaTgChatRepository tgChatRepository,
-        LinkInfoService linkInfoService
+        JpaTgChatRepository tgChatRepository
     ) {
-        return new JpaLinkService(linkRepository, tgChatRepository, linkInfoService);
+        return new JpaLinkService(linkRepository, tgChatRepository);
     }
 
 }

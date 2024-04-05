@@ -23,6 +23,12 @@ public class TgChat implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    public TgChat(TgChat chat) {
+        this.id = chat.getId();
+        this.chatId = chat.getChatId();
+        this.name = chat.getName();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,5 +37,4 @@ public class TgChat implements Serializable {
     @NonNull private Long chatId;
     @Column(name = "name")
     @NonNull private String name;
-
 }
