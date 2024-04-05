@@ -32,4 +32,10 @@ public class TgChat implements Serializable {
     @Column(name = "name")
     @NonNull private String name;
 
+    public TgChat(TgChat tgChat) {
+        this.id = tgChat.id;
+        this.chatId = tgChat.chatId;
+        this.name = tgChat.name;
+    }
+
 }

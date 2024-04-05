@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public enum SupportedApi {
 
-    GITHUB_REPO(Pattern.compile("^(https?://)?github\\.com/(?<ownerName>\\w+)/(?<repoName>\\w+)$")),
+    GITHUB_REPO(Pattern.compile("^(https?://)?github\\.com/(?<ownerName>[\\w-]+)/(?<repoName>[\\w-]+)$")),
     STACKOVERFLOW_QUESTION(Pattern.compile(
         "^(https?://)?stackoverflow\\.com/questions/(?<questionId>\\d+)/(?<questionName>[\\w-]+)$"));
 

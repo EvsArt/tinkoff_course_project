@@ -6,7 +6,6 @@ import edu.java.exceptions.ChatNotExistException;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.TgChat;
-import edu.java.service.LinkInfoService;
 import edu.java.service.LinkService;
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -19,15 +18,12 @@ public class JpaLinkService implements LinkService {
 
     private final JpaLinkRepository linkRepository;
     private final JpaTgChatRepository chatRepository;
-    private final LinkInfoService linkInfoService;
 
     public JpaLinkService(
-        JpaLinkRepository linkRepository, JpaTgChatRepository chatRepository,
-        LinkInfoService linkInfoService
+        JpaLinkRepository linkRepository, JpaTgChatRepository chatRepository
     ) {
         this.linkRepository = linkRepository;
         this.chatRepository = chatRepository;
-        this.linkInfoService = linkInfoService;
     }
 
     @Override

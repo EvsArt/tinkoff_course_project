@@ -1,27 +1,30 @@
-package edu.java.bot.configuration;
+package edu.java.configuration.kafka;
 
-import edu.java.bot.api.dto.LinkUpdateRequest;
-import edu.java.bot.service.UpdatesService;
-import jakarta.validation.Valid;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.java.botClient.dto.LinkUpdateRequest;
+import edu.java.configuration.ApplicationConfig;
+import edu.java.kafkaBotClient.ScrapperQueueProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.common.serialization.Serializer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.TopicBuilder;
+import org.springframework.kafka.core.KafkaTemplate;
 
 @Configuration
-@Slf4j
 @ConditionalOnProperty(prefix = "app", name = "useQueue", havingValue = "true")
+@EnableKafka
+@Slf4j
 public class KafkaConfiguration {
 
     private final ApplicationConfig.KafkaUpdatesTopic kafkaUpdatesTopic;
-    public final UpdatesService updatesService;
 
-    public KafkaConfiguration(ApplicationConfig applicationConfig, UpdatesService updatesService) {
+    public KafkaConfiguration(ApplicationConfig applicationConfig) {
         this.kafkaUpdatesTopic = applicationConfig.kafkaUpdatesTopic();
-        this.updatesService = updatesService;
     }
 
     @Bean
@@ -32,10 +35,12 @@ public class KafkaConfiguration {
             .build();
     }
 
-    @KafkaListener(topics = "${app.kafka-updates-topic.name}")
-    public void listen(@Valid LinkUpdateRequest update) {
-        log.debug(String.format("Update %s was accepted", update));
-        updatesService.sendUpdatesMessages(update);
+    @Bean
+    public ScrapperQueueProducer scrapperQueueProducer(
+        ApplicationConfig applicationConfig,
+        KafkaTemplate<Long, LinkUpdateRequest> kafkaTemplate
+    ) {
+        return new ScrapperQueueProducer(applicationConfig.kafkaUpdatesTopic(), kafkaTemplate);
     }
 
 }

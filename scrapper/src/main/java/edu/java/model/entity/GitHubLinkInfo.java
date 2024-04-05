@@ -35,4 +35,10 @@ public class GitHubLinkInfo implements Serializable {
     @Column(name = "last_event_id")
     @NonNull private Long lastEventId;
 
+    public GitHubLinkInfo(GitHubLinkInfo info) {
+            this.id = info.id;
+            this.link = info.link;
+            this.lastEventId = info.lastEventId;
+    }
+
 }

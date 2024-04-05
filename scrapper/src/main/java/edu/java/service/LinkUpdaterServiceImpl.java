@@ -11,6 +11,7 @@ import edu.java.model.LinkUpdateInfo;
 import edu.java.model.entity.GitHubLinkInfo;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.StackOverFlowLinkInfo;
+import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,9 +108,10 @@ public class LinkUpdaterServiceImpl implements LinkUpdaterService {
         if (responseLastEventId == savedLastEventId) {
             return LinkUpdateInfo.updateInfoWithoutUpdate();
         }
-
+        System.out.println(responseLastEventId);
+        System.out.println(savedLastEventId);
         linkInfo.setLastEventId(responseLastEventId);
-        gitHubLinkInfoService.updateLinkInfo(link.getId(), linkInfo);
+        gitHubLinkInfoService.updateLinkInfo(linkInfo.getId(), linkInfo);
         String message = "New event: %s".formatted(response.getType());
         return LinkUpdateInfo.updateInfoWithUpdate(message, link);
     }

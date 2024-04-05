@@ -15,6 +15,11 @@ spring:
     name: bot
   jackson:
     time-zone: UTC
+  kafka:
+    consumer:
+      group-id: link-updates
+      value-deserializer: edu.java.bot.configuration.kafka.LinkUpdateRequestDeserializer
+
 
 server:
   port: 8090

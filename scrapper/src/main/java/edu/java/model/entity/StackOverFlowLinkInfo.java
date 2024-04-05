@@ -34,4 +34,11 @@ public class StackOverFlowLinkInfo implements Serializable {
     @NonNull private Link link;
     @Column(name = "answers_count")
     @NonNull private Integer answersCount;
+
+    public StackOverFlowLinkInfo(StackOverFlowLinkInfo info) {
+        this.id = info.id;
+        this.link = info.link;
+        this.answersCount = info.answersCount;
+    }
+
 }

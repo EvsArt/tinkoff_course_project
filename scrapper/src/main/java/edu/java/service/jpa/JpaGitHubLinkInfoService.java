@@ -59,8 +59,9 @@ public class JpaGitHubLinkInfoService implements GitHubLinkInfoService {
     @Transactional
     public GitHubLinkInfo updateLinkInfo(long linkId, GitHubLinkInfo linkInfo) {
         log.debug("updateLinkInfo() was called with linkId={}, linkInfo={}", linkId, linkInfo);
-        GitHubLinkInfo newLinkInfo = SerializationUtils.clone(linkInfo);
+        GitHubLinkInfo newLinkInfo = new GitHubLinkInfo(linkInfo);
         newLinkInfo.setId(linkId);
+        linkInfoRepository.save(newLinkInfo);
         return newLinkInfo;
     }
 
