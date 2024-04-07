@@ -1,25 +1,25 @@
 app:
   telegram-token: ${TG_TOKEN}
-  controller:
-    updates:
-      limit: 50
-      interval: 1m
+  useQueue: true
+  kafka-updates-topic:
+    name: updatesTopic
+    partitions: 10
+    replicas: 1
 
 scrapper:
   url: http://localhost:8080
   connection-timeout: 10s
-  retry:
-    max-attempts: 3
-    strategy: exponential
-    interval: 3s
-    codes:
-      - 429
 
 spring:
   application:
     name: bot
   jackson:
     time-zone: UTC
+  kafka:
+    consumer:
+      group-id: link-updates
+      value-deserializer: edu.java.bot.configuration.kafka.LinkUpdateRequestDeserializer
+
 
 server:
   port: 8090
