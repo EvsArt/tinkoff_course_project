@@ -30,12 +30,13 @@ public class KafkaConfiguration {
             .partitions(kafkaUpdatesTopic.partitions())
             .replicas(kafkaUpdatesTopic.replicas())
             .build();
+        
     }
 
     @Bean
     public UpdatesQueueProducer scrapperQueueProducer(
         ApplicationConfig applicationConfig,
-        KafkaTemplate<Long, LinkUpdateRequest> kafkaTemplate
+        KafkaTemplate<String, LinkUpdateRequest> kafkaTemplate
     ) {
         return new UpdatesQueueProducer(applicationConfig.kafkaUpdatesTopic(), kafkaTemplate);
     }

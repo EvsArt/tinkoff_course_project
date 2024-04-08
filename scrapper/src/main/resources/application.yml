@@ -5,14 +5,14 @@ app:
     interval: 10s
     force-check-delay: 10s
   linkChecker:
-    checkInterval: 15s
-    controller:
-      tg-chat:
-        limit: 20
-        interval: 30m
-      links:
-        limit: 20
-        interval: 30m
+    checkInterval: 1m
+  controller:
+    tg-chat:
+      limit: 20
+      interval: 30m
+    links:
+      limit: 20
+      interval: 30m
   database-access-type: jpa
   kafka-updates-topic:
     name: updatesTopic
@@ -44,12 +44,18 @@ api:
 tgbot:
   url: http://localhost:8090
   connection-timeout: 10s
+  retry:
+    max-attempts: 3
+    strategy: linear
+    interval: 3s
+    codes:
+      - 429
 
 spring:
   application:
     name: scrapper
   datasource:
-    url: jdbc:postgresql://localhost:5432/scrapper
+    url: jdbc:postgresql://localhost:5433/scrapper
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -60,10 +66,18 @@ spring:
   liquibase:
     enabled: false
   kafka:
-    consumer:
-      auto-offset-reset: earliest
+    bootstrap-servers: localhost:9092
     producer:
       value-serializer: edu.java.configuration.kafka.LinkUpdateRequestSerializer
+      client-id: scrapper-backend
+      acks: all
+      batch-size: 100000
+      properties:
+        delivery:
+          timeout:
+            ms: 60_000
+        linger:
+          ms: 12_000
 
 server:
   port: 8080

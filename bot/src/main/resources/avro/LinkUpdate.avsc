@@ -1,0 +1,22 @@
+{
+    "type": "record",
+    "name": "LinkUpdateRequest",
+    "namespace": "edu.java",
+    "fields": [
+        {
+            "name": "tgChatIds",
+            "type": {
+                "type": "array",
+                "items": "long"
+            }
+        },
+        {
+            "name": "url",
+            "type": "string"
+        },
+        {
+            "name": "description",
+            "type": "string"
+        }
+    ]
+}

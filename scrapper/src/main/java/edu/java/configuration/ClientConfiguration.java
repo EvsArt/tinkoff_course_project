@@ -6,7 +6,9 @@ import edu.java.client.DefaultGitHubClient;
 import edu.java.client.DefaultStackOverflowClient;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
+import edu.java.kafkaBotClient.UpdatesQueueProducer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,8 +35,15 @@ public class ClientConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(value = "${app.useQueue}", havingValue = "false")
     public BotClient botClient() {
         return DefaultBotClient.create(botConfig);
+    }
+
+    @Bean
+    @ConditionalOnProperty(value = "${app.useQueue}", havingValue = "true")
+    public BotClient kafkaBotClient(UpdatesQueueProducer producer) {
+        return producer;
     }
 
 }
