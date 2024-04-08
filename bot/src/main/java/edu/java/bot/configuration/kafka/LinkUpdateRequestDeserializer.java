@@ -11,13 +11,13 @@ import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DatumReader;
 import org.apache.kafka.common.serialization.Deserializer;
+import org.springframework.kafka.support.serializer.DeserializationException;
 
 @Slf4j
 public class LinkUpdateRequestDeserializer implements Deserializer<LinkUpdateRequest> {
 
     @Override
     public LinkUpdateRequest deserialize(String s, byte[] data) {
-
         DatumReader<GenericRecord> datumReader = new GenericDatumReader<>(AvroLinkUpdateRequest.getClassSchema());
         SeekableByteArrayInput arrayInput = new SeekableByteArrayInput(data);
 
@@ -26,10 +26,11 @@ public class LinkUpdateRequestDeserializer implements Deserializer<LinkUpdateReq
         try {
             dataFileReader = new DataFileReader<>(arrayInput, datumReader);
             record = dataFileReader.next();
+            return toLinkUpdateRequest(record);
         } catch (IOException e) {
             log.error("Error with serialization data: {}", data);
+            throw new DeserializationException("Error with deserialization data", data, false, e);
         }
-        return toLinkUpdateRequest(record);
     }
 
     private LinkUpdateRequest toLinkUpdateRequest(GenericRecord avro) {

@@ -75,9 +75,9 @@ spring:
       properties:
         delivery:
           timeout:
-            ms: 60_000
+            ms: 60000
         linger:
-          ms: 12_000
+          ms: 12000
 
 server:
   port: 8080
