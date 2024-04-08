@@ -9,6 +9,10 @@ app:
     name: updatesTopic
     partitions: 10
     replicas: 1
+  kafka-updates-dlq-topic:
+    name: updatesTopic_dlq
+    partitions: 1
+    replicas: 1
 
 scrapper:
   url: http://localhost:8080
@@ -29,17 +33,13 @@ spring:
     bootstrap-servers: localhost:9092
     consumer:
       group-id: link-updates
-      value-deserializer: edu.java.bot.configuration.kafka.LinkUpdateRequestDeserializer
+      value-deserializer: edu.java.bot.kafka.LinkUpdateRequestDeserializer
       auto-offset-reset: latest
       properties:
         max:
           poll:
             interval:
               ms: 300000
-
-      enable-auto-commit: false
-
-
 
 server:
   port: 8090

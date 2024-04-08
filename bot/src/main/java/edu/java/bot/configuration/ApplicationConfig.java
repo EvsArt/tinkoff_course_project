@@ -9,10 +9,11 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "app")
 public record ApplicationConfig(
     @NotEmpty String telegramToken,
-    @NotNull KafkaUpdatesTopic kafkaUpdatesTopic
+    @NotNull ApplicationConfig.KafkaTopic kafkaUpdatesTopic,
+    @NotNull ApplicationConfig.KafkaTopic kafkaUpdatesDLQTopic
 ) {
 
-    public record KafkaUpdatesTopic(String name, int partitions, int replicas) {
+    public record KafkaTopic(String name, int partitions, int replicas) {
     }
 
 }

@@ -1,4 +1,4 @@
-package edu.java.bot.configuration.kafka;
+package edu.java.bot.kafka;
 
 import edu.java.bot.api.dto.LinkUpdateRequest;
 import edu.java.bot.avro.AvroLinkUpdateRequest;
@@ -17,7 +17,7 @@ import org.springframework.kafka.support.serializer.DeserializationException;
 public class LinkUpdateRequestDeserializer implements Deserializer<LinkUpdateRequest> {
 
     @Override
-    public LinkUpdateRequest deserialize(String s, byte[] data) {
+    public LinkUpdateRequest deserialize(String topic, byte[] data) {
         DatumReader<GenericRecord> datumReader = new GenericDatumReader<>(AvroLinkUpdateRequest.getClassSchema());
         SeekableByteArrayInput arrayInput = new SeekableByteArrayInput(data);
 
@@ -28,7 +28,7 @@ public class LinkUpdateRequestDeserializer implements Deserializer<LinkUpdateReq
             record = dataFileReader.next();
             return toLinkUpdateRequest(record);
         } catch (IOException e) {
-            log.error("Error with serialization data: {}", data);
+            log.error("Error with serialization data: {} in topic {}", data, topic);
             throw new DeserializationException("Error with deserialization data", data, false, e);
         }
     }

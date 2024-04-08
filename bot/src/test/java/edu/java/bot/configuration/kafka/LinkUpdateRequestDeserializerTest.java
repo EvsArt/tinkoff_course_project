@@ -1,8 +1,7 @@
 package edu.java.bot.configuration.kafka;
 
+import edu.java.bot.kafka.LinkUpdateRequestDeserializer;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class LinkUpdateRequestDeserializerTest {
 
