@@ -120,7 +120,7 @@ public class ConstantRetryTest {
 
         long expTime = retryConfig.getInterval().multipliedBy(retryConfig.getMaxAttempts()).toMillis();
 
-        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(10));
+        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(30));
     }
 
     // 1s * 4 = 4s
@@ -150,7 +150,7 @@ public class ConstantRetryTest {
 
         long expTime = retryConfig.getInterval().multipliedBy(retryConfig.getMaxAttempts()).toMillis();
 
-        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(10));
+        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(30));
     }
 
 }

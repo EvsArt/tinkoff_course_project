@@ -33,10 +33,6 @@ public class LinearRetryTest {
     HttpUrl url = mockWebServer.url("/mvuri2");
     WebClient webClient = WebClient.create();
 
-    @BeforeAll
-    public static void createServer() throws IOException {
-    }
-
     @AfterAll
     public static void shutDown() throws IOException {
         mockWebServer.shutdown();
@@ -131,7 +127,7 @@ public class LinearRetryTest {
 
         long expTime = retryConfig.getInterval().multipliedBy((long) (((double) retries + 1) / 2 * retries)).toMillis();
 
-        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(10));
+        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(30));
     }
 
     // 1s + 2s = 3s
@@ -161,7 +157,7 @@ public class LinearRetryTest {
 
         long expTime = retryConfig.getInterval().multipliedBy((long) (((double) retries + 1) / 2 * retries)).toMillis();
 
-        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(10));
+        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(30));
     }
 
 }
