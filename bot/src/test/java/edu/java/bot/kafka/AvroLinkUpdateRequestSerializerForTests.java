@@ -1,7 +1,7 @@
-package edu.java.configuration.kafka;
+package edu.java.bot.kafka;
 
-import edu.java.avro.AvroLinkUpdateRequest;
-import edu.java.botClient.dto.LinkUpdateRequest;
+import edu.java.bot.api.dto.LinkUpdateRequest;
+import edu.java.bot.avro.AvroLinkUpdateRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.common.serialization.Serializer;
 
 @Slf4j
-public class LinkUpdateRequestSerializer implements Serializer<LinkUpdateRequest> {
+public class AvroLinkUpdateRequestSerializerForTests implements Serializer<LinkUpdateRequest> {
 
     @Override
     public byte[] serialize(String topic, LinkUpdateRequest request) {

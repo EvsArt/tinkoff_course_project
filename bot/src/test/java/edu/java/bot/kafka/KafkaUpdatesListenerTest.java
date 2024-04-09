@@ -1,10 +1,6 @@
-package edu.java.bot.configuration.kafka;
+package edu.java.bot.kafka;
 
 import org.junit.jupiter.api.Test;
-
-import java.util.concurrent.CountDownLatch;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doAnswer;
 
 class KafkaUpdatesListenerTest {
 

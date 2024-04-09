@@ -48,7 +48,6 @@ public abstract class IntegrationTest {
 
     private static void runMigrations(JdbcDatabaseContainer<?> c) throws FileNotFoundException, SQLException {
         ResourceAccessor accessor = new DirectoryResourceAccessor(migrationsPath);
-        System.out.println(c.getJdbcUrl());
         DatabaseConnection connection = new JdbcConnection(
             DriverManager.getConnection(
                 c.getJdbcUrl(),

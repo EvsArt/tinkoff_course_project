@@ -18,7 +18,10 @@ public class UpdatesService {
     public void sendUpdatesMessages(LinkUpdateRequest updateRequest) {
         updateRequest.getTgChatIds()
             .forEach(chatId -> bot.sendMessage(
-                new SendMessage(chatId, StringService.receiveUpdate(updateRequest.getUrl(), updateRequest.getDescription()))
+                new SendMessage(
+                    chatId,
+                    StringService.receiveUpdate(updateRequest.getUrl(), updateRequest.getDescription())
+                )
             ));
     }
 

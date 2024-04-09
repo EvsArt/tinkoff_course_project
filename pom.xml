@@ -35,6 +35,7 @@
         <testcontainers.version>1.19.4</testcontainers.version>
         <wiremock.version>3.3.1</wiremock.version>
         <mockwebserver.version>4.12.0</mockwebserver.version>
+        <apache-compress.version>1.25.0</apache-compress.version>
 
         <!-- Plugins -->
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
@@ -81,6 +82,11 @@
                 <version>${testcontainers.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>${apache-compress.version}</version>
             </dependency>
 
             <dependency>

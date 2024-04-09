@@ -18,7 +18,7 @@ public class KafkaConfiguration {
     private final ApplicationConfig.KafkaTopic kafkaTopic;
 
     public KafkaConfiguration(
-            ApplicationConfig applicationConfig
+        ApplicationConfig applicationConfig
     ) {
         this.kafkaTopic = applicationConfig.kafkaUpdatesTopic();
     }

@@ -21,13 +21,13 @@ class KafkaErrorHandler implements CommonErrorHandler {
     @Override
     public boolean handleOne(
         Exception exception,
-        ConsumerRecord<?, ?> record,
+        ConsumerRecord<?, ?> readedRecord,
         Consumer<?, ?> consumer,
         MessageListenerContainer container
     ) {
         log.error("Handling exception with available record");
-        String msg = "record: " + record.toString() + '\n' +
-                "exception: " + exception.getMessage();
+        String msg = "record: " + readedRecord.toString() + '\n'
+            + "exception: " + exception.getMessage();
         dlqSender.send(msg);
         handle(exception, consumer);
         return true;
@@ -41,7 +41,7 @@ class KafkaErrorHandler implements CommonErrorHandler {
         boolean batchListener
     ) {
         log.error("Handling exception without available record");
-        dlqSender.send("exception: " + exception.getMessage());
+        dlqSender.send("with exception: " + exception.getMessage());
         handle(exception, consumer);
     }
 

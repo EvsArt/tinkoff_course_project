@@ -12,7 +12,7 @@ import edu.java.service.jdbc.JdbcTgChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = "app.database-access-type=jdbc")
+@TestPropertySource(properties = {"app.database-access-type=jdbc", "app.useQueue=false"})
 public abstract class JdbcIntegrationTest extends IntegrationTest {
 
     @Autowired protected JdbcTgChatRepository jdbcTgChatRepository;

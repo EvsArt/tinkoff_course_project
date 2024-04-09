@@ -1,8 +1,6 @@
 package edu.java.bot.api.controller;
 
-import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.api.dto.LinkUpdateRequest;
-import edu.java.bot.constants.StringService;
 import edu.java.bot.scrapperClient.exceptions.status.TooManyRequestsException;
 import edu.java.bot.service.UpdatesService;
 import io.github.bucket4j.Bucket;

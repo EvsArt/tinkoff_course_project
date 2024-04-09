@@ -11,7 +11,7 @@ import edu.java.service.jpa.JpaTgChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = "app.database-access-type=jpa")
+@TestPropertySource(properties = {"app.database-access-type=jpa", "app.useQueue=false"})
 public abstract class JpaIntegrationTest extends IntegrationTest {
 
     @Autowired protected JpaTgChatRepository jpaTgChatRepository;

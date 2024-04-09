@@ -22,11 +22,11 @@ public class LinkUpdateRequestDeserializer implements Deserializer<LinkUpdateReq
         SeekableByteArrayInput arrayInput = new SeekableByteArrayInput(data);
 
         DataFileReader<GenericRecord> dataFileReader;
-        GenericRecord record = null;
+        GenericRecord readedRecord = null;
         try {
             dataFileReader = new DataFileReader<>(arrayInput, datumReader);
-            record = dataFileReader.next();
-            return toLinkUpdateRequest(record);
+            readedRecord = dataFileReader.next();
+            return toLinkUpdateRequest(readedRecord);
         } catch (IOException e) {
             log.error("Error with serialization data: {} in topic {}", data, topic);
             throw new DeserializationException("Error with deserialization data", data, false, e);
