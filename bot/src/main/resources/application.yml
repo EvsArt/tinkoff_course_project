@@ -5,10 +5,15 @@ app:
     updates:
       limit: 50
       interval: 1m
+  async:
+    core-pool-size: 4
+    max-pool-size: 16
+    queue-capacity: 256
+
   kafka-updates-topic:
     name: updatesTopic
-    partitions: 10
-    replicas: 1
+    partitions: 3
+    replicas: 3
   kafka-updates-dlq-topic:
     name: updatesTopic_dlq
     partitions: 1
