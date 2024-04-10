@@ -24,7 +24,7 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public NewTopic topic() {
+    public NewTopic updatesTopic() {
         return TopicBuilder.name(kafkaTopic.name())
             .partitions(kafkaTopic.partitions())
             .replicas(kafkaTopic.replicas())

@@ -30,7 +30,8 @@ spring:
   jackson:
     time-zone: UTC
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers:
+      - localhost:9092
     consumer:
       group-id: link-updates
       value-deserializer: edu.java.bot.kafka.LinkUpdateRequestDeserializer
