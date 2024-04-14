@@ -38,7 +38,7 @@ public class ExponentRetryTest {
         d.dispatch(new RecordedRequest("", Headers.of(), List.of(), 1, new Buffer(), 1, new Socket(), null));
     }
 
-    private void setResponsesWithNErrors(int n) throws IOException, InterruptedException {
+    private void setResponsesWithNErrors(int n) {
         IntStream.range(0, n).forEach(
             i -> mockWebServer.enqueue(new MockResponse().setResponseCode(500))
         );

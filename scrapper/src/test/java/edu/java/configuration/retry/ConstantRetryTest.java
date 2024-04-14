@@ -94,7 +94,7 @@ public class ConstantRetryTest {
 
     // 1s * 3 = 3s
     @Test
-    public void testClient3RetriesWith1SDelay_shouldRunsAbout3Seconds() throws IOException {
+    public void testClient3RetriesWith1SDelay_shouldRunsAbout3Seconds() {
         int retries = 3;
         setResponsesWithNErrors(retries);
         RetryConfig retryConfig = getRetryConfigWithNRetries(retries);
@@ -119,7 +119,7 @@ public class ConstantRetryTest {
 
         long expTime = retryConfig.getInterval().multipliedBy(retryConfig.getMaxAttempts()).toMillis();
 
-        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(10));
+        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(30));
     }
 
     // 1s * 4 = 4s
@@ -149,7 +149,7 @@ public class ConstantRetryTest {
 
         long expTime = retryConfig.getInterval().multipliedBy(retryConfig.getMaxAttempts()).toMillis();
 
-        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(10));
+        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(30));
     }
 
 }

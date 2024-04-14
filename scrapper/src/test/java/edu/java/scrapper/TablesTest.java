@@ -4,13 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
+@TestPropertySource(properties = "app.useQueue=false")
 public class TablesTest extends IntegrationTest {
 
     @Test
-    void tableLinkExists() throws SQLException, InterruptedException {
+    void tableLinkExists() throws SQLException {
         Connection connection = POSTGRES.createConnection("");
 
         PreparedStatement linkStatement = connection.prepareStatement("select * from link");

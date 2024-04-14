@@ -1,9 +1,23 @@
 app:
   telegram-token: ${TG_TOKEN}
+  useQueue: true
   controller:
     updates:
       limit: 50
       interval: 1m
+  async:
+    core-pool-size: 4
+    max-pool-size: 16
+    queue-capacity: 256
+
+  kafka-updates-topic:
+    name: updatesTopic
+    partitions: 3
+    replicas: 3
+  kafka-updates-dlq-topic:
+    name: updatesTopic_dlq
+    partitions: 1
+    replicas: 1
 
 scrapper:
   url: http://localhost:8080
@@ -20,6 +34,18 @@ spring:
     name: bot
   jackson:
     time-zone: UTC
+  kafka:
+    bootstrap-servers:
+      - localhost:9092
+    consumer:
+      group-id: link-updates
+      value-deserializer: edu.java.bot.kafka.LinkUpdateRequestDeserializer
+      auto-offset-reset: latest
+      properties:
+        max:
+          poll:
+            interval:
+              ms: 300000
 
 server:
   port: 8090

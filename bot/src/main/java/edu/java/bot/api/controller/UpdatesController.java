@@ -1,10 +1,8 @@
 package edu.java.bot.api.controller;
 
-import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.api.dto.LinkUpdateRequest;
-import edu.java.bot.bot.TgBot;
-import edu.java.bot.constants.StringService;
 import edu.java.bot.scrapperClient.exceptions.status.TooManyRequestsException;
+import edu.java.bot.service.UpdatesService;
 import io.github.bucket4j.Bucket;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/updates")
 public class UpdatesController implements IUpdatesController {
 
-    private final TgBot bot;
+    private final UpdatesService updatesService;
     private final Bucket bucket;
 
     @Autowired
-    public UpdatesController(TgBot bot, @Qualifier("updatesRateLimitBucket") Bucket bucket) {
-        this.bot = bot;
+    public UpdatesController(UpdatesService updatesService, @Qualifier("updatesRateLimitBucket") Bucket bucket) {
+        this.updatesService = updatesService;
         this.bucket = bucket;
     }
 
@@ -37,10 +35,7 @@ public class UpdatesController implements IUpdatesController {
             throw new TooManyRequestsException();
         }
         log.debug(String.format("Update %s was accepted", update));
-        update.getTgChatIds()
-            .forEach(chatId -> bot.sendMessage(
-                new SendMessage(chatId, StringService.receiveUpdate(update.getUrl(), update.getDescription()))
-            ));
+        updatesService.sendUpdatesMessages(update);
     }
 
 }

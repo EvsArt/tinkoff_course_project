@@ -10,7 +10,8 @@ import org.springframework.validation.annotation.Validated;
 public record ApplicationConfig(
     @NotNull Scheduler scheduler,
     @NotNull LinkChecker linkChecker,
-    @NotNull AccessType databaseAccessType
+    @NotNull AccessType databaseAccessType,
+    @NotNull KafkaUpdatesTopic kafkaUpdatesTopic
 ) {
 
     public enum AccessType {
@@ -21,6 +22,9 @@ public record ApplicationConfig(
     }
 
     public record LinkChecker(@NotNull Duration checkInterval) {
+    }
+
+    public record KafkaUpdatesTopic(String name, int partitions, int replicas) {
     }
 
 }

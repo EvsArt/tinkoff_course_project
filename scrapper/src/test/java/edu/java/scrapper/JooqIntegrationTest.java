@@ -12,7 +12,7 @@ import edu.java.service.jooq.JooqTgChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = "app.database-access-type=jooq")
+@TestPropertySource(properties = {"app.database-access-type=jooq", "app.useQueue=false"})
 public abstract class JooqIntegrationTest extends IntegrationTest {
 
     @Autowired protected JooqTgChatRepository jooqTgChatRepository;

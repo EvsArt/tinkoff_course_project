@@ -1,7 +1,7 @@
 package edu.java.bot.api.controller;
 
 import edu.java.bot.api.dto.LinkUpdateRequest;
-import edu.java.bot.bot.TgBot;
+import edu.java.bot.service.UpdatesService;
 import io.github.bucket4j.Bucket;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -16,10 +16,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UpdatesController.class)
-public class ChatControllerRateLimitTest {
+public class UpdatesControllerRateLimitTest {
 
     @Autowired MockMvc mockMvc;
-    @MockBean TgBot chatService;
+    @MockBean UpdatesService updatesService;
     @MockBean(name = "updatesRateLimitBucket") Bucket bucket;
 
     @Test
