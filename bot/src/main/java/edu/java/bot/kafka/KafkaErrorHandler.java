@@ -1,5 +1,6 @@
 package edu.java.bot.kafka;
 
+import edu.java.bot.metrics.ErrorUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -45,6 +46,7 @@ class KafkaErrorHandler implements CommonErrorHandler {
         handle(exception, consumer);
     }
 
+    @ErrorUpdate
     private void handle(Exception exception, Consumer<?, ?> consumer) {
         log.error("Exception thrown", exception);
         if (exception instanceof RecordDeserializationException ex) {
