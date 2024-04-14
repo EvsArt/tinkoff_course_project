@@ -3,6 +3,7 @@ package edu.java.bot.constants;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
+@SuppressWarnings("MultipleStringLiterals")
 public class MetricsConstants {
 
     public static final String UPDATE_NAME = "update";

@@ -39,7 +39,7 @@ public class MetricsContainer {
 
     private final Counter receivedTgMessages = Counter.builder(MetricsConstants.MESSAGES_NAME)
         .tag(MetricsConstants.MESSAGES_NAME_FROM, MetricsConstants.MESSAGES_NAME_FROM_TG)
-        .description("Updates with error that sent to dlq")
+        .description("Messages that received by Telegram")
         .register(meterRegistry);
 
 }
