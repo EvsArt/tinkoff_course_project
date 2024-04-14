@@ -13,4 +13,8 @@ public class MetricsConstants {
     public static final String UPDATE_FROM = "from";
     public static final String UPDATE_FROM_KAFKA = "kafka";
     public static final String UPDATE_FROM_HTTP = "http";
+
+    public static final String MESSAGES_NAME = "messages";
+    public static final String MESSAGES_NAME_FROM = "from";
+    public static final String MESSAGES_NAME_FROM_TG = "telegram";
 }

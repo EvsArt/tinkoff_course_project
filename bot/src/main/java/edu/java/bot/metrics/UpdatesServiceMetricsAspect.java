@@ -56,4 +56,14 @@ public class UpdatesServiceMetricsAspect {
         return joinPoint.proceed();
     }
 
+    @Pointcut("@annotation(edu.java.bot.metrics.ReceivedTgMessage)")
+    public void receivedTgMessage() {
+    }
+
+    @Around("receivedTgMessage()")
+    public Object incrementReceivedTgMessages(ProceedingJoinPoint joinPoint) throws Throwable {
+        metricsContainer.getReceivedTgMessages().increment();
+        return joinPoint.proceed();
+    }
+
 }

@@ -8,6 +8,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.messageProcessor.MessageProcessor;
+import edu.java.bot.metrics.ReceivedTgMessage;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,7 @@ public class MyTgBot implements TgBot {
     }
 
     @Override
+    @ReceivedTgMessage
     public int process(List<Update> updates) {
         log.debug("{} updates was received: {}", updates.size(), updates);
 
