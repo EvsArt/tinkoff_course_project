@@ -40,7 +40,7 @@ public class MyTgBot implements TgBot {
     @EventListener(classes = ContextRefreshedEvent.class)
     public void start() {
         // Spring actuator creates new context and ContextRefreshedEvent is published twice
-        if(botCore != null) {
+        if (botCore != null) {
             log.warn("Bot has already started so new bot creation was skipped");
             return;
         }

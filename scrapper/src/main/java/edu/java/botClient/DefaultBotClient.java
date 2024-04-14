@@ -9,6 +9,7 @@ import edu.java.constants.BotApiPaths;
 import edu.java.exceptions.status.BadRequestException;
 import edu.java.exceptions.status.ServerErrorException;
 import edu.java.exceptions.status.TooManyRequestsException;
+import edu.java.metrics.SentHttpUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class DefaultBotClient implements BotClient {
     private final WebClient webClient;
     private final BotConfig config;
 
-    private DefaultBotClient(WebClient webClient, BotConfig config) {
+    protected DefaultBotClient(WebClient webClient, BotConfig config) {
         this.webClient = webClient;
         this.config = config;
         log.info("Created Bot Client");
@@ -65,6 +66,7 @@ public class DefaultBotClient implements BotClient {
     }
 
     @Override
+    @SentHttpUpdate
     public Mono<PostUpdatesResponse> postUpdates(LinkUpdateRequest updateRequest) throws JsonProcessingException {
         return webClient.post()
             .uri(uriBuilder -> uriBuilder

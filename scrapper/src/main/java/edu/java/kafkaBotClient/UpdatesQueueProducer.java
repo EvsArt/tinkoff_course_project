@@ -4,6 +4,7 @@ import edu.java.botClient.BotClient;
 import edu.java.botClient.dto.LinkUpdateRequest;
 import edu.java.botClient.dto.PostUpdatesResponse;
 import edu.java.configuration.ApplicationConfig;
+import edu.java.metrics.SentKafkaUpdate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,6 +17,7 @@ public class UpdatesQueueProducer implements BotClient {
     private final ApplicationConfig.KafkaUpdatesTopic kafkaUpdatesTopic;
     private final KafkaTemplate<String, LinkUpdateRequest> kafkaTemplate;
 
+    @SentKafkaUpdate
     public Mono<PostUpdatesResponse> postUpdates(LinkUpdateRequest updateRequest) {
         log.debug("Sending update {}", updateRequest);
         kafkaTemplate.send(kafkaUpdatesTopic.name(), updateRequest);
