@@ -28,6 +28,7 @@ public class MetricsContainer {
     private void registerCounters() {
         sentUpdates = Counter.builder(MetricsConstants.UPDATE_NAME)
             .tag(MetricsConstants.UPDATE_STATUS, MetricsConstants.UPDATE_STATUS_RECEIVED)
+            .tag(MetricsConstants.UPDATE_FROM, MetricsConstants.UPDATE_FROM)
             .description("Processed and sent updates to telegram")
             .register(meterRegistry);
 
@@ -45,6 +46,7 @@ public class MetricsContainer {
 
         errorUpdates = Counter.builder(MetricsConstants.UPDATE_NAME)
             .tag(MetricsConstants.UPDATE_STATUS, MetricsConstants.UPDATE_STATUS_ERROR)
+            .tag(MetricsConstants.UPDATE_FROM, MetricsConstants.UPDATE_FROM_KAFKA)
             .description("Updates with error that sent to dlq")
             .register(meterRegistry);
 
