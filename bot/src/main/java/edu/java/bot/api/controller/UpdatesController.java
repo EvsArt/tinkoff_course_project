@@ -1,6 +1,7 @@
 package edu.java.bot.api.controller;
 
 import edu.java.bot.api.dto.LinkUpdateRequest;
+import edu.java.bot.metrics.ReceivedHttpUpdate;
 import edu.java.bot.scrapperClient.exceptions.status.TooManyRequestsException;
 import edu.java.bot.service.UpdatesService;
 import io.github.bucket4j.Bucket;
@@ -28,6 +29,7 @@ public class UpdatesController implements IUpdatesController {
     }
 
     @PostMapping
+    @ReceivedHttpUpdate
     public void postUpdate(
         @RequestBody @Valid LinkUpdateRequest update
     ) {

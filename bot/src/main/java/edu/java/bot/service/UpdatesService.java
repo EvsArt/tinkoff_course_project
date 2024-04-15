@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.api.dto.LinkUpdateRequest;
 import edu.java.bot.bot.TgBot;
 import edu.java.bot.constants.StringService;
+import edu.java.bot.metrics.ProcessedUpdate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,7 @@ public class UpdatesService {
         this.bot = bot;
     }
 
+    @ProcessedUpdate
     public void sendUpdatesMessages(LinkUpdateRequest updateRequest) {
         updateRequest.getTgChatIds()
             .forEach(chatId -> bot.sendMessage(

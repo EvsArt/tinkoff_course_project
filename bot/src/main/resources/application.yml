@@ -1,10 +1,13 @@
 app:
   telegram-token: ${TG_TOKEN}
+
   useQueue: true
+
   controller:
     updates:
       limit: 50
       interval: 1m
+
   async:
     core-pool-size: 4
     max-pool-size: 16
@@ -52,3 +55,22 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
+
+management:
+  server:
+    port: 8091
+
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - prometheus
+      base-path: /
+      path-mapping:
+        prometheus: /metrics
+
+  metrics:
+    tags:
+      application: ${spring.application.name}

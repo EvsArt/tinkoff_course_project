@@ -1,11 +1,15 @@
 app:
+
   useQueue: true
+
   scheduler:
     enable: true
     interval: 10s
     force-check-delay: 10s
+
   linkChecker:
     checkInterval: 1m
+
   controller:
     tg-chat:
       limit: 20
@@ -13,7 +17,9 @@ app:
     links:
       limit: 20
       interval: 30m
+
   database-access-type: jpa
+
   kafka-updates-topic:
     name: updatesTopic
     partitions: 10
@@ -28,6 +34,7 @@ api:
       strategy: linear
       interval: 3s
       codes:
+        - 403
         - 429
   stackoverflow:
     connection-timeout: 10s
@@ -54,17 +61,21 @@ tgbot:
 spring:
   application:
     name: scrapper
+
   datasource:
     url: jdbc:postgresql://localhost:5433/scrapper
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+
   jpa:
     show-sql: false
     hibernate:
       ddl-auto: validate
+
   liquibase:
     enabled: false
+
   kafka:
     bootstrap-servers:
       - localhost:9092
@@ -89,3 +100,22 @@ logging:
 springdoc:
   swagger-ui:
     path: /swagger-ui
+
+management:
+  server:
+    port: 8081
+
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - prometheus
+      base-path: /
+      path-mapping:
+        prometheus: /metrics
+
+  metrics:
+    tags:
+      application: ${spring.application.name}

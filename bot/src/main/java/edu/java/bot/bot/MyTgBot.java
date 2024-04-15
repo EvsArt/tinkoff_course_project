@@ -20,24 +20,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyTgBot implements TgBot {
 
+    private final ApplicationConfig applicationConfig;
     private final MessageProcessor messageProcessor;
     private final SetMyCommands setMyCommands;
-    private final TelegramBot botCore;
+    private TelegramBot botCore;
 
     @Autowired
     public MyTgBot(
-        MessageProcessor messageProcessor,
         ApplicationConfig applicationConfig,
+        MessageProcessor messageProcessor,
         SetMyCommands setMyCommands
     ) {
+        this.applicationConfig = applicationConfig;
         this.messageProcessor = messageProcessor;
         this.setMyCommands = setMyCommands;
-        botCore = new TelegramBot(applicationConfig.telegramToken());
     }
 
     @Override
     @EventListener(classes = ContextRefreshedEvent.class)
     public void start() {
+        // Spring actuator creates new context and ContextRefreshedEvent is published twice
+        if (botCore != null) {
+            log.warn("Bot has already started so new bot creation was skipped");
+            return;
+        }
+        botCore = new TelegramBot(applicationConfig.telegramToken());
         botCore.setUpdatesListener(this, this);
 
         botCore.execute(setMyCommands);

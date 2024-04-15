@@ -37,13 +37,13 @@ public class ClientConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(value = "${app.useQueue}", havingValue = "false", matchIfMissing = true)
+    @ConditionalOnProperty(value = "app.useQueue", havingValue = "false", matchIfMissing = true)
     public BotClient botClient() {
         return DefaultBotClient.create(botConfig);
     }
 
     @Bean
-    @ConditionalOnProperty(value = "${app.useQueue}", havingValue = "true")
+    @ConditionalOnProperty(value = "app.useQueue", havingValue = "true")
     public BotClient kafkaBotClient(
         ApplicationConfig applicationConfig,
         KafkaTemplate<String, LinkUpdateRequest> kafkaTemplate
