@@ -1,13 +1,14 @@
 package edu.java.bot.metrics;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Aspect
-@Component
+@Configuration
+@EnableAspectJAutoProxy
 public class UpdatesServiceMetricsAspect {
 
     private final MetricsContainer metricsContainer;
@@ -20,50 +21,45 @@ public class UpdatesServiceMetricsAspect {
     public void receivedHTTPUpdate() {
     }
 
-    @Around("receivedHTTPUpdate()")
-    public Object incrementReceivedHttpUpdates(ProceedingJoinPoint joinPoint) throws Throwable {
+    @After("receivedHTTPUpdate()")
+    public void incrementReceivedHttpUpdates() {
         metricsContainer.getReceivedHTTPUpdate().increment();
-        return joinPoint.proceed();
     }
 
     @Pointcut("@annotation(edu.java.bot.metrics.ReceivedKafkaUpdate)")
     public void receivedKafkaUpdate() {
     }
 
-    @Around("receivedKafkaUpdate()")
-    public Object incrementReceivedKafkaUpdates(ProceedingJoinPoint joinPoint) throws Throwable {
+    @After("receivedKafkaUpdate()")
+    public void incrementReceivedKafkaUpdates() {
         metricsContainer.getReceivedKafkaUpdate().increment();
-        return joinPoint.proceed();
     }
 
     @Pointcut("@annotation(edu.java.bot.metrics.ProcessedUpdate)")
     public void processedUpdate() {
     }
 
-    @Around("processedUpdate()")
-    public Object incrementSentUpdates(ProceedingJoinPoint joinPoint) throws Throwable {
+    @After("processedUpdate()")
+    public void incrementSentUpdates() {
         metricsContainer.getSentUpdates().increment();
-        return joinPoint.proceed();
     }
 
     @Pointcut("@annotation(edu.java.bot.metrics.ErrorUpdate)")
     public void errorUpdate() {
     }
 
-    @Around("errorUpdate()")
-    public Object incrementErrorUpdates(ProceedingJoinPoint joinPoint) throws Throwable {
+    @After("errorUpdate()")
+    public void incrementErrorUpdates() {
         metricsContainer.getErrorUpdates().increment();
-        return joinPoint.proceed();
     }
 
     @Pointcut("@annotation(edu.java.bot.metrics.ReceivedTgMessage)")
     public void receivedTgMessage() {
     }
 
-    @Around("receivedTgMessage()")
-    public Object incrementReceivedTgMessages(ProceedingJoinPoint joinPoint) throws Throwable {
+    @After("receivedTgMessage()")
+    public void incrementReceivedTgMessages() {
         metricsContainer.getReceivedTgMessages().increment();
-        return joinPoint.proceed();
     }
 
 }

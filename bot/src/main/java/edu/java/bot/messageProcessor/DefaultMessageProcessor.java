@@ -7,6 +7,7 @@ import edu.java.bot.commands.CommandsHolder;
 import edu.java.bot.constants.Constants;
 import edu.java.bot.constants.StringService;
 import edu.java.bot.exceptions.NoSuchCommandException;
+import edu.java.bot.metrics.ReceivedTgMessage;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     @Override
+    @ReceivedTgMessage
     public SendMessage process(Update update) {
         MessageParser.ParsedMessage message;
         try {
