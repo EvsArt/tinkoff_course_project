@@ -27,8 +27,8 @@ public class MetricsContainer {
 
     private void registerCounters() {
         sentUpdates = Counter.builder(MetricsConstants.UPDATE_NAME)
-            .tag(MetricsConstants.UPDATE_STATUS, MetricsConstants.UPDATE_STATUS_RECEIVED)
-            .tag(MetricsConstants.UPDATE_FROM, MetricsConstants.UPDATE_FROM)
+            .tag(MetricsConstants.UPDATE_STATUS, MetricsConstants.UPDATE_STATUS_SENT)
+            .tag(MetricsConstants.UPDATE_FROM, MetricsConstants.UPDATE_FROM_TG)
             .description("Processed and sent updates to telegram")
             .register(meterRegistry);
 
