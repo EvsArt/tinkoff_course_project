@@ -17,7 +17,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: evsart/tinkoff_course_project/bot
+  IMAGE_NAME: evsart/tinkoff_course_project/scrapper
 
 jobs:
   build:
