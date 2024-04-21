@@ -15,6 +15,7 @@ import org.testcontainers.utility.DockerImageName;
 @SpringBootTest
 @Testcontainers
 @TestPropertySource(properties = "app.kafka-updates-topic.name=testTopic")
+@TestPropertySource(locations = "classpath:/testKafka.env")
 public abstract class KafkaIntegrationTest {
 
     @Autowired KafkaUpdatesListener updatesListener;

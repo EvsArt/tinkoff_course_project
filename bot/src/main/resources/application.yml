@@ -1,7 +1,7 @@
 app:
   telegram-token: ${TG_TOKEN}
 
-  useQueue: true
+  useQueue: ${USE_KAFKA}
 
   controller:
     updates:
@@ -23,7 +23,7 @@ app:
     replicas: 1
 
 scrapper:
-  url: http://localhost:8080
+  url: ${SCRAPPER_URL}
   connection-timeout: 10s
   retry:
     max-attempts: 3
@@ -38,8 +38,7 @@ spring:
   jackson:
     time-zone: UTC
   kafka:
-    bootstrap-servers:
-      - localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     consumer:
       group-id: link-updates
       value-deserializer: edu.java.bot.kafka.LinkUpdateRequestDeserializer
@@ -51,14 +50,14 @@ spring:
               ms: 300000
 
 server:
-  port: 8090
+  port: 8080
 
 logging:
   config: classpath:log4j2-plain.xml
 
 management:
   server:
-    port: 8091
+    port: 8081
 
   endpoints:
     web:
