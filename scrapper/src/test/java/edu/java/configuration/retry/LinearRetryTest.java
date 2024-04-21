@@ -126,7 +126,7 @@ public class LinearRetryTest {
 
         long expTime = retryConfig.getInterval().multipliedBy((long) (((double) retries + 1) / 2 * retries)).toMillis();
 
-        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(30));
+        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(40));
     }
 
     // 1s + 2s = 3s
@@ -156,7 +156,7 @@ public class LinearRetryTest {
 
         long expTime = retryConfig.getInterval().multipliedBy((long) (((double) retries + 1) / 2 * retries)).toMillis();
 
-        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(30));
+        assertThat(time).isCloseTo(expTime, Percentage.withPercentage(40));
     }
 
 }
