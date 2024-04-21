@@ -2,4 +2,11 @@ FROM eclipse-temurin:21-jre-alpine
 
 COPY ./target/scrapper.jar /scrapper.jar
 
+ENV BOT_URL=${BOT_URL} \
+    DATASOURCE_URL=${DATASOURCE_URL} \
+    DATASOURCE_USERNAME=${DATASOURCE_USERNAME} \
+    DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD} \
+    USE_KAFKA=${USE_KAFKA} \
+    KAFKA_BOOTSTRAP_SERVERS=${KAFKA_BOOTSTRAP_SERVERS}
+
 ENTRYPOINT ["java","-jar","/scrapper.jar"]
