@@ -38,9 +38,11 @@ jobs:
         run: mvn -pl bot -am package
 
       - name: docker image build
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main')
         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} -f ${{ github.workspace }}/bot/bot.Dockerfile ${{ github.workspace }}/bot
 
       - name: Log in to the Container registry
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main')
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
@@ -48,6 +50,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: docker image push
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main')
         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - id: jacoco
