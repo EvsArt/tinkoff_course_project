@@ -100,6 +100,40 @@ services:
     networks:
       - backend
 
+  tgbot:
+    image: ghcr.io/evsart/tinkoff_course_project/bot
+    ports:
+      - 8090:8080
+      - 8091:8081
+    environment:
+      - TG_TOKEN= ======YOUR TOKEN======
+      - SCRAPPER_URL=http://scrapper:8080/
+      - USE_KAFKA=true
+      - KAFKA_BOOTSTRAP_SERVERS=kafka1:19092
+    depends_on:
+      - liquibase-migrations
+      - kafka1
+    networks:
+      - backend
+
+  scrapper:
+    image: ghcr.io/evsart/tinkoff_course_project/scrapper
+    ports:
+      - 8080:8080
+      - 8081:8081
+    environment:
+      - BOT_URL=http://tgbot:8090/
+      - DATASOURCE_URL=jdbc:postgresql://postgresql:5432/scrapper
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=postgres
+      - USE_KAFKA=true
+      - KAFKA_BOOTSTRAP_SERVERS=kafka1:19092
+    depends_on:
+      - liquibase-migrations
+      - kafka1
+    networks:
+      - backend
+
 volumes:
   postgresql: { }
   kafka1: { }

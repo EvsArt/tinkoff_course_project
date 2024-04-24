@@ -5,12 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.errors.RecordDeserializationException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.listener.CommonErrorHandler;
 import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@ConditionalOnProperty(prefix = "app", name = "useQueue", havingValue = "true")
 class KafkaErrorHandler implements CommonErrorHandler {
 
     private final KafkaDlqSender dlqSender;
