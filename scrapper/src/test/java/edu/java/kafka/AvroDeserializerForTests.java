@@ -1,7 +1,7 @@
 package edu.java.kafka;
 
 import edu.java.avro.AvroLinkUpdateRequest;
-import edu.java.botClient.dto.LinkUpdateRequest;
+import edu.java.dto.bot.LinkUpdateRequest;
 import java.io.IOException;
 import java.util.List;
 import org.apache.avro.file.DataFileReader;

@@ -1,10 +1,10 @@
 package edu.java.api.controller;
 
 import edu.java.api.constants.Headers;
-import edu.java.api.dto.AddLinkRequest;
-import edu.java.api.dto.LinkResponse;
-import edu.java.api.dto.ListLinksResponse;
-import edu.java.api.dto.RemoveLinkRequest;
+import edu.java.dto.bot.AddLinkRequest;
+import edu.java.dto.bot.LinkResponse;
+import edu.java.dto.bot.ListLinksResponse;
+import edu.java.dto.bot.RemoveLinkRequest;
 import edu.java.exceptions.status.TooManyRequestsException;
 import edu.java.model.entity.Link;
 import edu.java.service.LinkInfoService;

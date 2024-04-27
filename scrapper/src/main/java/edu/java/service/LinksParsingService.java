@@ -1,7 +1,7 @@
 package edu.java.service;
 
-import edu.java.dto.GitHubRepoRequest;
-import edu.java.dto.StackOverflowQuestionRequest;
+import edu.java.dto.github.GitHubRepoRequest;
+import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
 
 public interface LinksParsingService {
 

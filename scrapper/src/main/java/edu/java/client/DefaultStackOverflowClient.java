@@ -2,9 +2,9 @@ package edu.java.client;
 
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.StackOverflowApiPaths;
-import edu.java.dto.StackOverflowQuestionListResponse;
-import edu.java.dto.StackOverflowQuestionRequest;
-import edu.java.dto.StackOverflowQuestionResponse;
+import edu.java.dto.stackoverflow.StackOverflowQuestionListResponse;
+import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
+import edu.java.dto.stackoverflow.StackOverflowQuestionResponse;
 import edu.java.exceptions.status.BadRequestException;
 import edu.java.exceptions.status.ForbiddenException;
 import edu.java.exceptions.status.ResourceNotFoundException;

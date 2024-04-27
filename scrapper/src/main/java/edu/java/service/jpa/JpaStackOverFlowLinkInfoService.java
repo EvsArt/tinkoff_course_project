@@ -3,7 +3,7 @@ package edu.java.service.jpa;
 import edu.java.client.StackOverflowClient;
 import edu.java.domain.jpaRepository.JpaLinkRepository;
 import edu.java.domain.jpaRepository.JpaStackOverFlowLinkInfoRepository;
-import edu.java.dto.StackOverflowQuestionRequest;
+import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.exceptions.status.ResourceNotFoundException;
 import edu.java.exceptions.status.StatusException;

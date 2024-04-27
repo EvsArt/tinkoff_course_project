@@ -1,4 +1,4 @@
-package edu.java.api.dto;
+package edu.java.dto.bot;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

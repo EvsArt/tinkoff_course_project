@@ -1,8 +1,8 @@
 package edu.java.client;
 
-import edu.java.dto.GitHubRepoEventResponse;
-import edu.java.dto.GitHubRepoRequest;
-import edu.java.dto.GitHubRepoResponse;
+import edu.java.dto.github.GitHubRepoEventResponse;
+import edu.java.dto.github.GitHubRepoRequest;
+import edu.java.dto.github.GitHubRepoResponse;
 import reactor.core.publisher.Mono;
 
 public interface GitHubClient extends Client {

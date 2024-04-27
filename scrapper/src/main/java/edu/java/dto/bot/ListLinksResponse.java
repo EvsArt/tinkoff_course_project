@@ -1,4 +1,4 @@
-package edu.java.api.dto;
+package edu.java.dto.bot;
 
 import java.util.List;
 import lombok.Getter;

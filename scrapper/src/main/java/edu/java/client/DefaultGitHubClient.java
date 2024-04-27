@@ -2,9 +2,9 @@ package edu.java.client;
 
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.GitHubApiPaths;
-import edu.java.dto.GitHubRepoEventResponse;
-import edu.java.dto.GitHubRepoRequest;
-import edu.java.dto.GitHubRepoResponse;
+import edu.java.dto.github.GitHubRepoEventResponse;
+import edu.java.dto.github.GitHubRepoRequest;
+import edu.java.dto.github.GitHubRepoResponse;
 import edu.java.exceptions.status.ForbiddenException;
 import edu.java.exceptions.status.MovedPermanentlyException;
 import edu.java.exceptions.status.ResourceNotFoundException;

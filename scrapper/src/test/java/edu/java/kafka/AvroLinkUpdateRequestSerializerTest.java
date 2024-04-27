@@ -1,6 +1,6 @@
 package edu.java.kafka;
 
-import edu.java.botClient.dto.LinkUpdateRequest;
+import edu.java.dto.bot.LinkUpdateRequest;
 import edu.java.configuration.kafka.LinkUpdateRequestSerializer;
 import java.util.List;
 import org.junit.jupiter.api.AfterAll;

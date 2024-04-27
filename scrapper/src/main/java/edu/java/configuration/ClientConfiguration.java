@@ -2,7 +2,7 @@ package edu.java.configuration;
 
 import edu.java.botClient.BotClient;
 import edu.java.botClient.DefaultBotClient;
-import edu.java.botClient.dto.LinkUpdateRequest;
+import edu.java.dto.bot.LinkUpdateRequest;
 import edu.java.client.DefaultGitHubClient;
 import edu.java.client.DefaultStackOverflowClient;
 import edu.java.client.GitHubClient;

@@ -1,8 +1,8 @@
 package edu.java.kafkaBotClient;
 
 import edu.java.botClient.BotClient;
-import edu.java.botClient.dto.LinkUpdateRequest;
-import edu.java.botClient.dto.PostUpdatesResponse;
+import edu.java.dto.bot.LinkUpdateRequest;
+import edu.java.dto.bot.PostUpdatesResponse;
 import edu.java.configuration.ApplicationConfig;
 import edu.java.metrics.SentKafkaUpdate;
 import lombok.RequiredArgsConstructor;

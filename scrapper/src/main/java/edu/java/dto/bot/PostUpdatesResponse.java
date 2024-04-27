@@ -1,4 +1,4 @@
-package edu.java.botClient.dto;
+package edu.java.dto.bot;
 
 import lombok.EqualsAndHashCode;
 
