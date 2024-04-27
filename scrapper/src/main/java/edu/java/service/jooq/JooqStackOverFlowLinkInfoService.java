@@ -1,6 +1,5 @@
 package edu.java.service.jooq;
 
-import edu.java.servicesClient.StackOverflowClient;
 import edu.java.domain.jooqRepository.JooqStackOverFlowLinkInfoRepository;
 import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
 import edu.java.dto.stackoverflow.StackOverflowQuestionResponse;
@@ -8,6 +7,7 @@ import edu.java.model.entity.Link;
 import edu.java.model.entity.StackOverFlowLinkInfo;
 import edu.java.service.LinksParsingService;
 import edu.java.service.StackOverFlowLinkInfoService;
+import edu.java.servicesClient.StackOverflowClient;
 import java.net.URI;
 
 public class JooqStackOverFlowLinkInfoService implements StackOverFlowLinkInfoService {

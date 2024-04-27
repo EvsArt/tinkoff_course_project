@@ -1,8 +1,5 @@
 package edu.java.bot.api.kafka;
 
-import edu.java.bot.api.kafka.KafkaDlqSender;
-import edu.java.bot.api.kafka.KafkaErrorHandler;
-import edu.java.bot.api.kafka.KafkaUpdatesListener;
 import edu.java.bot.service.UpdatesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

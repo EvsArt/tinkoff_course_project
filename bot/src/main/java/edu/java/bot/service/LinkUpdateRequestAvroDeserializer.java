@@ -1,7 +1,7 @@
 package edu.java.bot.service;
 
-import edu.java.bot.dto.api.LinkUpdateRequest;
 import edu.java.bot.avro.AvroLinkUpdateRequest;
+import edu.java.bot.dto.api.LinkUpdateRequest;
 import java.io.IOException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,5 @@
 package edu.java.service.jooq;
 
-import edu.java.servicesClient.GitHubClient;
 import edu.java.domain.jooqRepository.JooqGitHubLinkInfoRepository;
 import edu.java.domain.jooqRepository.JooqLinkRepository;
 import edu.java.dto.github.GitHubRepoEventResponse;
@@ -10,6 +9,7 @@ import edu.java.model.entity.GitHubLinkInfo;
 import edu.java.model.entity.Link;
 import edu.java.service.GitHubLinkInfoService;
 import edu.java.service.LinksParsingService;
+import edu.java.servicesClient.GitHubClient;
 import java.net.URI;
 
 public class JooqGitHubLinkInfoService implements GitHubLinkInfoService {

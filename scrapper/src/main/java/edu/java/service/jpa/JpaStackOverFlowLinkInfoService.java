@@ -1,6 +1,5 @@
 package edu.java.service.jpa;
 
-import edu.java.servicesClient.StackOverflowClient;
 import edu.java.domain.jpaRepository.JpaLinkRepository;
 import edu.java.domain.jpaRepository.JpaStackOverFlowLinkInfoRepository;
 import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
@@ -11,6 +10,7 @@ import edu.java.model.entity.Link;
 import edu.java.model.entity.StackOverFlowLinkInfo;
 import edu.java.service.LinksParsingService;
 import edu.java.service.StackOverFlowLinkInfoService;
+import edu.java.servicesClient.StackOverflowClient;
 import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;

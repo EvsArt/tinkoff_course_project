@@ -1,6 +1,5 @@
 package edu.java.service.jdbc;
 
-import edu.java.servicesClient.GitHubClient;
 import edu.java.domain.jdbcRepository.JdbcGitHubLinkInfoRepository;
 import edu.java.domain.jdbcRepository.JdbcLinkRepository;
 import edu.java.dto.github.GitHubRepoEventResponse;
@@ -10,6 +9,7 @@ import edu.java.model.entity.GitHubLinkInfo;
 import edu.java.model.entity.Link;
 import edu.java.service.GitHubLinkInfoService;
 import edu.java.service.LinksParsingService;
+import edu.java.servicesClient.GitHubClient;
 import java.net.URI;
 
 public class JdbcGitHubLinkInfoService implements GitHubLinkInfoService {

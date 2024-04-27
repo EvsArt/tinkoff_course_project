@@ -1,6 +1,5 @@
 package edu.java.service.jpa;
 
-import edu.java.servicesClient.GitHubClient;
 import edu.java.domain.jpaRepository.JpaGitHubLinkInfoRepository;
 import edu.java.domain.jpaRepository.JpaLinkRepository;
 import edu.java.dto.github.GitHubRepoRequest;
@@ -11,6 +10,7 @@ import edu.java.model.entity.GitHubLinkInfo;
 import edu.java.model.entity.Link;
 import edu.java.service.GitHubLinkInfoService;
 import edu.java.service.LinksParsingService;
+import edu.java.servicesClient.GitHubClient;
 import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;

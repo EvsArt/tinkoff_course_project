@@ -1,9 +1,8 @@
 package edu.java.botClient;
 
-import edu.java.botClient.BotClient;
+import edu.java.configuration.ApplicationConfig;
 import edu.java.dto.bot.LinkUpdateRequest;
 import edu.java.dto.bot.PostUpdatesResponse;
-import edu.java.configuration.ApplicationConfig;
 import edu.java.metrics.SentKafkaUpdate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

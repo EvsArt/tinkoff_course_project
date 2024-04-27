@@ -1,8 +1,5 @@
 package edu.java.service;
 
-import edu.java.servicesClient.GitHubClient;
-import edu.java.servicesClient.StackOverflowClient;
-import edu.java.servicesClient.SupportedApi;
 import edu.java.dto.github.GitHubRepoEventResponse;
 import edu.java.dto.github.GitHubRepoRequest;
 import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
@@ -12,6 +9,9 @@ import edu.java.model.LinkUpdateInfo;
 import edu.java.model.entity.GitHubLinkInfo;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.StackOverFlowLinkInfo;
+import edu.java.servicesClient.GitHubClient;
+import edu.java.servicesClient.StackOverflowClient;
+import edu.java.servicesClient.SupportedApi;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -2,9 +2,9 @@ package edu.java.bot.scrapperClient.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.java.bot.configuration.ScrapperConfig;
 import edu.java.bot.constants.Headers;
 import edu.java.bot.constants.ScrapperApiPaths;
-import edu.java.bot.configuration.ScrapperConfig;
 import edu.java.bot.dto.scrapperClient.AddLinkRequest;
 import edu.java.bot.dto.scrapperClient.DeleteChatResponse;
 import edu.java.bot.dto.scrapperClient.LinkResponse;

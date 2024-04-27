@@ -1,6 +1,5 @@
 package edu.java.bot.configuration;
 
-import edu.java.bot.configuration.ApplicationConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

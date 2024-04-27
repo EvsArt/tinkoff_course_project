@@ -1,12 +1,12 @@
 package edu.java.bot.api.kafka;
 
-import edu.java.bot.dto.api.LinkUpdateRequest;
 import edu.java.bot.configuration.ApplicationConfig;
+import edu.java.bot.dto.api.LinkUpdateRequest;
+import edu.java.bot.kafka.AvroLinkUpdateRequestSerializerForTests;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import edu.java.bot.kafka.AvroLinkUpdateRequestSerializerForTests;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;

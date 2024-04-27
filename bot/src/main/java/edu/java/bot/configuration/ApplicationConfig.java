@@ -2,10 +2,10 @@ package edu.java.bot.configuration;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
-import java.time.Duration;
 
 @Validated
 @ConfigurationProperties(prefix = "app")

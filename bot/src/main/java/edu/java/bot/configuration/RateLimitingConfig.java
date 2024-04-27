@@ -1,6 +1,5 @@
 package edu.java.bot.configuration;
 
-import edu.java.bot.configuration.ApplicationConfig;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import org.springframework.context.annotation.Bean;

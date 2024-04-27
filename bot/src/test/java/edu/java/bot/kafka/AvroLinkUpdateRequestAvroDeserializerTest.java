@@ -1,8 +1,8 @@
 package edu.java.bot.kafka;
 
 import edu.java.bot.dto.api.LinkUpdateRequest;
-import java.util.List;
 import edu.java.bot.service.LinkUpdateRequestAvroDeserializer;
+import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

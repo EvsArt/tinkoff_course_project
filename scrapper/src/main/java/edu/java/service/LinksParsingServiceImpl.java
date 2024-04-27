@@ -1,8 +1,8 @@
 package edu.java.service;
 
-import edu.java.servicesClient.SupportedApi;
 import edu.java.dto.github.GitHubRepoRequest;
 import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
+import edu.java.servicesClient.SupportedApi;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;

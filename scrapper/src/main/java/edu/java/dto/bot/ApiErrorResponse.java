@@ -1,7 +1,7 @@
 package edu.java.dto.bot;
 
-import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 

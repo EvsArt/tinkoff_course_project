@@ -1,8 +1,8 @@
 package edu.java.bot.api.rest.controller;
 
 import edu.java.bot.dto.api.LinkUpdateRequest;
-import edu.java.bot.metrics.ReceivedHttpUpdate;
 import edu.java.bot.exceptions.status.TooManyRequestsException;
+import edu.java.bot.metrics.ReceivedHttpUpdate;
 import edu.java.bot.service.UpdatesService;
 import io.github.bucket4j.Bucket;
 import jakarta.validation.Valid;
