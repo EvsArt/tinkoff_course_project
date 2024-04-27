@@ -1,7 +1,8 @@
 package edu.java.bot.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.java.bot.api.dto.LinkUpdateRequest;
+import edu.java.bot.api.rest.controller.UpdatesController;
+import edu.java.bot.dto.api.LinkUpdateRequest;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package edu.java.bot.service;
 
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.api.dto.LinkUpdateRequest;
-import edu.java.bot.bot.TgBot;
+import edu.java.bot.dto.api.LinkUpdateRequest;
+import edu.java.bot.tgBot.TgBot;
 import edu.java.bot.constants.StringService;
 import edu.java.bot.metrics.ProcessedUpdate;
 import org.springframework.stereotype.Service;

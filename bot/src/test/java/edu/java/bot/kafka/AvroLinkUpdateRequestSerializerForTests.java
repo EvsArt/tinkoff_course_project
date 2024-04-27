@@ -1,6 +1,6 @@
 package edu.java.bot.kafka;
 
-import edu.java.bot.api.dto.LinkUpdateRequest;
+import edu.java.bot.dto.api.LinkUpdateRequest;
 import edu.java.bot.avro.AvroLinkUpdateRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -1,11 +1,11 @@
 package edu.java.bot.scrapperClient.client;
 
-import edu.java.bot.scrapperClient.dto.AddLinkRequest;
-import edu.java.bot.scrapperClient.dto.DeleteChatResponse;
-import edu.java.bot.scrapperClient.dto.LinkResponse;
-import edu.java.bot.scrapperClient.dto.ListLinksResponse;
-import edu.java.bot.scrapperClient.dto.RegisterChatResponse;
-import edu.java.bot.scrapperClient.dto.RemoveLinkRequest;
+import edu.java.bot.dto.scrapperClient.AddLinkRequest;
+import edu.java.bot.dto.scrapperClient.DeleteChatResponse;
+import edu.java.bot.dto.scrapperClient.LinkResponse;
+import edu.java.bot.dto.scrapperClient.ListLinksResponse;
+import edu.java.bot.dto.scrapperClient.RegisterChatResponse;
+import edu.java.bot.dto.scrapperClient.RemoveLinkRequest;
 import reactor.core.publisher.Mono;
 
 public interface ScrapperClient {

@@ -41,7 +41,7 @@ spring:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     consumer:
       group-id: link-updates
-      value-deserializer: edu.java.bot.kafka.LinkUpdateRequestDeserializer
+      value-deserializer: edu.java.bot.service.LinkUpdateRequestAvroDeserializer
       auto-offset-reset: latest
       properties:
         max:
