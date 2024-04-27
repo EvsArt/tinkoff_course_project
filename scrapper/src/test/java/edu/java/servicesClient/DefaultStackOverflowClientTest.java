@@ -1,21 +1,23 @@
-package edu.java.client;
+package edu.java.servicesClient;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.configuration.ApiConfig;
 import edu.java.configuration.retry.RetryConfig;
-import edu.java.constants.GitHubApiPaths;
-import edu.java.dto.github.GitHubRepoRequest;
-import edu.java.dto.github.GitHubRepoResponse;
+import edu.java.constants.StackOverflowApiPaths;
+import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
+import edu.java.dto.stackoverflow.StackOverflowQuestionResponse;
+import edu.java.exceptions.status.BadRequestException;
 import edu.java.exceptions.status.ForbiddenException;
-import edu.java.exceptions.status.MovedPermanentlyException;
 import edu.java.exceptions.status.ResourceNotFoundException;
 import edu.java.exceptions.status.ServerErrorException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
@@ -30,45 +32,44 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
 @WireMockTest(httpPort = 8082)
-class DefaultGitHubClientTest {
+class DefaultStackOverflowClientTest {
 
     private static final String host = "localhost";
     private static final int port = 8082;
-    private final static GitHubRepoResponse expResponse = new GitHubRepoResponse(
-        1L,
-        "Name/Repo",
-        OffsetDateTime.parse("2007-12-03T10:15:30Z"),
-        OffsetDateTime.parse("2007-12-05T11:14:31Z")
-    );
+    private final static StackOverflowQuestionResponse expResponse =
+        new StackOverflowQuestionResponse(
+            1L,
+            "MyQuestion",
+            OffsetDateTime.of(LocalDateTime.ofEpochSecond(1708557503, 0, ZoneOffset.UTC), ZoneOffset.UTC),
+            1
+        );
     private static final String responseJson = """
-        {
-        "id": 1,
-        "full_name": "Name/Repo",
-        "updated_at": "2007-12-03T10:15:30Z",
-        "pushed_at": "2007-12-05T11:14:31Z"
-        }
+        {"items":[{
+            "question_id": 1,
+            "title": "MyQuestion",
+            "last_activity_date": 1708557503,
+            "answer_count": 1
+        }]}
         """;
-    private static final String name = "Name";
-    private static final String repo = "Repo";
-    private static final String urlPath = GitHubApiPaths.GET_REPOSITORY
-        .replaceAll("\\{" + GitHubApiPaths.OWNER_NAME_PARAM + "}", name)
-        .replaceAll("\\{" + GitHubApiPaths.REPO_NAME_PARAM + "}", repo);
-    private static DefaultGitHubClient client;
+    private static final Long id = 1L;
+    private static final String urlPath = StackOverflowApiPaths.GET_QUESTION
+        .replaceAll("\\{" + StackOverflowApiPaths.QUESTION_ID_PARAM + "}", String.valueOf(id));
+    private static DefaultStackOverflowClient client;
 
     @BeforeAll
     public static void setClientAndConvertResponse()
         throws URISyntaxException, MalformedURLException {
-        client = DefaultGitHubClient.create(
-            new ApiConfig.GitHubConfig(
+        client = DefaultStackOverflowClient.create(
+            new ApiConfig.StackOverflowConfig(
                 new URI(String.format("http://%s:%d", host, port)).toURL(),
                 new MultiValueMapAdapter<>(new HashMap<>()),
                 Duration.of(10, ChronoUnit.SECONDS),
-                new RetryConfig(1, RetryConfig.Strategy.CONSTANT, List.of(500), Duration.ofMillis(10))
+                new RetryConfig(1, RetryConfig.Strategy.LINEAR, List.of(500), Duration.ofMillis(10))
             )
         );
     }
 
-    public void setupOKGetRepositoryStub() {
+    public void setupOKGetQuestionStub() {
         WireMock.stubFor(
             WireMock
                 .get(WireMock.urlPathEqualTo(urlPath))
@@ -82,7 +83,7 @@ class DefaultGitHubClientTest {
         );
     }
 
-    public void setupNotFoundGetRepositoryStub() {
+    public void setupNotFoundGetQuestionStub() {
         WireMock.stubFor(
             WireMock
                 .get(WireMock.urlPathEqualTo(urlPath))
@@ -95,7 +96,7 @@ class DefaultGitHubClientTest {
         );
     }
 
-    private void setupForbiddenGetRepositoryStub() {
+    private void setupForbiddenGetQuestionStub() {
         WireMock.stubFor(
             WireMock
                 .get(WireMock.urlPathEqualTo(urlPath))
@@ -108,20 +109,20 @@ class DefaultGitHubClientTest {
         );
     }
 
-    private void setupMovedPermanentlyGetRepositoryStub() {
+    private void setupBadRequestGetQuestionStub() {
         WireMock.stubFor(
             WireMock
                 .get(WireMock.urlPathEqualTo(urlPath))
                 .withPort(port)
                 .withHeader(HttpHeaders.CONTENT_TYPE, WireMock.equalTo(MediaType.APPLICATION_JSON_VALUE))
                 .willReturn(WireMock.aResponse()
-                    .withStatus(HttpStatus.MOVED_PERMANENTLY.value())
+                    .withStatus(HttpStatus.BAD_REQUEST.value())
                     .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 )
         );
     }
 
-    private void setupServerErrorGetRepositoryStub() {
+    private void setupServerErrorGetQuestionStub() {
         WireMock.stubFor(
             WireMock
                 .get(WireMock.urlPathEqualTo(urlPath))
@@ -135,54 +136,54 @@ class DefaultGitHubClientTest {
     }
 
     @Test
-    void getRepositoryWithOKStatus() {
-        setupOKGetRepositoryStub();
+    void getQuestionWithOKStatus() {
+        setupOKGetQuestionStub();
 
-        GitHubRepoResponse realResponse =
-            client.getRepository(new GitHubRepoRequest(name, repo)).block();
+        StackOverflowQuestionResponse realResponse =
+            client.getQuestion(new StackOverflowQuestionRequest(id)).block();
 
         assertThat(realResponse).isEqualTo(expResponse);
     }
 
     @Test
-    void getRepositoryWithNotFoundStatus() {
-        setupNotFoundGetRepositoryStub();
+    void getQuestionWithNotFoundStatus() {
+        setupNotFoundGetQuestionStub();
 
-        Mono<GitHubRepoResponse> realResponseMono =
-            client.getRepository(new GitHubRepoRequest(name, repo));
+        Mono<StackOverflowQuestionResponse> realResponseMono =
+            client.getQuestion(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
-    void getRepositoryWithForbiddenStatus() {
-        setupForbiddenGetRepositoryStub();
+    void getQuestionWithForbiddenStatus() {
+        setupForbiddenGetQuestionStub();
 
-        Mono<GitHubRepoResponse> realResponseMono =
-            client.getRepository(new GitHubRepoRequest(name, repo));
+        Mono<StackOverflowQuestionResponse> realResponseMono =
+            client.getQuestion(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ForbiddenException.class);
     }
 
     @Test
-    void getRepositoryWithMovedPermanentlyStatus() {
-        setupMovedPermanentlyGetRepositoryStub();
+    void getQuestionWithBadRequestStatus() {
+        setupBadRequestGetQuestionStub();
 
-        Mono<GitHubRepoResponse> realResponseMono =
-            client.getRepository(new GitHubRepoRequest(name, repo));
+        Mono<StackOverflowQuestionResponse> realResponseMono =
+            client.getQuestion(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
-        assertThat(thrown).isInstanceOf(MovedPermanentlyException.class);
+        assertThat(thrown).isInstanceOf(BadRequestException.class);
     }
 
     @Test
-    void getRepositoryWithServerErrorStatus() {
-        setupServerErrorGetRepositoryStub();
+    void getQuestionWithServerErrorStatus() {
+        setupServerErrorGetQuestionStub();
 
-        Mono<GitHubRepoResponse> realResponseMono =
-            client.getRepository(new GitHubRepoRequest(name, repo));
+        Mono<StackOverflowQuestionResponse> realResponseMono =
+            client.getQuestion(new StackOverflowQuestionRequest(id));
         Throwable thrown = catchThrowable(realResponseMono::block);
 
         assertThat(thrown).isInstanceOf(ServerErrorException.class);

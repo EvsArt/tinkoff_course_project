@@ -1,6 +1,6 @@
 package edu.java.service.jdbc;
 
-import edu.java.client.GitHubClient;
+import edu.java.servicesClient.GitHubClient;
 import edu.java.domain.jdbcRepository.JdbcGitHubLinkInfoRepository;
 import edu.java.domain.jdbcRepository.JdbcLinkRepository;
 import edu.java.dto.github.GitHubRepoEventResponse;

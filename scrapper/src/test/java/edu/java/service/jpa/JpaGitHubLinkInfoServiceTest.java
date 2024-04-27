@@ -1,6 +1,6 @@
 package edu.java.service.jpa;
 
-import edu.java.client.GitHubClient;
+import edu.java.servicesClient.GitHubClient;
 import edu.java.dto.github.GitHubRepoEventResponse;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.entity.GitHubLinkInfo;

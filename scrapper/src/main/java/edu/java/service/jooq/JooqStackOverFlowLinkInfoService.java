@@ -1,6 +1,6 @@
 package edu.java.service.jooq;
 
-import edu.java.client.StackOverflowClient;
+import edu.java.servicesClient.StackOverflowClient;
 import edu.java.domain.jooqRepository.JooqStackOverFlowLinkInfoRepository;
 import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
 import edu.java.dto.stackoverflow.StackOverflowQuestionResponse;

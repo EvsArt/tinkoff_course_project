@@ -1,4 +1,4 @@
-package edu.java.client;
+package edu.java.servicesClient;
 
 import edu.java.dto.github.GitHubRepoEventResponse;
 import edu.java.dto.github.GitHubRepoRequest;

@@ -1,4 +1,4 @@
-package edu.java.client.service;
+package edu.java.servicesClient;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,6 +1,6 @@
 package edu.java.service.jooq;
 
-import edu.java.client.GitHubClient;
+import edu.java.servicesClient.GitHubClient;
 import edu.java.domain.jooqRepository.JooqGitHubLinkInfoRepository;
 import edu.java.domain.jooqRepository.JooqLinkRepository;
 import edu.java.dto.github.GitHubRepoEventResponse;

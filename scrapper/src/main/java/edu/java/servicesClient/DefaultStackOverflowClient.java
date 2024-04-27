@@ -1,4 +1,4 @@
-package edu.java.client;
+package edu.java.servicesClient;
 
 import edu.java.configuration.ApiConfig;
 import edu.java.constants.StackOverflowApiPaths;

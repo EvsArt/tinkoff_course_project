@@ -1,6 +1,6 @@
 package edu.java.service;
 
-import edu.java.client.service.SupportedApi;
+import edu.java.servicesClient.SupportedApi;
 import edu.java.dto.github.GitHubRepoRequest;
 import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
 import java.util.regex.Matcher;

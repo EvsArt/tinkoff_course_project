@@ -1,7 +1,7 @@
 package edu.java.configuration.dbAccess;
 
-import edu.java.client.GitHubClient;
-import edu.java.client.StackOverflowClient;
+import edu.java.servicesClient.GitHubClient;
+import edu.java.servicesClient.StackOverflowClient;
 import edu.java.domain.jpaRepository.JpaGitHubLinkInfoRepository;
 import edu.java.domain.jpaRepository.JpaLinkRepository;
 import edu.java.domain.jpaRepository.JpaStackOverFlowLinkInfoRepository;

@@ -1,4 +1,4 @@
-package edu.java.configuration.kafka;
+package edu.java.service.kafka;
 
 import edu.java.avro.AvroLinkUpdateRequest;
 import edu.java.dto.bot.LinkUpdateRequest;

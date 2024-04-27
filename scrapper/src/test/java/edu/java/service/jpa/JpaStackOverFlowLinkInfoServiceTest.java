@@ -1,6 +1,6 @@
 package edu.java.service.jpa;
 
-import edu.java.client.StackOverflowClient;
+import edu.java.servicesClient.StackOverflowClient;
 import edu.java.dto.stackoverflow.StackOverflowQuestionResponse;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.entity.Link;

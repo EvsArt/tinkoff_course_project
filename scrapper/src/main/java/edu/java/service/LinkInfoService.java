@@ -1,6 +1,6 @@
 package edu.java.service;
 
-import edu.java.client.service.SupportedApi;
+import edu.java.servicesClient.SupportedApi;
 import edu.java.model.entity.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 

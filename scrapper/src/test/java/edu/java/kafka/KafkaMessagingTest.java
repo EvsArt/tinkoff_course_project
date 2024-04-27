@@ -2,8 +2,8 @@ package edu.java.kafka;
 
 import edu.java.dto.bot.LinkUpdateRequest;
 import edu.java.configuration.ApplicationConfig;
-import edu.java.configuration.kafka.LinkUpdateRequestSerializer;
-import edu.java.kafkaBotClient.UpdatesQueueProducer;
+import edu.java.service.kafka.LinkUpdateRequestSerializer;
+import edu.java.botClient.UpdatesQueueProducer;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;

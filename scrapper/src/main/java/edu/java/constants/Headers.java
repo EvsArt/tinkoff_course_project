@@ -1,4 +1,4 @@
-package edu.java.api.constants;
+package edu.java.constants;
 
 import lombok.experimental.UtilityClass;
 

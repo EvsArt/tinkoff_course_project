@@ -1,7 +1,7 @@
 package edu.java.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.java.api.constants.Headers;
+import edu.java.constants.Headers;
 import edu.java.dto.bot.AddLinkRequest;
 import edu.java.dto.bot.LinkResponse;
 import edu.java.dto.bot.ListLinksResponse;

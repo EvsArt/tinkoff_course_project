@@ -1,6 +1,6 @@
 package edu.java.service.jpa;
 
-import edu.java.client.GitHubClient;
+import edu.java.servicesClient.GitHubClient;
 import edu.java.domain.jpaRepository.JpaGitHubLinkInfoRepository;
 import edu.java.domain.jpaRepository.JpaLinkRepository;
 import edu.java.dto.github.GitHubRepoRequest;

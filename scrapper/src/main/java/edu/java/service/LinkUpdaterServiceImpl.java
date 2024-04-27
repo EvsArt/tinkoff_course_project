@@ -1,8 +1,8 @@
 package edu.java.service;
 
-import edu.java.client.GitHubClient;
-import edu.java.client.StackOverflowClient;
-import edu.java.client.service.SupportedApi;
+import edu.java.servicesClient.GitHubClient;
+import edu.java.servicesClient.StackOverflowClient;
+import edu.java.servicesClient.SupportedApi;
 import edu.java.dto.github.GitHubRepoEventResponse;
 import edu.java.dto.github.GitHubRepoRequest;
 import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;

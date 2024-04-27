@@ -1,6 +1,6 @@
 package edu.java.service.jpa;
 
-import edu.java.client.StackOverflowClient;
+import edu.java.servicesClient.StackOverflowClient;
 import edu.java.domain.jpaRepository.JpaLinkRepository;
 import edu.java.domain.jpaRepository.JpaStackOverFlowLinkInfoRepository;
 import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;

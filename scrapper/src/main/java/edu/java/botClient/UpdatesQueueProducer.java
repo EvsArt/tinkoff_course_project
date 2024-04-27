@@ -1,4 +1,4 @@
-package edu.java.kafkaBotClient;
+package edu.java.botClient;
 
 import edu.java.botClient.BotClient;
 import edu.java.dto.bot.LinkUpdateRequest;
