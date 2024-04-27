@@ -1,13 +1,13 @@
 package edu.java.service.jdbc;
 
-import edu.java.client.StackOverflowClient;
 import edu.java.domain.jdbcRepository.JdbcStackOverFlowLinkInfoRepository;
-import edu.java.dto.StackOverflowQuestionRequest;
-import edu.java.dto.StackOverflowQuestionResponse;
+import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
+import edu.java.dto.stackoverflow.StackOverflowQuestionResponse;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.StackOverFlowLinkInfo;
 import edu.java.service.LinksParsingService;
 import edu.java.service.StackOverFlowLinkInfoService;
+import edu.java.servicesClient.StackOverflowClient;
 import java.net.URI;
 
 public class JdbcStackOverFlowLinkInfoService implements StackOverFlowLinkInfoService {

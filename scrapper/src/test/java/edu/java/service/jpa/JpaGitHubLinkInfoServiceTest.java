@@ -1,12 +1,12 @@
 package edu.java.service.jpa;
 
-import edu.java.client.GitHubClient;
-import edu.java.dto.GitHubRepoEventResponse;
+import edu.java.dto.github.GitHubRepoEventResponse;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.entity.GitHubLinkInfo;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.TgChat;
 import edu.java.scrapper.JpaIntegrationTest;
+import edu.java.servicesClient.GitHubClient;
 import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

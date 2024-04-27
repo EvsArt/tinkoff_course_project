@@ -1,7 +1,7 @@
 package edu.java.bot.api.controller.retry;
 
-import edu.java.bot.scrapperClient.config.retry.RetryConfig;
-import edu.java.bot.scrapperClient.exceptions.status.ServerErrorException;
+import edu.java.bot.exceptions.status.ServerErrorException;
+import edu.java.bot.scrapperClient.retry.RetryConfig;
 import java.io.IOException;
 import java.net.Socket;
 import java.time.Duration;
@@ -16,7 +16,6 @@ import okhttp3.mockwebserver.RecordedRequest;
 import okio.Buffer;
 import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;

@@ -2,12 +2,12 @@ package edu.java.configuration;
 
 import edu.java.botClient.BotClient;
 import edu.java.botClient.DefaultBotClient;
-import edu.java.botClient.dto.LinkUpdateRequest;
-import edu.java.client.DefaultGitHubClient;
-import edu.java.client.DefaultStackOverflowClient;
-import edu.java.client.GitHubClient;
-import edu.java.client.StackOverflowClient;
-import edu.java.kafkaBotClient.UpdatesQueueProducer;
+import edu.java.botClient.UpdatesQueueProducer;
+import edu.java.dto.bot.LinkUpdateRequest;
+import edu.java.servicesClient.DefaultGitHubClient;
+import edu.java.servicesClient.DefaultStackOverflowClient;
+import edu.java.servicesClient.GitHubClient;
+import edu.java.servicesClient.StackOverflowClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

@@ -1,12 +1,12 @@
 package edu.java.service.jpa;
 
-import edu.java.client.StackOverflowClient;
-import edu.java.dto.StackOverflowQuestionResponse;
+import edu.java.dto.stackoverflow.StackOverflowQuestionResponse;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.StackOverFlowLinkInfo;
 import edu.java.model.entity.TgChat;
 import edu.java.scrapper.JpaIntegrationTest;
+import edu.java.servicesClient.StackOverflowClient;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;

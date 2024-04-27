@@ -1,17 +1,17 @@
 package edu.java.service;
 
-import edu.java.client.GitHubClient;
-import edu.java.client.StackOverflowClient;
-import edu.java.client.service.SupportedApi;
-import edu.java.dto.GitHubRepoEventResponse;
-import edu.java.dto.GitHubRepoRequest;
-import edu.java.dto.StackOverflowQuestionRequest;
-import edu.java.dto.StackOverflowQuestionResponse;
+import edu.java.dto.github.GitHubRepoEventResponse;
+import edu.java.dto.github.GitHubRepoRequest;
+import edu.java.dto.stackoverflow.StackOverflowQuestionRequest;
+import edu.java.dto.stackoverflow.StackOverflowQuestionResponse;
 import edu.java.exceptions.status.ForbiddenException;
 import edu.java.model.LinkUpdateInfo;
 import edu.java.model.entity.GitHubLinkInfo;
 import edu.java.model.entity.Link;
 import edu.java.model.entity.StackOverFlowLinkInfo;
+import edu.java.servicesClient.GitHubClient;
+import edu.java.servicesClient.StackOverflowClient;
+import edu.java.servicesClient.SupportedApi;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;

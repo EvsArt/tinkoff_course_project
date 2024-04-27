@@ -1,7 +1,7 @@
 package edu.java.bot.api.controller.retry;
 
-import edu.java.bot.scrapperClient.config.retry.RetryConfig;
-import edu.java.bot.scrapperClient.exceptions.status.ServerErrorException;
+import edu.java.bot.exceptions.status.ServerErrorException;
+import edu.java.bot.scrapperClient.retry.RetryConfig;
 import java.io.IOException;
 import java.net.Socket;
 import java.time.Duration;

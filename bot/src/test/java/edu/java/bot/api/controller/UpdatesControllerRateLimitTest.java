@@ -1,6 +1,7 @@
 package edu.java.bot.api.controller;
 
-import edu.java.bot.api.dto.LinkUpdateRequest;
+import edu.java.bot.api.rest.controller.UpdatesController;
+import edu.java.bot.dto.api.LinkUpdateRequest;
 import edu.java.bot.service.UpdatesService;
 import io.github.bucket4j.Bucket;
 import java.util.List;

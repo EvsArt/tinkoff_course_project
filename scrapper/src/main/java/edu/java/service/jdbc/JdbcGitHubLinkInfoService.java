@@ -1,15 +1,15 @@
 package edu.java.service.jdbc;
 
-import edu.java.client.GitHubClient;
 import edu.java.domain.jdbcRepository.JdbcGitHubLinkInfoRepository;
 import edu.java.domain.jdbcRepository.JdbcLinkRepository;
-import edu.java.dto.GitHubRepoEventResponse;
-import edu.java.dto.GitHubRepoRequest;
+import edu.java.dto.github.GitHubRepoEventResponse;
+import edu.java.dto.github.GitHubRepoRequest;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.entity.GitHubLinkInfo;
 import edu.java.model.entity.Link;
 import edu.java.service.GitHubLinkInfoService;
 import edu.java.service.LinksParsingService;
+import edu.java.servicesClient.GitHubClient;
 import java.net.URI;
 
 public class JdbcGitHubLinkInfoService implements GitHubLinkInfoService {

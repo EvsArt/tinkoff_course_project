@@ -1,7 +1,7 @@
 package edu.java.service;
 
-import edu.java.client.service.SupportedApi;
 import edu.java.model.entity.Link;
+import edu.java.servicesClient.SupportedApi;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class LinkInfoService {

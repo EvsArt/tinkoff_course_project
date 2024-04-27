@@ -35,6 +35,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Return the BinaryMessageEncoder instance used by this class.
+     *
      * @return the message encoder used by this class
      */
     public static BinaryMessageEncoder<AvroLinkUpdateRequest> getEncoder() {
@@ -43,6 +44,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Return the BinaryMessageDecoder instance used by this class.
+     *
      * @return the message decoder used by this class
      */
     public static BinaryMessageDecoder<AvroLinkUpdateRequest> getDecoder() {
@@ -51,6 +53,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
+     *
      * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
      * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
      */
@@ -60,6 +63,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Serializes this LinkUpdateRequest to a ByteBuffer.
+     *
      * @return a buffer holding the serialized data for this instance
      * @throws java.io.IOException if this instance could not be serialized
      */
@@ -69,6 +73,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Deserializes a LinkUpdateRequest from a ByteBuffer.
+     *
      * @param b a byte buffer holding serialized data for an instance of this class
      * @return a LinkUpdateRequest instance decoded from the given buffer
      * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
@@ -93,8 +98,9 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * All-args constructor.
-     * @param tgChatIds The new value for tgChatIds
-     * @param url The new value for url
+     *
+     * @param tgChatIds   The new value for tgChatIds
+     * @param url         The new value for url
      * @param description The new value for description
      */
     public AvroLinkUpdateRequest(
@@ -153,6 +159,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Gets the value of the 'tgChatIds' field.
+     *
      * @return The value of the 'tgChatIds' field.
      */
     public java.util.List<java.lang.Long> getTgChatIds() {
@@ -161,6 +168,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Sets the value of the 'tgChatIds' field.
+     *
      * @param value the value to set.
      */
     public void setTgChatIds(java.util.List<java.lang.Long> value) {
@@ -169,6 +177,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Gets the value of the 'url' field.
+     *
      * @return The value of the 'url' field.
      */
     public java.lang.CharSequence getUrl() {
@@ -177,6 +186,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Sets the value of the 'url' field.
+     *
      * @param value the value to set.
      */
     public void setUrl(java.lang.CharSequence value) {
@@ -185,6 +195,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Gets the value of the 'description' field.
+     *
      * @return The value of the 'description' field.
      */
     public java.lang.CharSequence getDescription() {
@@ -193,6 +204,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Sets the value of the 'description' field.
+     *
      * @param value the value to set.
      */
     public void setDescription(java.lang.CharSequence value) {
@@ -201,6 +213,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Creates a new LinkUpdateRequest RecordBuilder.
+     *
      * @return A new LinkUpdateRequest RecordBuilder
      */
     public static AvroLinkUpdateRequest.Builder newBuilder() {
@@ -209,6 +222,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Creates a new LinkUpdateRequest RecordBuilder by copying an existing Builder.
+     *
      * @param other The existing builder to copy.
      * @return A new LinkUpdateRequest RecordBuilder
      */
@@ -222,6 +236,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
     /**
      * Creates a new LinkUpdateRequest RecordBuilder by copying an existing LinkUpdateRequest instance.
+     *
      * @param other The existing instance to copy.
      * @return A new LinkUpdateRequest RecordBuilder
      */
@@ -251,6 +266,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Creates a Builder by copying an existing Builder.
+         *
          * @param other The existing Builder to copy.
          */
         private Builder(AvroLinkUpdateRequest.Builder other) {
@@ -271,6 +287,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Creates a Builder by copying an existing LinkUpdateRequest instance
+         *
          * @param other The existing instance to copy.
          */
         private Builder(AvroLinkUpdateRequest other) {
@@ -291,6 +308,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Gets the value of the 'tgChatIds' field.
+         *
          * @return The value.
          */
         public java.util.List<java.lang.Long> getTgChatIds() {
@@ -299,6 +317,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Sets the value of the 'tgChatIds' field.
+         *
          * @param value The value of 'tgChatIds'.
          * @return This builder.
          */
@@ -311,6 +330,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Checks whether the 'tgChatIds' field has been set.
+         *
          * @return True if the 'tgChatIds' field has been set, false otherwise.
          */
         public boolean hasTgChatIds() {
@@ -319,6 +339,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Clears the value of the 'tgChatIds' field.
+         *
          * @return This builder.
          */
         public AvroLinkUpdateRequest.Builder clearTgChatIds() {
@@ -329,6 +350,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Gets the value of the 'url' field.
+         *
          * @return The value.
          */
         public java.lang.CharSequence getUrl() {
@@ -337,6 +359,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Sets the value of the 'url' field.
+         *
          * @param value The value of 'url'.
          * @return This builder.
          */
@@ -349,6 +372,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Checks whether the 'url' field has been set.
+         *
          * @return True if the 'url' field has been set, false otherwise.
          */
         public boolean hasUrl() {
@@ -357,6 +381,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Clears the value of the 'url' field.
+         *
          * @return This builder.
          */
         public AvroLinkUpdateRequest.Builder clearUrl() {
@@ -367,6 +392,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Gets the value of the 'description' field.
+         *
          * @return The value.
          */
         public java.lang.CharSequence getDescription() {
@@ -375,6 +401,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Sets the value of the 'description' field.
+         *
          * @param value The value of 'description'.
          * @return This builder.
          */
@@ -387,6 +414,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Checks whether the 'description' field has been set.
+         *
          * @return True if the 'description' field has been set, false otherwise.
          */
         public boolean hasDescription() {
@@ -395,6 +423,7 @@ public class AvroLinkUpdateRequest extends org.apache.avro.specific.SpecificReco
 
         /**
          * Clears the value of the 'description' field.
+         *
          * @return This builder.
          */
         public AvroLinkUpdateRequest.Builder clearDescription() {

@@ -1,7 +1,7 @@
 package edu.java.bot.kafka;
 
-import edu.java.bot.api.dto.LinkUpdateRequest;
 import edu.java.bot.avro.AvroLinkUpdateRequest;
+import edu.java.bot.dto.api.LinkUpdateRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;

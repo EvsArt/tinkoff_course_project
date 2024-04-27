@@ -1,11 +1,11 @@
 package edu.java.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.java.api.constants.Headers;
-import edu.java.api.dto.AddLinkRequest;
-import edu.java.api.dto.LinkResponse;
-import edu.java.api.dto.ListLinksResponse;
-import edu.java.api.dto.RemoveLinkRequest;
+import edu.java.constants.Headers;
+import edu.java.dto.bot.AddLinkRequest;
+import edu.java.dto.bot.LinkResponse;
+import edu.java.dto.bot.ListLinksResponse;
+import edu.java.dto.bot.RemoveLinkRequest;
 import edu.java.exceptions.LinkNotExistsException;
 import edu.java.model.entity.Link;
 import edu.java.service.LinkInfoService;

@@ -1,7 +1,7 @@
 package edu.java.api.controllerAdvice;
 
 import edu.java.api.controller.ChatController;
-import edu.java.api.dto.ApiErrorResponse;
+import edu.java.dto.bot.ApiErrorResponse;
 import edu.java.exceptions.ChatAlreadyRegisteredException;
 import edu.java.exceptions.ChatNotExistException;
 import edu.java.exceptions.status.TooManyRequestsException;

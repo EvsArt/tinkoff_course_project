@@ -2,7 +2,7 @@ package edu.java.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import edu.java.botClient.BotClient;
-import edu.java.botClient.dto.LinkUpdateRequest;
+import edu.java.dto.bot.LinkUpdateRequest;
 import edu.java.model.LinkUpdateInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

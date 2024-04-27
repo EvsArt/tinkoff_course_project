@@ -1,7 +1,5 @@
 package edu.java.configuration.dbAccess;
 
-import edu.java.client.GitHubClient;
-import edu.java.client.StackOverflowClient;
 import edu.java.domain.jooqRepository.JooqGitHubLinkInfoRepository;
 import edu.java.domain.jooqRepository.JooqLinkRepository;
 import edu.java.domain.jooqRepository.JooqStackOverFlowLinkInfoRepository;
@@ -16,6 +14,8 @@ import edu.java.service.jooq.JooqGitHubLinkInfoService;
 import edu.java.service.jooq.JooqLinkService;
 import edu.java.service.jooq.JooqStackOverFlowLinkInfoService;
 import edu.java.service.jooq.JooqTgChatService;
+import edu.java.servicesClient.GitHubClient;
+import edu.java.servicesClient.StackOverflowClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

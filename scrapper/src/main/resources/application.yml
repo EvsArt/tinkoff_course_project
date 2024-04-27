@@ -79,7 +79,7 @@ spring:
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     producer:
-      value-serializer: edu.java.configuration.kafka.LinkUpdateRequestSerializer
+      value-serializer: edu.java.service.kafka.LinkUpdateRequestSerializer
       client-id: scrapper-backend
       acks: all
       batch-size: 100000
